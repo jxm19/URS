@@ -1,0 +1,46 @@
+<div class="sidebar" [ngClass]="{ 'collapsed': isCollapsed }">
+
+    <div class="navtop mb-0">
+        <div class="test">
+            <button (click)="toggleSidebar()" class="toggle-btn" >
+                ☰
+            </button>
+        <div class="logo d-flex align-items-center mb-2">
+            <img src="./uskudar.png" alt="uskudar Logo" width="90" height="90" class="me-2">
+        </div>            
+    </div>
+        <div>
+        <a  class="nav-link text-white d-flex align-items-center py-2">
+            <img src="./user.png" alt="user" width="30" height="30" class="me-3">
+            <span *ngIf="!isCollapsed">Username</span>
+        </a>
+        </div>
+    </div>
+   
+    <hr class="border-light" />
+    <!-- Navigation Menu -->
+    <div class="menu d-flex flex-column">
+  
+        <a href="studenthome" class="nav-link text-white d-flex align-items-center py-2">
+            <img src="./home.png" alt="Home" width="30" height="30" class="me-3">
+            <span *ngIf="!isCollapsed">Home</span>
+        </a>
+
+        <a href="#" class="nav-link text-white d-flex align-items-center py-2">
+            <img src="./grades.png" alt="resitmangement" width="30" height="30" class="me-3">
+            <span *ngIf="!isCollapsed">Resit Managemnet</span>
+        </a>
+  
+    </div>
+
+    <hr class="border-light" />
+  
+    <!-- Settings & Logout -->
+    <div class="menu d-flex flex-column">
+        <a href="#" class="nav-link text-white d-flex align-items-center py-2">
+            <img src="./logout.png" alt="Log Out" width="30" height="30" class="me-3">
+            <span *ngIf="!isCollapsed">Quit</span>
+        </a>
+    </div>
+  
+</div>
