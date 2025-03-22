@@ -14,6 +14,7 @@ use App\Http\Controllers\DashboardSecretary\ResetPasswordController as Secretary
 use App\Http\Controllers\SiteStudent\ResetPasswordController as StudentResetPasswordController;
 use App\Http\Controllers\SiteStudent\CourseController as StudentCourseController;
 use App\Http\Controllers\DashboardInstructor\CourseController as InstructorCourseController;
+use App\Http\Controllers\DashboardInstructor\GradeController as InstructorGradeController;
 
 
 
@@ -41,6 +42,9 @@ Route::group(['prefix' => 'dashboard-instructor'], function () {
         Route::post('/logout', [InstructorAuthController::class, 'logout']);
         Route::get('/courses', [InstructorCourseController::class, 'index']);
         Route::get('/courses/{id}', [InstructorCourseController::class, 'show']);
+        Route::apiResource('/grades', InstructorGradeController::class);
+        Route::get('/courses/{courseId}/grades', [InstructorGradeController::class, 'index']);
+
 
     });
     

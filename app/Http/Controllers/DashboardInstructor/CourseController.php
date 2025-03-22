@@ -38,7 +38,8 @@ class CourseController extends Controller
         if (!$course) {
             return response()->json(['message' => 'Course not found!'], 404);
         }
-    
+        
+        $students = $course->students;
         return $this->success($course);
     }
     

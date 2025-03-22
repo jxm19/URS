@@ -21,6 +21,10 @@ class Student extends Model
     {
         return $this->belongsToMany(Course::class,'student_course_pivot');
     }
-
+    
+    public function grades()
+    {
+        return $this->hasMany(Grade::class);
+    }
     
 }
