@@ -1,0 +1,136 @@
+
+.left-section {
+    background: #F7F9FC;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    padding: 40px;
+    gap: 20px;
+}
+
+.carousel-inner img {
+    max-height: 500px;
+    object-fit: contain;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+
+.left-text {
+    text-align: left;
+    text-align: left;
+    color: #24487E;
+    margin-bottom: 20px;
+}
+
+.left-text h3 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 60px;
+    margin-left: 40px;
+}
+
+
+
+.carousel-indicators {
+    position: absolute;
+    top: 93%; 
+    left: 0; 
+    display: flex;
+    justify-content: flex-start; 
+    width: 100%; 
+    padding-left: 100px;
+    margin-left: -20px; 
+}
+
+.carousel-indicators button {
+    width: 18px;
+    height: 18px;
+    background-color: #d1d0d0;
+    border-radius: 50%;
+    border: none;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.carousel-indicators .active {
+    background-color: #7F94B4;
+}
+
+
+.right-section {
+    background-color: #ffffff;
+    padding: 30px;
+    color:#536073;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.right-section h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+
+.right-section p {
+    font-size: 1.3rem;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+
+.form-control {
+    border-radius: 0 8px 8px 0;
+}
+.custom-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #007bff;
+    cursor: pointer;
+    position: relative;
+    bottom: -5px; 
+    margin-right: 8px; 
+
+  }
+  
+  
+
+
+.btn-primary { 
+    background: linear-gradient(53deg, #243c63 0%, #4b72b0 100%);
+    border: none;
+    color: #fff;
+    border-radius: 12px;
+    transition: background 0.3s ease-in-out;
+    padding: 10px;
+    font-size: 1rem;
+   
+}
+
+
+
+/*"Back to Login" */
+.text-decoration-none {
+    color: #007bff;
+    text-decoration: none;
+    display: block;
+    margin-top: 15px;
+}
+
+.text-decoration-none:hover {
+    text-decoration: underline;
+}
+.is-invalid {
+    border-color: #dc3545 !important; 
+  }
+  
+  .is-invalid:focus {
+    border-color: #ead2d4 !important;
+  }
+  

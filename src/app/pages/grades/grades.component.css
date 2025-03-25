@@ -1,0 +1,202 @@
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+  }
+  
+  /* Main Content */
+  .main-content {
+    margin-left: 250px; /* Same as sidebar width */
+    padding: 30px;
+  }
+  
+  /* Custom Box */
+  .custom-box {
+    background-color: #f2f2f3;
+    width: 100%; 
+    max-width: 1250px; 
+    min-height: 100vh;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    margin: 0 auto;
+  }
+  
+  /* Icon and Text */
+  .icon-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .icon-img {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .course-text {
+    font-size: 1.5rem;
+    color: #676868;
+  }
+
+  
+
+  
+
+/* Accordion Items */
+.accordion-item {
+    background-color: #ffffff;
+    width: 100%; 
+    max-width: 1200px;
+    min-height: 50px;
+    padding: 0.2rem;
+    border-radius: 0.8rem; 
+    margin: 20px auto; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+/* Resize Accordion Button */
+.accordion-button {
+    font-size: 1.2rem; /* Adjust font size */
+    padding: 1rem 1rem; /* Adjust padding */
+}
+
+
+
+/* Improve colors, fonts, and spacing */
+body {
+    font-family: 'Inter', sans-serif; 
+}
+
+.table {
+    border-spacing: 0 10px; 
+}
+
+
+.table td, .table th {
+    vertical-align: middle;
+    padding: 12px 16px; 
+    text-align: center;
+    font-size: 12px; 
+    font-weight: 500; 
+    color: rgb(109, 109, 109); 
+}
+
+.badge-passed {
+    background-color: #ddfce4; 
+    color: rgb(12, 98, 49);
+    padding: 0.25rem 0.9rem;
+    border-radius: 4px;
+}
+
+.badge-failed {
+    background-color: #fce9eb; 
+    color: rgb(166, 16, 16);
+    padding: 0.25rem 0.9rem;
+    border-radius: 4px;
+}
+
+
+.form-control, .form-select {
+    border: 1px solid #ddd; 
+    font-size: 12px; 
+    font-weight: 500; 
+    color: rgb(48, 47, 48); 
+}
+
+
+
+
+.page-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px; 
+    height: 40px; 
+    border: none; 
+    border-radius: 8px; 
+    background-color: transparent; 
+    font-size: 14px;
+    font-weight: 500;
+    color: #0f3a7be6; /* Text color */
+    transition: all 0.3s ease;
+}
+
+.page-link:hover {
+    background-color: #bdbfc198; 
+    color: white;
+}
+
+/* Resize checkbox */
+.custom-checkbox .form-check-input {
+    width: 18px;
+    height: 18px; 
+    transform: scale(1.2); 
+    border: 1px solid #b2b3b4; 
+    border-radius: 4px; 
+}
+
+/* Change color when checked */
+.custom-checkbox .form-check-input:checked {
+    background-color: #133f78; 
+    border-color: #3d66df; 
+}
+
+.card {
+    border-radius: 16px; /* Rounded corners */
+    padding: 20px; /* Inner spacing */
+    margin: 0px auto; /* Center horizontally */
+    top: -90px; /* Move box upwards */
+    width: 150%; /* Box width */
+    height: 580px; /* Box height */
+    max-width: 950px; /* Max width */
+    overflow: hidden; 
+}
+
+
+
+
+
+
+.search-box {
+    width: 280px;
+    display: flex;
+    align-items: center;
+    background-color: #f8f7f7ee; 
+    border-radius: 12px; 
+    box-shadow: none; 
+    border: 1px solid #e0e0e0;
+}
+
+
+.search-box img {
+    width: 20px;
+    height: 20px;
+}
+.search-box .input-group-text {
+    background-color: transparent;
+    border: none;
+    border-radius: 20px 0 0 20px; 
+    padding: 0 0.75rem; 
+}
+
+
+
+.search-box .form-control {
+    border: none;
+    height: 30px;
+    background-color: #f8f7f7; 
+    box-shadow: none;
+    font-size: 0.8rem; 
+    padding: 0 0.5rem; 
+}
+
+
+.flex-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem;
+}
