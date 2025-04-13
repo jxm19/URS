@@ -15,6 +15,7 @@ use App\Http\Controllers\SiteStudent\ResetPasswordController as StudentResetPass
 use App\Http\Controllers\SiteStudent\CourseController as StudentCourseController;
 use App\Http\Controllers\DashboardInstructor\CourseController as InstructorCourseController;
 use App\Http\Controllers\DashboardInstructor\GradeController as InstructorGradeController;
+use App\Http\Controllers\SiteStudent\GradeController as StudentGradeController;
 
 
 
@@ -43,8 +44,9 @@ Route::group(['prefix' => 'dashboard-instructor'], function () {
         Route::get('/courses', [InstructorCourseController::class, 'index']);
         Route::get('/courses/{id}', [InstructorCourseController::class, 'show']);
         Route::apiResource('/grades', InstructorGradeController::class);
+        Route::post('/import-grades', [InstructorGradeController::class, 'import']);
         Route::get('/courses/{courseId}/grades', [InstructorGradeController::class, 'index']);
-
+        Route::delete('/grades/course/{courseId}', [InstructorGradeController::class, 'destroyByCourse']);
 
     });
     
@@ -80,6 +82,7 @@ Route::group(['prefix' => 'site-student'], function () {
         Route::post('/logout', [StudentAuthController::class, 'logout']);
         Route::get('/courses', [StudentCourseController::class, 'index']);
         Route::get('/courses/{id}', [StudentCourseController::class, 'show']);
+        Route::get('/grades', [StudentGradeController::class, 'index']);
     });
 
     Route::group(['prefix' => '/password'], function () {

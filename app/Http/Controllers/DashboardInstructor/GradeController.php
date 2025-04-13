@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\DashboardInstructor;
 
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\GradesImport;
 use Illuminate\Http\Request;
 use App\Models\Grade;
 use App\Models\Course;
@@ -20,7 +22,8 @@ class GradeController extends Controller
         $validate = Validator::make($request->all(), [
             'student_id' => 'required|exists:students,id',
             'course_id' => 'required|exists:courses,id',
-            'final_grade' => 'required|numeric|min:0|max:100'
+            'final_grade' => 'required|numeric|min:0|max:100',
+            'absenteeism' => 'nullable|integer|min:0',
         ]);
     
         if ($validate->fails()) {
@@ -59,7 +62,8 @@ class GradeController extends Controller
         public function update(Request $request, $id)
     {
         $validate = Validator::make($request->all(), [
-            'final_grade' => 'required|numeric|min:0|max:100'
+            'final_grade' => 'required|numeric|min:0|max:100',
+            'absenteeism' => 'nullable|integer|min:0'
         ]);
 
         if ($validate->fails()) {
@@ -85,6 +89,7 @@ class GradeController extends Controller
         }
 
         $grade->final_grade = $request->final_grade;
+        $grade->absenteeism = $request->absenteeism;
         $grade->calculateGrade();  
         $grade->save();
 
@@ -101,6 +106,7 @@ class GradeController extends Controller
                 'course_code'   => $grade->course->course_code,
                 'final_grade'   => $grade->final_grade,
                 'letter_grade'  => $grade->letter_grade,
+                'absenteeism'   => $grade->absenteeism,
                 'status'        => $grade->status,
             ]
         ]);
@@ -174,5 +180,56 @@ class GradeController extends Controller
     }
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'grades_file' => 'required|file|mimes:xlsx,xls,csv',
+            'course_id' => 'required|exists:courses,id',
+        ]);
+    
+        $file = $request->file('grades_file');
+        $courseId = $request->input('course_id');
+    
+        $instructor = Instructor::where('user_id', auth()->id())->first();
+        if (!$instructor) {
+            return response()->json(['error' => 'Instructor not found!'], 404);
+        }
+    
+        $instructorId = $instructor->id;
+    
+        try {
+            Excel::import(new GradesImport($courseId, $instructorId), $file);
+            return response()->json(['message' => 'Grades uploaded and processed successfully.']);
+        } catch (ValidationException $e) {
+            return response()->json(['message' => 'Error processing file: ' . $e->getMessage()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error processing file: ' . $e->getMessage()], 500);
+        }
+    }
+
+
+    public function destroyByCourse($courseId)
+{
+    $instructor = Instructor::where('user_id', auth()->id())->first();
+
+    if (!$instructor) {
+        return response()->json(['error' => 'Instructor not found!'], 404);
+    }
+
+    $course = $instructor->courses()->where('id', $courseId)->first();
+
+    if (!$course) {
+        return response()->json(['error' => 'You are not authorized to delete grades for this course.'], 403);
+    }
+
+    Grade::where('course_id', $courseId)->delete();
+
+    return response()->json([
+        'message' => 'All grades for this course deleted successfully.'
+    ], 200);
+}
 
 }
