@@ -22,6 +22,11 @@ class Grade extends Model
         return $this->belongsTo(Course::class);
     }
 
+    public function resitExam()
+    {
+        return $this->hasMany(ResitExam::class);
+    }
+
     public function calculateGrade()
     {
 

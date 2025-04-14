@@ -16,6 +16,8 @@ use App\Http\Controllers\SiteStudent\CourseController as StudentCourseController
 use App\Http\Controllers\DashboardInstructor\CourseController as InstructorCourseController;
 use App\Http\Controllers\DashboardInstructor\GradeController as InstructorGradeController;
 use App\Http\Controllers\SiteStudent\GradeController as StudentGradeController;
+use App\Http\Controllers\SiteStudent\ResitExamController as StudentResitExamController;
+use App\Http\Controllers\DashboardInstructor\ResitExamController as InstructorResitExamController;
 
 
 
@@ -47,6 +49,7 @@ Route::group(['prefix' => 'dashboard-instructor'], function () {
         Route::post('/import-grades', [InstructorGradeController::class, 'import']);
         Route::get('/courses/{courseId}/grades', [InstructorGradeController::class, 'index']);
         Route::delete('/grades/course/{courseId}', [InstructorGradeController::class, 'destroyByCourse']);
+        Route::get('/confirmed-students/{Courseid}', [InstructorResitExamController::class, 'confirmedStudents']);
 
     });
     
@@ -83,6 +86,9 @@ Route::group(['prefix' => 'site-student'], function () {
         Route::get('/courses', [StudentCourseController::class, 'index']);
         Route::get('/courses/{id}', [StudentCourseController::class, 'show']);
         Route::get('/grades', [StudentGradeController::class, 'index']);
+        Route::post('/resit_confirm',[StudentResitExamController::class, 'Confirm']);
+        Route::get('/resit_confirmed', [StudentResitExamController::class, 'index']);
+        Route::delete('/resit_confirm/{id}',[StudentResitExamController::class, 'destroy']);
     });
 
     Route::group(['prefix' => '/password'], function () {
