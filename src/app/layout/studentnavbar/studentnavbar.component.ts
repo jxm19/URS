@@ -14,4 +14,5 @@ export class StudentnavbarComponent {
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed; // Toggle collapse state
   }
+  
 }

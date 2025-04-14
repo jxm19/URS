@@ -3,5 +3,268 @@
 </div>
 
 <div class="main-content">
-hello Jana Is Here
+  <div class="head">
+    <span class="page-title">Courses</span>
+  </div>
+  <div class="general-container">
+    <!--Course-->
+    <div class="container mt-4">
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4" *ngFor="let course of course0">
+        <div class="card shadow-sm rounded-4 p-3 h-100">
+          <div class="card-content-with-grade d-flex align-items-start mb-2">
+            <div class="course-info">
+              <h3 class="fw-bold">{{ course.code }}</h3>
+              <p class="mb-1">{{ course.title }}</p>
+              <small class="course-instructor text-muted">
+                <img src="./instructor-profile.png" width="25" height="25" >
+                {{ course.instructor }}
+              </small>
+            </div>
+            <div class="letter-grade border rounded-circle d-flex align-items-center justify-content-center"
+              [ngClass]="getGradeColor(course.grade)"
+              style="width: 45px; height: 45px; font-weight: bold;"
+            >
+              {{ course.grade }}
+            </div>
+          </div>
+  
+          <p class="attendance-status h-25 mt-3 mb-2">
+            Resit Exam Attendance Status :
+            <span [ngClass]="getStatusColor(course.status)">
+              {{ course.status }}
+            </span>
+          </p>
+  
+          <button
+            class="btn w-100"
+            [ngClass]="{
+              'btn-dark': course.status !== 'Declined',
+              'btn-secondary': course.status === 'Declined'
+            }"
+            [disabled]="course.status === 'Declined'"
+          >
+            Confirm Attendance
+          </button>
+        </div>
+      </div>
+    </div>
+    </div>
+  <!--Course-->
+    <div class="container mt-4">
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4" *ngFor="let course of course1">
+        <div class="card shadow-sm rounded-4 p-3 h-100">
+          <div class="card-content-with-grade d-flex align-items-start mb-2">
+            <div class="course-info">
+              <h3 class="fw-bold">{{ course.code }}</h3>
+              <p class="mb-1">{{ course.title }}</p>
+              <small class="course-instructor text-muted">
+                <img src="./instructor-profile.png" width="25" height="25" >
+                {{ course.instructor }}
+              </small>
+            </div>
+            <div class="letter-grade border rounded-circle d-flex align-items-center justify-content-center"
+              [ngClass]="getGradeColor(course.grade)"
+              style="width: 45px; height: 45px; font-weight: bold;"
+            >
+              {{ course.grade }}
+            </div>
+          </div>
+  
+          <p class="attendance-status h-25 mt-3 mb-2">
+            Resit Exam Attendance Status :
+            <span [ngClass]="getStatusColor(course.status)">
+              {{ course.status }}
+            </span>
+          </p>
+  
+          <button
+            class="btn w-100"
+            [ngClass]="{
+              'btn-dark': course.status !== 'Declined',
+              'btn-secondary': course.status === 'Declined'
+            }"
+            [disabled]="course.status === 'Declined'"
+          >
+            Confirm Attendance
+          </button>
+        </div>
+      </div>
+    </div>
+    </div>
+  <!--Course-->
+  <div class="container mt-4">
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4" *ngFor="let course of course2">
+        <div class="card shadow-sm rounded-4 p-3 h-100">
+          <div class="card-content-with-grade d-flex align-items-start mb-2">
+            <div class="course-info">
+              <h3 class="fw-bold">{{ course.code }}</h3>
+              <p class="mb-1">{{ course.title }}</p>
+              <small class="course-instructor text-muted">
+                <img src="./instructor-profile.png" width="25" height="25" >
+                {{ course.instructor }}
+              </small>
+            </div>
+            <div class="letter-grade border rounded-circle d-flex align-items-center justify-content-center"
+              [ngClass]="getGradeColor(course.grade)"
+              style="width: 45px; height: 45px; font-weight: bold;"
+            >
+              {{ course.grade }}
+            </div>
+          </div>
+  
+          <p class="attendance-status h-25 mt-3 mb-2">
+            Resit Exam Attendance Status :
+            <span [ngClass]="getStatusColor(course.status)">
+              {{ course.status }}
+            </span>
+          </p>
+  
+          <button
+            class="btn w-100"
+            [ngClass]="{
+              'btn-dark': course.status !== 'Declined',
+              'btn-secondary': course.status === 'Declined'
+            }"
+            [disabled]="course.status === 'Declined'"
+          >
+            Confirm Attendance
+          </button>
+        </div>
+      </div>
+    </div>
+    </div>
+    <!--Course-->
+  <div class="container mt-4">
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4" *ngFor="let course of course3">
+        <div class="card shadow-sm rounded-4 p-3 h-100">
+          <div class="card-content-with-grade d-flex align-items-start mb-2">
+            <div class="course-info">
+              <h3 class="fw-bold">{{ course.code }}</h3>
+              <p class="mb-1">{{ course.title }}</p>
+              <small class="course-instructor text-muted">
+                <img src="./instructor-profile.png" width="25" height="25" >
+                {{ course.instructor }}
+              </small>
+            </div>
+            <div class="letter-grade border rounded-circle d-flex align-items-center justify-content-center"
+              [ngClass]="getGradeColor(course.grade)"
+              style="width: 45px; height: 45px; font-weight: bold;"
+            >
+              {{ course.grade }}
+            </div>
+          </div>
+  
+          <p class="attendance-status h-25 mt-3 mb-2">
+            Resit Exam Attendance Status :
+            <span [ngClass]="getStatusColor(course.status)">
+              {{ course.status }}
+            </span>
+          </p>
+  
+          <button
+            class="btn w-100"
+            [ngClass]="{
+              'btn-dark': course.status !== 'Declined',
+              'btn-secondary': course.status === 'Declined'
+            }"
+            [disabled]="course.status === 'Declined'"
+          >
+            Confirm Attendance
+          </button>
+        </div>
+      </div>
+    </div>
+    </div>
+    <!--Course-->
+  <div class="container mt-4">
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4" *ngFor="let course of course4">
+        <div class="card shadow-sm rounded-4 p-3 h-100">
+          <div class="card-content-with-grade d-flex align-items-start mb-2">
+            <div class="course-info">
+              <h3 class="fw-bold">{{ course.code }}</h3>
+              <p class="mb-1">{{ course.title }}</p>
+              <small class="course-instructor text-muted">
+                <img src="./instructor-profile.png" width="25" height="25" >
+                {{ course.instructor }}
+              </small>
+            </div>
+            <div class="letter-grade border rounded-circle d-flex align-items-center justify-content-center"
+              [ngClass]="getGradeColor(course.grade)"
+              style="width: 45px; height: 45px; font-weight: bold;"
+            >
+              {{ course.grade }}
+            </div>
+          </div>
+  
+          <p class="attendance-status h-25 mt-3 mb-2">
+            Resit Exam Attendance Status :
+            <span [ngClass]="getStatusColor(course.status)">
+              {{ course.status }}
+            </span>
+          </p>
+  
+          <button
+            class="btn w-100"
+            [ngClass]="{
+              'btn-dark': course.status !== 'Declined',
+              'btn-secondary': course.status === 'Declined'
+            }"
+            [disabled]="course.status === 'Declined'"
+          >
+            Confirm Attendance
+          </button>
+        </div>
+      </div>
+    </div>
+    </div>
+     <!--Course-->
+  <div class="container mt-4">
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4" *ngFor="let course of course5">
+        <div class="card shadow-sm rounded-4 p-3 h-100">
+          <div class="card-content-with-grade d-flex align-items-start mb-2">
+            <div class="course-info">
+              <h3 class="fw-bold">{{ course.code }}</h3>
+              <p class="mb-1">{{ course.title }}</p>
+              <small class="course-instructor text-muted">
+                <img src="./instructor-profile.png" width="25" height="25" >
+                {{ course.instructor }}
+              </small>
+            </div>
+            <div class="letter-grade border rounded-circle d-flex align-items-center justify-content-center"
+              [ngClass]="getGradeColor(course.grade)"
+              style="width: 45px; height: 45px; font-weight: bold;"
+            >
+              {{ course.grade }}
+            </div>
+          </div>
+  
+          <p class="attendance-status h-25 mt-3 mb-2">
+            Resit Exam Attendance Status :
+            <span [ngClass]="getStatusColor(course.status)">
+              {{ course.status }}
+            </span>
+          </p>
+  
+          <button
+            class="btn w-100"
+            [ngClass]="{
+              'btn-dark': course.status !== 'Declined',
+              'btn-secondary': course.status === 'Declined'
+            }"
+            [disabled]="course.status === 'Declined'"
+          >
+            Confirm Attendance
+          </button>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  
 </div>

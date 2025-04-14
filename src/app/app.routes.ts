@@ -4,8 +4,10 @@ import { StudenthomeComponent } from './pages/studenthome/studenthome.component'
 import { InstructorhomeComponent } from './pages/instructorhome/instructorhome.component';
 import { FchomeComponent } from './pages/fchome/fchome.component';
 import { ResitexamsComponent } from './pages/resitexams/resitexams.component';
-import { PreviousComponent } from './layout/previous/previous.component';
-import { UpcomingComponent } from './layout/upcoming/upcoming.component';
+import { GradesdetailsComponent } from './pages/gradesdetails/gradesdetails.component';
+import { ExamdetailsComponent } from './pages/examdetails/examdetails.component';
+import { CourseannComponent } from './pages/courseann/courseann.component';
+import { ExamscheduleComponent } from './pages/examschedule/examschedule.component';
 export const routes: Routes = [
     {
         path: 'studentnavbar',
@@ -33,13 +35,25 @@ export const routes: Routes = [
     },
 
     {
-        path: 'previous',
-        component: PreviousComponent
+        path: 'gradesdetails',
+        component: GradesdetailsComponent
     },
 
     {
-        path: 'upcoming',
-        component: UpcomingComponent
+        path: 'examdetails',
+        component: ExamdetailsComponent
+    },
+
+    
+    {
+        path: 'courseann',
+        component: CourseannComponent
+    },
+
+     
+    {
+        path: 'examschedule',
+        component: ExamscheduleComponent
     },
 
 
