@@ -18,7 +18,13 @@ use App\Http\Controllers\DashboardInstructor\GradeController as InstructorGradeC
 use App\Http\Controllers\SiteStudent\GradeController as StudentGradeController;
 use App\Http\Controllers\SiteStudent\ResitExamController as StudentResitExamController;
 use App\Http\Controllers\DashboardInstructor\ResitExamController as InstructorResitExamController;
+use App\Http\Controllers\ExamDetailsController ;
+use App\Http\Controllers\ExamScheduleController;
 
+
+Route::post('/exam-schedules/import', [ExamScheduleController::class, 'import']);
+Route::get('/exam-schedules', [ExamScheduleController::class, 'index']);
+Route::get('/exam-schedules/{id}', [ExamScheduleController::class, 'show']);
 
 
 Route::group(['prefix' => 'dashboard-uni'], function () {
@@ -51,6 +57,7 @@ Route::group(['prefix' => 'dashboard-instructor'], function () {
         Route::delete('/grades/course/{courseId}', [InstructorGradeController::class, 'destroyByCourse']);
         Route::get('/confirmed-students/{Courseid}', [InstructorResitExamController::class, 'confirmedStudents']);
 
+        Route::post('/exam-details', [ExamDetailsController::class, 'store']);
     });
     
     Route::group(['prefix' => '/password'], function () {
