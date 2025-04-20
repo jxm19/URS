@@ -1,0 +1,53 @@
+<div class="sidebar">
+  <app-instructornavbar></app-instructornavbar>
+</div>
+
+<div class="main-content" style="font-family: 'Inter', sans-serif; font-size: 14px;">
+  <div class="custom-box">
+    <div class="icon-text">
+      <img [src]="examData.header.icon" alt="Icon" class="icon-img">
+      <span class="course-text">{{examData.header.title}}</span>
+    </div>
+
+    <div class="custom-box1">
+      <table class="table table-hover align-middle">
+        <tbody>
+          <tr *ngFor="let exam of examData.exams">
+            <td>
+              <div class="avatar">
+                <img [src]="exam.avatar" alt="avatar">
+              </div>
+            </td>
+            <td>
+              <div class="name-email">{{exam.name}}</div>
+              <div class="email">{{exam.email}}</div>
+            </td>
+            <td>{{exam.type}}</td>
+            <td>{{exam.time}}</td>
+            <td>
+              <button class="btn" [routerLink]="['/courseann']">
+                <img [src]="exam.actions.search" alt="Search">
+              </button>
+              
+              <button class="btn" (click)="onEdit(exam)">
+                <img [src]="exam.actions.edit" alt="Edit">
+              </button>
+              <button class="btn" (click)="onDelete(exam)">
+                <img [src]="exam.actions.delete" alt="Delete">
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-end mt-5 mb-3">
+        <a href="upload-note" 
+        class="btn text-white rounded-3 border-0"
+        style="width: 170px; height: 40px; background-color: #243c63; transition: all 0.3s ease;"
+        onmouseover="this.style.backgroundImage='linear-gradient(53deg, #243c63 0%, #4b72b0 100%)'"
+        onmouseout="this.style.backgroundImage='none'">
+        Add New
+     </a>
+      </div>
+    </div>
+  </div>
+</div>

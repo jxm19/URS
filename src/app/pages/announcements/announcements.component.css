@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
 /* Sidebar */
 .sidebar {
     width: 250px;
@@ -12,7 +14,7 @@
     margin-left: 250px; /* Same as sidebar width */
     padding: 30px;
   }
-
+  
   /* Custom Box */
   .custom-box {
     background-color: #f2f2f3;
@@ -24,8 +26,6 @@
     margin: 0 auto;
   }
   
-
-  
   /* Icon and Text */
   .icon-text {
     display: flex;
@@ -36,6 +36,8 @@
   .icon-img {
     width: 35px;
     height: 35px;
+    margin-bottom: 1%;
+
   }
   
   .course-text {
@@ -43,10 +45,27 @@
     color: #676868;
   }
 
-  .form-select option[value="Passed"] {
-    color: green; 
-}
+  .course-bar {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; 
+    max-width: 1200px;
+    min-height: 60px;
+    padding: 0.2rem;
+    border-radius: 0.8rem; 
+    margin-bottom: 20px ; 
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+  }
 
-.form-select option[value="Failed"] {
-    color: red; 
-}
+  .course-bar p{
+    padding-left: 20px;
+    color: #536073;
+    font-weight: 400;
+  }
+
+  .course-bar img {
+    padding-right: 20px;
+    cursor: pointer;
+  }

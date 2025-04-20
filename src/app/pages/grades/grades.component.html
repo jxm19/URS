@@ -25,7 +25,14 @@
         <!-- Add New Button and Search Box -->
         <div class="flex-container">
           
-
+            <a 
+            href="/upload"  
+            class="btn btn-outline-secondary" 
+            style="height: 35px; width: 120px; border-radius: 0.6rem; font-size: 0.9rem;"
+          >
+            + Upload file
+          </a>
+  
             <!-- Search Box -->
             <div class="search-box">
                 <span class="input-group-text">
@@ -77,10 +84,7 @@
                             }">{{ student.status }}</span>
                         </td>
                         <td class="d-flex justify-content-center align-items-center gap-2">
-                            <!-- Edit Button -->
-                            <button class="btn btn-light btn-sm">
-                                <img src="Icons\edit-2.png" alt="Edit" style="width: 12px; height: 12px;" />
-                            </button>
+                       
                             <!-- Delete Button -->
                             <button class="btn btn-light btn-sm">
                                 <img src="Icons\trash.png" alt="Delete" style="width: 12px; height: 12px;" />
@@ -111,15 +115,46 @@
                 Next
             </button>
         </div>
+        
     </div>
+    <div class="d-flex justify-content-end mt-5 mb-3">
+        <button 
+          class="btn btn-outline-secondary me-2 rounded-3"
+          style="
+            width: 100px;
+            height: 40px;
+            border-color: #243c63;
+            color: #243c63;
+            background-color: transparent;
+            transition: background-color 0.3s ease;
+          "
+          onmouseover="this.style.backgroundColor='#ececec'"
+          onmouseout="this.style.backgroundColor='transparent'">
+          Cancel
+        </button>
+        
+        <!--  Save Changes -->
+        <button 
+          class="btn text-white rounded-3 border-0"
+          style="
+            width: 170px;
+            height: 40px;
+            background-color: #243c63;
+            transition: all 0.3s ease;
+          "
+          onmouseover="this.style.backgroundImage='linear-gradient(53deg, #243c63 0%, #4b72b0 100%)'"
+          onmouseout="this.style.backgroundImage='none'">
+          Save Changes
+        </button>
+      </div>
+      
 </div>
 </div>
 </div>
 </div>
 </div>
-  
-  
-            
+
+
           
      
 
@@ -180,3 +215,4 @@
     
     </div>
 
+          </div>

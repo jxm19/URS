@@ -1,49 +1,24 @@
 <div class="sidebar">
     <app-instructornavbar></app-instructornavbar>
-</div>
-<div class="main-content">
+  </div>
+  
+  <div class="main-content">
     <div class="custom-box">
-        <img src="Icons\profile-add.png" alt="Icon" class="icon-img"> <!-- Icon as an image -->
-        <span class="course-text">Instructor List</span> <!-- Text with custom class -->
+      <img src="Icons/profile-add.png" alt="Icon" class="icon-img">
+      <span class="course-text">Instructor List</span>
+  
+      <!-- Dynamic Course List -->
+      <div class="box1" *ngFor="let course of courses">
+        <h1>{{ course.code }}</h1>
+        <p>{{ course.title }}</p>
+        <p>{{ course.instructor }}</p>
 
-        <div class="box1">
-            <h1>SE302/1</h1>
-            <p>Software Project Management</p>
-            <p>Dr. Öğr. Üyesi KRİSTİN SURPUHİ BENLİ</p>
-            <button class="custom-button">Details For Resit Exams</button>
-            <img src="Icons\textalign-justifycenter.png" alt="icon-box-img" class="icon-box-img"> <!-- Icon as an image -->
-        </div>
 
-        <div class="box1">
-            <h1>SE302/1</h1>
-            <p>Software Project Management</p>
-            <p>Dr. Öğr. Üyesi KRİSTİN SURPUHİ BENLİ</p>
-            <button class="custom-button">Details For Resit Exams</button>
-            <img src="Icons\textalign-justifycenter.png" alt="icon-box-img" class="icon-box-img"> <!-- Icon as an image -->
-        </div>
+        <a href="/resit-list" class="custom-button" style="text-decoration: none;">
+            Details For Resit Exams
+        </a>
 
-        <div class="box1">
-            <h1>SE302/1</h1>
-            <p>Software Project Management</p>
-            <p>Dr. Öğr. Üyesi KRİSTİN SURPUHİ BENLİ</p>
-            <button class="custom-button">Details For Resit Exams</button>
-            <img src="Icons\textalign-justifycenter.png" alt="icon-box-img" class="icon-box-img"> <!-- Icon as an image -->
-        </div>
-
-        <div class="box1">
-            <h1>SE302/1</h1>
-            <p>Software Project Management</p>
-            <p>Dr. Öğr. Üyesi KRİSTİN SURPUHİ BENLİ</p>
-            <button class="custom-button">Details For Resit Exams</button>
-            <img src="Icons\textalign-justifycenter.png" alt="icon-box-img" class="icon-box-img"> <!-- Icon as an image -->
-        </div>
-
-        <div class="box1">
-            <h1>SE302/1</h1>
-            <p>Software Project Management</p>
-            <p>Dr. Öğr. Üyesi KRİSTİN SURPUHİ BENLİ</p>
-            <button class="custom-button">Details For Resit Exams</button>
-            <img src="Icons\textalign-justifycenter.png" alt="icon-box-img" class="icon-box-img"> <!-- Icon as an image -->
-        </div>
+                  <img src="Icons/textalign-justifycenter.png" alt="icon-box-img" class="icon-box-img">
+      </div>
     </div>
-</div>
+  </div>

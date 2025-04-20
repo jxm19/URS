@@ -1,3 +1,5 @@
+<div class="main-content">
+ 
 <div class="sidebar" [ngClass]="{ 'collapsed': isCollapsed }">
 
     <div class="navtop mb-0">
@@ -21,27 +23,32 @@
     <!-- Navigation Menu -->
     <div class="menu d-flex flex-column">
   
-        <a href="studenthome" class="nav-link text-white d-flex align-items-center py-2">
+        <a href="/instructorhome" class="nav-link text-white d-flex align-items-center py-2">
             <img src="./home.png" alt="Home" width="30" height="30" class="me-3">
             <span *ngIf="!isCollapsed">Home</span>
-        </a>
+          </a>
 
-        <a href="#" class="nav-link text-white d-flex align-items-center py-2">
+          <a href="/grades" class="nav-link text-white d-flex align-items-center py-2">
             <img src="./grades.png" alt="Grades" width="30" height="30" class="me-3">
             <span *ngIf="!isCollapsed">Grades</span>
-        </a>
+          </a>
 
-        <a href="#" class="nav-link text-white d-flex align-items-center py-2">
-            <img src="./list.png" alt="list" width="30" height="30" class="me-3">
-            <span *ngIf="!isCollapsed"> Resit Eligibility List </span>
-        </a>
+        
   
-        <a href="#" class="nav-link text-white d-flex align-items-center py-2">
-            <img src="./ann.png" alt="Announcements" width="30" height="30" class="me-3">
+          <a href="/resit-list" class="nav-link text-white d-flex align-items-center py-2">
+            <img src="./list.png" alt="Resit List" width="30" height="30" class="me-3">
+            <span *ngIf="!isCollapsed">Resit List</span>
+          </a>
+          <a href="/announcements" class="nav-link text-white d-flex align-items-center py-2">
+            <img src="Icons/notification-bing.png" alt="Announcements" width="30" height="30" class="me-3" />
             <span *ngIf="!isCollapsed">Announcements</span>
-        </a>
+          </a>
   
-    </div>
+  <!-- Exam Schedule Link -->
+  <a href="/exam-details" class="nav-link text-white d-flex align-items-center py-2">
+    <img src="Icons/menu-board.png" alt="Exam Schedule" width="30" height="30" class="me-3" />
+    <span *ngIf="!isCollapsed">Exam Schedule</span>
+  </a>
 
     <hr class="border-light" />
   
@@ -53,4 +60,5 @@
         </a>
     </div>
   
+</div>
 </div>

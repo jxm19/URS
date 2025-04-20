@@ -1,0 +1,87 @@
+
+ table, td, th, tr, button, .name-email, .email, 
+ .avatar {
+  color: #808383;
+
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 250px; /* Same as sidebar width */
+  padding: 30px;
+}
+
+/* Custom Box */
+
+.custom-box {
+    background-color: rgba(33, 66, 117, 0.03);
+    width: 100%; 
+    max-width: 1250px; 
+    min-height: 100vh;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    margin: 0 auto;
+  }
+   /* Icon and Text */
+  .icon-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .icon-img {
+    width: 35px;
+    height: 35px;
+    margin-bottom: 1%;
+
+  }
+  
+  .course-text {
+    font-size: 1.5rem;
+    color: #676868;
+  }
+    
+
+.custom-box1 {
+  background-color: #ffffff;
+  width: 100%; 
+  max-width: 1000px; 
+  min-height: 60vh;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin: 0 auto;
+  margin-top: 2%;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.avatar img {
+  width: 40px;
+  height: 40px;
+}
+
+.name-email {
+  font-weight: 400;
+  color: #536073;
+
+}
+
+.email {
+  font-size: 0.875rem;
+  color: #536073;
+}
+
+

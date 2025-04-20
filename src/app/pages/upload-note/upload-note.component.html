@@ -1,0 +1,49 @@
+<div class="sidebar">
+    <app-instructornavbar></app-instructornavbar>
+  </div>
+  
+  <div class="main-content">
+    <div class="custom-box">
+      <img src="Icons/profile-add.png" alt="Icon" class="icon-img">
+      <span class="course-text">Exam Details</span>
+  
+      <div class="container my-5">
+        <!-- Title Field -->
+        <div class="mb-4">
+          <label for="title" class="form-label text-muted fw-semibold">Title</label>
+          <div class="position-relative">
+            <input type="text" id="title" maxlength="100"
+                   class="form-control bg-light border-0 rounded-3 shadow-sm px-3 py-2"
+                   placeholder="type here"
+                   [(ngModel)]="title">
+            <small class="position-absolute end-0 bottom-0 me-2 mb-1 text-muted">
+              {{ title.length }}/100
+            </small>
+          </div>
+        </div>
+  
+        <!-- Exam Notes Field -->
+        <div class="mb-4">
+          <label for="notes" class="form-label text-muted fw-semibold">Exam Notes</label>
+          <div class="position-relative">
+            <textarea id="notes" maxlength="150"
+                      class="form-control bg-light border-0 rounded-3 shadow-sm px-3 py-3"
+                      rows="6" placeholder="type here"
+                      [(ngModel)]="notes"></textarea>
+            <small class="position-absolute end-0 bottom-0 me-2 mb-1 text-muted">
+              {{ notes.length }}/150
+            </small>
+          </div>
+          <div class="d-flex justify-content-end mt-5 mb-3">
+            <button 
+            class="btn text-white rounded-3 border-0"
+              style="width: 170px; height: 40px;; background-color: #243c63; transition: all 0.3s ease;"
+              onmouseover="this.style.backgroundImage='linear-gradient(53deg, #243c63 0%, #4b72b0 100%)'"
+              onmouseout="this.style.backgroundImage='none'">
+             Uploud
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
