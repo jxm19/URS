@@ -67,8 +67,8 @@
 }
 
 .sidebar.collapsed  a  {
-  justify-content: center; /* Centers the icons */
-  padding: 10px 0; /* Adjust padding to keep spacing */
+  justify-content: center; 
+  padding: 10px 0; 
   
 }
 

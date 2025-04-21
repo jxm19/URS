@@ -10,10 +10,10 @@ import { CommonModule } from '@angular/common';
 })
 export class GradesdetailsComponent {
   courses = [
-    { grp: 1, courseCode: 'SE/302', courseName: 'Software Project Management', midterm: 90, assignment: 50, final: 80, grade: 75, letterGrade: 'BB', status: 'Passed' },
-    { grp: 3, courseCode: 'SE/202', courseName: 'Software Design Architecture', midterm: 10, assignment: 60, final: 30, resit: '--', grade: 30, letterGrade: 'FF', status: 'Failed' },
-    { grp: 1, courseCode: 'SE/302', courseName: 'Software Project Management', midterm: 90, assignment: 50, final: 80, grade: 75, letterGrade: 'BB', status: 'Passed' },
-    { grp: 1, courseCode: 'SE/302', courseName: 'Software Project Management', midterm: 90, assignment: 50, final: 80, grade: 75, letterGrade: 'BB', status: 'Passed' }
+    { grp: 1, courseCode: 'SE/302', courseName: 'Software Project Management', final: 80,  letterGrade: 'BB', status: 'Passed' },
+    { grp: 3, courseCode: 'SE/202', courseName: 'Software Design Architecture', final: 30, resit: '--', grade: 30, letterGrade: 'FF', status: 'Failed' },
+    { grp: 1, courseCode: 'SE/302', courseName: 'Software Project Management', final: 80, letterGrade: 'BB', status: 'Passed' },
+    { grp: 1, courseCode: 'SE/302', courseName: 'Software Project Management', final: 80, letterGrade: 'BB', status: 'Passed' }
   ];
 }
   

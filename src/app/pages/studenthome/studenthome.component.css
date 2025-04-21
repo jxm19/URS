@@ -93,6 +93,10 @@
     }
   }
 
+  .text-success, .text-secondary {
+    animation: none;
+  }
+
   .card-content-with-grade{
     display: flex;
     justify-content: space-between;

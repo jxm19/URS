@@ -14,8 +14,8 @@
               <th>Grp</th>
               <th>Course Code</th>
               <th>Course Name</th>
-              <th>Exam Grades</th>
-              <th>Grade</th>
+              <th>Final Exam Grades</th>
+              <th>Resit Exam Grade</th>
               <th>Letter Grade</th>
               <th>Status</th>
             </tr>
@@ -25,14 +25,9 @@
               <td>{{ course.grp }}</td>
               <td>{{ course.courseCode }}</td>
               <td>{{ course.courseName }}</td>
-              <td>
-                Midterm: {{ course.midterm }} <br> 
-                Assignment: {{ course.assignment }}
-                Final: {{ course.final }}  
-                <span *ngIf="course.resit !== undefined">Resit: {{ course.resit }}</span>
-              </td>
-              <td>{{ course.grade }}</td>
-              <td>{{ course.letterGrade }}</td>
+              <td  style="text-align: center;"> {{ course.final }} </td>
+              <td  style="text-align: center;"> <span *ngIf="course.resit !== undefined"> {{ course.resit }}</span></td>
+              <td  style="text-align: center;">{{ course.letterGrade }}</td>
               <td [ngClass]="{ 'passed': course.status === 'Passed', 'failed': course.status === 'Failed' }">
                 {{ course.status }}
               </td>

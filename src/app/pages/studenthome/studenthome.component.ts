@@ -17,7 +17,7 @@ export class StudenthomeComponent {
       title: 'Software Project Management',
       instructor: 'Dr. Öğr. Üyesi KRİSTİN SURPUHİ BENLİ',
       grade: 'FD',
-      status: 'Mandatory',
+      status: 'Unconfirmed'
     },
 
     
@@ -29,7 +29,7 @@ export class StudenthomeComponent {
       title: 'Software Design and Architecture',
       instructor: 'Dr. Öğr. Üyesi KRİSTİN SURPUHİ BENLİ',
       grade: 'BB',
-      status: 'Declined',
+      status: 'Declined'
     },
 
     
@@ -40,8 +40,8 @@ export class StudenthomeComponent {
       code: 'SE204/1',
       title: 'Software Requirements Analysis',
       instructor: 'Dr. Öğr. Üyesi KRİSTİN SURPUHİ BENLİ',
-      grade: 'BA',
-      status: 'Declined',
+      grade: 'DD',
+      status: 'Unconfirmed'
     },
 
     
@@ -53,7 +53,7 @@ export class StudenthomeComponent {
       title: 'Calculus1',
       instructor: 'Dr. Öğr. Üyesi BURHAN PEKTAS',
       grade: 'FF',
-      status: 'Mandatory',
+      status: 'Unconfirmed'
     },
 
   ]
@@ -63,7 +63,7 @@ export class StudenthomeComponent {
         title: 'Calculus2',
         instructor: 'Dr. Öğr. Üyesi BURHAN PEKTAS',
         grade: 'DZ',
-        status: 'Mandatory',
+        status: 'Declined'
       },
 
     
@@ -86,7 +86,6 @@ export class StudenthomeComponent {
     switch (grade) {
       case 'FD':
       case 'FF':
-      case 'DZ':
         return 'text-danger';
       case 'DC':
       case 'DD':
@@ -97,6 +96,9 @@ export class StudenthomeComponent {
       case 'CB':
       case 'CC':
         return 'text-success';
+      case 'DZ':
+      return 'text-secondary';
+      
       default:
         return 'text-muted';
     }
@@ -104,10 +106,10 @@ export class StudenthomeComponent {
   
   getStatusColor(status: string): string {
     switch (status) {
-      case 'Mandatory':
+      case 'Unconfirmed':
         return 'text-danger';
-      case 'Optional':
-        return 'text-warning';
+      case 'Confirmed':
+        return 'text-success';
       case 'Declined':
         return 'text-secondary';
       default:
