@@ -27,46 +27,46 @@ class Grade extends Model
         return $this->hasMany(ResitExam::class);
     }
 
-    public function calculateGrade()
-    {
+    // public function calculateGrade()
+    // {
 
-        $grade = $this->final_grade;
+    //     $grade = $this->final_grade;
 
-        if ($this->absenteeism > 3) {
-            $this->letter_grade = 'DZ'; 
-            $this->status = 'failed';
-        } else {
+    //     if ($this->absenteeism > 3) {
+    //         $this->letter_grade = 'DZ'; 
+    //         $this->status = 'failed';
+    //     } else {
 
-            if ($grade >= 90) {
-                $this->letter_grade = 'AA';
-                $this->status = 'passed';
-            } elseif ($grade >= 85) {
-                $this->letter_grade = 'BA';
-                $this->status = 'passed';
-            } elseif ($grade >= 80) {
-                $this->letter_grade = 'BB';
-                $this->status = 'passed';
-            } elseif ($grade >= 75) {
-                $this->letter_grade = 'CB';
-                $this->status = 'passed';
-            } elseif ($grade >= 70) {
-                $this->letter_grade = 'CC';
-                $this->status = 'passed';
-            } elseif ($grade >= 65) {
-                $this->letter_grade = 'DC';
-                $this->status = 'passed';
-            } elseif ($grade >= 60) {
-                $this->letter_grade = 'DD';
-                $this->status = 'passed';
-            } elseif ($grade >= 50) {
-                $this->letter_grade = 'FD';
-                $this->status = 'failed';
-            } else {
-                $this->letter_grade = 'FF';
-                $this->status = 'failed';
-            }
-        }
+    //         if ($grade >= 90) {
+    //             $this->letter_grade = 'AA';
+    //             $this->status = 'passed';
+    //         } elseif ($grade >= 85) {
+    //             $this->letter_grade = 'BA';
+    //             $this->status = 'passed';
+    //         } elseif ($grade >= 80) {
+    //             $this->letter_grade = 'BB';
+    //             $this->status = 'passed';
+    //         } elseif ($grade >= 75) {
+    //             $this->letter_grade = 'CB';
+    //             $this->status = 'passed';
+    //         } elseif ($grade >= 70) {
+    //             $this->letter_grade = 'CC';
+    //             $this->status = 'passed';
+    //         } elseif ($grade >= 65) {
+    //             $this->letter_grade = 'DC';
+    //             $this->status = 'passed';
+    //         } elseif ($grade >= 60) {
+    //             $this->letter_grade = 'DD';
+    //             $this->status = 'passed';
+    //         } elseif ($grade >= 50) {
+    //             $this->letter_grade = 'FD';
+    //             $this->status = 'failed';
+    //         } else {
+    //             $this->letter_grade = 'FF';
+    //             $this->status = 'failed';
+    //         }
+    //     }
 
-        $this->save();
-    }
+    //     $this->save();
+    // }
 }
