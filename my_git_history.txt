@@ -1,0 +1,195 @@
+    1  git config --global user.name "Jana"
+    2  git config --global user.email "j.mohamed.2004@gmail.com"
+    3  git config user.name
+    4  git confiq user.email
+    5  git config user.email
+    6  git
+    7  clear
+    8  git init "myproject"
+    9  ls
+   10  cd myproject
+   11  ls
+   12  ls -a
+   13  git status
+   14  touch index.html
+   15  git status
+   16  git add index.html
+   17  git status
+   18  git commit-m"Create index.html"
+   19  coomit -m"Create index.html"
+   20  git commit -m"Create index.html"
+   21  git status
+   22  git log
+   23  touch app.js
+   24  touch sty.css
+   25  git status
+   26  git add app.js sty.css
+   27  git status
+   28  git commit -m"Create javascript file and css file"
+   29  git status
+   30  git log
+   31  git status
+   32  git add app.js index.html sty.css
+   33  git status
+   34  git commit -m"creating Hello message"
+   35  git status
+   36  git log
+   37  clear
+   38  git branch
+   39  git status
+   40  clear
+   41  git branch branch1
+   42  git status
+   43  git checkout branch1
+   44  git log
+   45  clear
+   46  git remote -v
+   47  git remote add origin https://github.com/jxm19/Group-20.git
+   48  git remote -v
+   49  git push -u origin master
+   50  clear
+   51  git init
+   52  git add .
+   53  git clone
+   54  git clone https://github.com/nouraelsheriif/Internship.git
+   55  cd internship
+   56  git fetch --all
+   57  git branch -r
+   58  git checkout noura-version
+   59  dir
+   60  git pull origin noura-version
+   61  code.
+   62  code .
+   63  git pull origin noura-version
+   64  code .
+   65  git checkout version-noura
+   66  git checkout noura-version
+   67  dir
+   68  git pull origin noura-version
+   69  code .
+   70  code .
+   71  clear
+   72  git checkout noura-version
+   73  git fetch --all
+   74  git pull origin noura-version
+   75  code .
+   76  clear
+   77  cd ~/Desktop/intership
+   78  cd ~/Desktop/internship
+   79  cd ~/Desktop/Internship
+   80  cd/Desktop/Internship
+   81  cd "C:\Users\Jana Mohamed\OneDrive\Desktop\Internship"
+   82  git fetch --all
+   83  git checkout noura-version
+   84  git pull origin noura-version
+   85  git status
+   86  git pull origin noura-version
+   87  git status
+   88  git fetch origin
+   89  git status
+   90  clear
+   91  git  pull origin noura-version
+   92  git add .
+   93  git commit -m "test1"
+   94  git  pull origin noura-version
+   95  git status
+   96  code .
+   97  git clone https://github.com/nouraelsheriif/Internship.git
+   98  cd Internship
+   99  git fetch --all
+  100  git branch -r
+  101  git checkout noura-version
+  102  dir
+  103  git pull origin noura-version
+  104  code .
+  105  cd desktop 
+  106  cd Desktop 
+  107  cd Desktop
+  108  cd Internship
+  109  ls
+  110  cd OneDrive
+  111  ls
+  112  cd desktop
+  113  ls
+  114  cd Internship
+  115  ls
+  116  git remote -v
+  117  git remote [200~https://github.com/nouraelsheriif/Internship.git~
+  118  git remote https://github.com/nouraelsheriif/Internship.git
+  119  git init
+  120  ls
+  121  git status
+  122  rm -rf master
+  123  rm -rf
+  124  rm -rf Internship
+  125  git remote add origin https://github.com/nouraelsheriif/Internship.git
+  126  git remote -v
+  127  git branch
+  128  git switch -c Jana-Branch
+  129  git checkout -b Jana-branch
+  130  git branch jana-branch
+  131  git branch 
+  132  git checkout -b new-Jana-branch
+  133  cd ..
+  134  clear
+  135  cd onedrive
+  136  cd oneDrive
+  137  cd Onedrive
+  138  cd OneDrive
+  139  cd/ OneDrive
+  140  cd Internship
+  141  git branch
+  142  git checkout -b jana-version
+  143  cd OneDrive
+  144  cd Desktop
+  145  cd urs
+  146  git status
+  147  git init
+  148  git remote add origin https://github.com/jxm19/URS.git
+  149  git remote -v
+  150  git add .
+  151  git commit -m "Initial commit"
+  152  git push -u origin main
+  153  git branch -M main
+  154  git push -u origin main
+  155  git branch -M main
+  156  git push -u origin main
+  157  [200~git push --force origin main
+  158  git push --force origin main
+  159  git push origin main
+  160  git status
+  161  git branch janaversion
+  162  git checkout janaversion
+  163  git status
+  164  git add src/app/app.routes.ts  src/app/layout/instructornavbar/instructornavbar.component.css src/app/layout/studentnavbar/studentnavbar.component.html src/app/pages/fchome/fchome.component.ts
+  165  git status
+  166  git commit -m"testcommit"
+  167  git add src/app/layout/previous/ src/app/layout/upcoming/ src/app/pages/resitexams/
+  168  git commit -m"test2"
+  169  git status
+  170  git push -u origin janaversion
+  171  cd URS
+  172  cd OneDrive
+  173  cd Desktop
+  174  cd urs
+  175  git status
+  176  git add .
+  177  git commit -m "all pages base"
+  178  git push origin janaversion
+  179  git status
+  180  cd OneDrive
+  181  cd Desktop
+  182  cd urs
+  183  git status
+  184  git add .
+  185  git commit -m"grades and student home updates"
+  186  git status
+  187  git status
+  188  git push origin janaversion
+  189  [200~cat ~/.bash_history
+  190  clear
+  191  ~/.bash_history
+  192  git push origin janaversion
+  193  Ctrl + R
+  194  git checkout janaversion
+  195  history > my_git_history.txt

@@ -1,8 +1,6 @@
 import { Routes } from '@angular/router';
 import { StudentnavbarComponent } from './layout/studentnavbar/studentnavbar.component';
 import { StudenthomeComponent } from './pages/studenthome/studenthome.component';
-import { InstructorhomeComponent } from './pages/instructorhome/instructorhome.component';
-import { FchomeComponent } from './pages/fchome/fchome.component';
 import { ResitexamsComponent } from './pages/resitexams/resitexams.component';
 import { GradesdetailsComponent } from './pages/gradesdetails/gradesdetails.component';
 import { ExamdetailsComponent } from './pages/examdetails/examdetails.component';
@@ -17,16 +15,6 @@ export const routes: Routes = [
     {
         path: 'studenthome',
         component: StudenthomeComponent
-    },
-
-    {
-        path: 'instructorhome',
-        component: InstructorhomeComponent
-    },
-
-    {
-        path: 'fchome',
-        component: FchomeComponent
     },
     
     {
