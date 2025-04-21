@@ -14,4 +14,8 @@ class ExamDetail extends Model
         'instructor_id',
         'announcement_text',
     ];
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
 }

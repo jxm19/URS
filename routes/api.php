@@ -20,6 +20,12 @@ use App\Http\Controllers\SiteStudent\ResitExamController as StudentResitExamCont
 use App\Http\Controllers\DashboardInstructor\ResitExamController as InstructorResitExamController;
 use App\Http\Controllers\ExamDetailsController ;
 use App\Http\Controllers\ExamScheduleController;
+use App\Http\Controllers\SiteStudent\ExamScheduleController as StudentExamScheduleController;
+use App\Http\Controllers\SiteStudent\ExamDetailsController as StudentExamDetailsController;
+
+
+
+
 
 
 Route::post('/exam-schedules/import', [ExamScheduleController::class, 'import']);
@@ -58,6 +64,11 @@ Route::group(['prefix' => 'dashboard-instructor'], function () {
         Route::get('/confirmed-students/{Courseid}', [InstructorResitExamController::class, 'confirmedStudents']);
 
         Route::post('/exam-details', [ExamDetailsController::class, 'store']);
+        Route::get('/exam-details', [ExamDetailsController::class, 'index']);
+
+    Route::get('/exam-details/{id}', [ExamDetailsController::class, 'show']);
+    Route::put('/exam-details/{id}', [ExamDetailsController::class, 'update']);
+    Route::delete('/exam-details/{id}', [ExamDetailsController::class, 'destroy']);
     });
     
     Route::group(['prefix' => '/password'], function () {
@@ -96,6 +107,9 @@ Route::group(['prefix' => 'site-student'], function () {
         Route::post('/resit_confirm',[StudentResitExamController::class, 'Confirm']);
         Route::get('/resit_confirmed', [StudentResitExamController::class, 'index']);
         Route::delete('/resit_confirm/{id}',[StudentResitExamController::class, 'destroy']);
+        
+       
+
     });
 
     Route::group(['prefix' => '/password'], function () {
@@ -104,3 +118,17 @@ Route::group(['prefix' => 'site-student'], function () {
         Route::post('/reset',  [StudentResetPasswordController::class,'reset']);
     });
 });
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/student/exam-schedules', [StudentExamScheduleController::class, 'index']);
+    Route::get('/student/exam-schedules/{course_id}', [StudentExamScheduleController::class, 'show'])
+         ->whereNumber('course_id');
+});
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/student/exam-details', [StudentExamDetailsController::class, 'index']);
+    Route::get('/student/exam-details/{course_id}', [StudentExamDetailsController::class, 'show'])
+         ->whereNumber('course_id');
+});
+
+

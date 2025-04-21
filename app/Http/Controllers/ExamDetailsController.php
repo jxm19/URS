@@ -80,4 +80,98 @@ if (!$course->instructor->is($instructor)) {
 
         return response()->json($examDetails);
     }
+
+
+    public function index()
+{
+    try {
+        $instructor = Auth::user()->instructor;
+
+        if (!$instructor) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You are not an instructor.',
+            ], 403);
+        }
+
+        // Get exam details for courses the instructor owns
+        $examDetails = ExamDetail::with(['course.instructor'])
+                            ->whereHas('course', function ($query) use ($instructor) {
+                                $query->where('instructor_id', $instructor->id);
+                            })
+                            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $examDetails
+        ], 200);
+
+    } catch (Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to retrieve exam details.',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
+
+
+
+     // Show a specific exam detail
+     public function show($id)
+     {
+         $examDetail = ExamDetail::find($id);
+ 
+         if (!$examDetail) {
+             return response()->json(['message' => 'Exam detail not found.'], 404);
+         }
+ 
+         return response()->json($examDetail);
+     }
+
+
+     
+     public function update(Request $request, $id)
+{
+
+    $examDetail = ExamDetail::find($id);
+
+    if (!$examDetail) {
+        return response()->json(['message' => 'Exam detail not found.'], 404);
+    }
+
+    // Only the instructor who created it can update
+    if ($examDetail->instructor_id !== Auth::id()) {
+        return response()->json(['message' => 'You are not authorized to update this exam detail.'], 403);
+    }
+
+    $request->validate([
+        'announcement_text' => 'required|string|max:1000',
+    ]);
+
+    $examDetail->announcement_text = $request->input('announcement_text');
+    $examDetail->save();
+
+    return response()->json(['message' => 'Exam detail updated successfully!']);
+}
+
+     
+     // Delete an exam detail
+     public function destroy($id)
+     {
+         $examDetail = ExamDetail::find($id);
+ 
+         if (!$examDetail) {
+             return response()->json(['message' => 'Exam detail not found.'], 404);
+         }
+ 
+         // Only the instructor who created it can delete
+         if ($examDetail->instructor_id !== Auth::id()) {
+             return response()->json(['message' => 'You are not authorized to delete this exam detail.'], 403);
+         }
+ 
+         $examDetail->delete();
+ 
+         return response()->json(['message' => 'Exam detail deleted successfully!']);
+     }
 }
