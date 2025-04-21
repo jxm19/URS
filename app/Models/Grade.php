@@ -10,7 +10,12 @@ class Grade extends Model
 {
     use HasFactory , FormatDates;
     
+<<<<<<< Updated upstream
     protected $fillable =[ 'student_id', 'course_id', 'final_grade','status','letter_grade','absenteeism'];
+=======
+    protected $fillable =[ 'student_id', 'course_id', 'final_grade','status','letter_grade', 'attended'];
+
+>>>>>>> Stashed changes
 
     public function student()
     {
@@ -24,6 +29,7 @@ class Grade extends Model
 
     public function resitExam()
     {
+<<<<<<< Updated upstream
         return $this->hasMany(ResitExam::class);
     }
 
@@ -69,4 +75,49 @@ class Grade extends Model
 
     //     $this->save();
     // }
+=======
+        // Assuming final_grade and attended are already set and valid.
+        $grade = $this->final_grade;
+
+        \Log::info('Attended: ' . $this->attended);
+
+        if ($this->attended === false) {
+            $this->letter_grade = 'DZ'; // failed due to attendance
+            $this->status = 'failed';
+        } else {
+            // Assign grades based on final grade
+            if ($grade >= 90) {
+                $this->letter_grade = 'AA';
+                $this->status = 'passed';
+            } elseif ($grade >= 85) {
+                $this->letter_grade = 'BA';
+                $this->status = 'passed';
+            } elseif ($grade >= 80) {
+                $this->letter_grade = 'BB';
+                $this->status = 'passed';
+            } elseif ($grade >= 75) {
+                $this->letter_grade = 'CB';
+                $this->status = 'passed';
+            } elseif ($grade >= 70) {
+                $this->letter_grade = 'CC';
+                $this->status = 'passed';
+            } elseif ($grade >= 65) {
+                $this->letter_grade = 'DC';
+                $this->status = 'passed';
+            } elseif ($grade >= 60) {
+                $this->letter_grade = 'DD';
+                $this->status = 'passed';
+            } elseif ($grade >= 50) {
+                $this->letter_grade = 'FD';
+                $this->status = 'failed';
+            } else {
+                $this->letter_grade = 'FF';
+                $this->status = 'failed';
+            }
+        }
+    
+        $this->save();
+    }
+    
+>>>>>>> Stashed changes
 }

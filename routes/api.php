@@ -15,22 +15,7 @@ use App\Http\Controllers\SiteStudent\ResetPasswordController as StudentResetPass
 use App\Http\Controllers\SiteStudent\CourseController as StudentCourseController;
 use App\Http\Controllers\DashboardInstructor\CourseController as InstructorCourseController;
 use App\Http\Controllers\DashboardInstructor\GradeController as InstructorGradeController;
-use App\Http\Controllers\SiteStudent\GradeController as StudentGradeController;
-use App\Http\Controllers\SiteStudent\ResitExamController as StudentResitExamController;
-use App\Http\Controllers\DashboardInstructor\ResitExamController as InstructorResitExamController;
-use App\Http\Controllers\ExamDetailsController ;
-use App\Http\Controllers\ExamScheduleController;
-use App\Http\Controllers\SiteStudent\ExamScheduleController as StudentExamScheduleController;
-use App\Http\Controllers\SiteStudent\ExamDetailsController as StudentExamDetailsController;
 
-
-
-
-
-
-Route::post('/exam-schedules/import', [ExamScheduleController::class, 'import']);
-Route::get('/exam-schedules', [ExamScheduleController::class, 'index']);
-Route::get('/exam-schedules/{id}', [ExamScheduleController::class, 'show']);
 
 
 Route::group(['prefix' => 'dashboard-uni'], function () {
@@ -50,25 +35,19 @@ Route::group(['prefix' => 'dashboard-uni'], function () {
 
 
 
+
 Route::group(['prefix' => 'dashboard-instructor'], function () {
     Route::post('/login', [InstructorAuthController::class, 'login']);
 
-    Route::group(['middleware' => ['auth:sanctum' , 'is_instructor']], function () {
+    Route::group(['middleware' => ['auth:sanctum', 'is_instructor']], function () {
         Route::post('/logout', [InstructorAuthController::class, 'logout']);
         Route::get('/courses', [InstructorCourseController::class, 'index']);
         Route::get('/courses/{id}', [InstructorCourseController::class, 'show']);
         Route::apiResource('/grades', InstructorGradeController::class);
         Route::post('/import-grades', [InstructorGradeController::class, 'import']);
         Route::get('/courses/{courseId}/grades', [InstructorGradeController::class, 'index']);
-        Route::delete('/grades/course/{courseId}', [InstructorGradeController::class, 'destroyByCourse']);
-        Route::get('/confirmed-students/{Courseid}', [InstructorResitExamController::class, 'confirmedStudents']);
 
-        Route::post('/exam-details', [ExamDetailsController::class, 'store']);
-        Route::get('/exam-details', [ExamDetailsController::class, 'index']);
 
-    Route::get('/exam-details/{id}', [ExamDetailsController::class, 'show']);
-    Route::put('/exam-details/{id}', [ExamDetailsController::class, 'update']);
-    Route::delete('/exam-details/{id}', [ExamDetailsController::class, 'destroy']);
     });
     
     Route::group(['prefix' => '/password'], function () {
@@ -77,6 +56,7 @@ Route::group(['prefix' => 'dashboard-instructor'], function () {
         Route::post('/reset',  [InstructorResetPasswordController::class,'reset']);
     });
 });
+
 
 
 
