@@ -3,13 +3,13 @@ import { FcnavbarComponent } from '../../layout/fcnavbar/fcnavbar.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-fchome',
+  selector: 'app-uploadfiles',
   imports: [FcnavbarComponent, CommonModule],
-  templateUrl: './fchome.component.html',
-  styleUrl: './fchome.component.css',
+  templateUrl: './uploadfiles.component.html',
+  styleUrl: './uploadfiles.component.css',
   standalone:true
 
 })
-export class FchomeComponent {
+export class UploadfilesComponent {
 
 }

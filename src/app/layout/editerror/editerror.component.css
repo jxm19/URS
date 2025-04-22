@@ -1,0 +1,131 @@
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Square Modal */
+.modal {
+  background: #fff;
+  width: 380px;       /* Set width */
+  height: 250px;      /* Equal height to make it square */
+  padding: 40px;      /* Add consistent padding */
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Modal Header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ffffff;
+  padding-bottom: 10px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #000000; /* Dark Blue Title */
+  flex-grow: 1; /* Ensure content fills the available space */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 21px;
+  cursor: pointer;
+  color: #555;
+  transition: 0.3s;
+  margin-top: -50px;
+  margin-right: -25px;
+
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+/* Modal Body */
+.modal-body p {
+  font-size: 20px;
+  margin: 20px;
+  color: #333;
+  flex-grow: 1; /* Ensure content fills the available space */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -40px;
+
+}
+
+/* Modal Footer */
+.modal-footer {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+  gap: 10px; /* Adds spacing between buttons */
+  margin-top: -30px;
+  width: 100%; /* Ensures the footer takes full width */
+}
+
+/* Confirm Button with Gradient */
+.confirm-btn {
+  background: linear-gradient(135deg, #152C4E 67%, #24487E 100%);
+  color: #ffffff;
+  border: none;
+  padding: 15px 65px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.confirm-btn:hover {
+  background: linear-gradient(135deg, #24487E 67%, #152C4E 100%);
+  transform: translateY(-2px);
+}
+
+/* Cancel Button */
+.cancel-btn {
+  background: #bcbcbc;
+  color: #ffffff;
+  border: none;
+  padding: 15px 97px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.cancel-btn:hover {
+  background: #b0b0b0;
+  transform: translateY(-2px);
+}
+
+/* Modal Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
