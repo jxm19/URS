@@ -1,0 +1,125 @@
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    filter: blur(2px); /* Apply blur only to sidebar */
+
+  }
+  
+ 
+  /* Main Content (to prevent overlap) */
+  .main-content {
+    margin-left: 300px; /* Same as sidebar width */
+    padding: 20px;
+
+  }
+
+
+
+  /* Global Styles */
+body {
+
+    font-family: Arial, sans-serif;
+    background-color: #f3f4f6;
+    margin: 0;
+    padding: 0;
+    display: flex;
+
+
+
+
+  }
+
+/* Additional styling for header and file entries */
+.faculty-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    filter: blur(2px); /* Apply blur only to sidebar */
+
+  }
+  
+  .user-icon {
+    width: 40px;
+    height: 40px;
+    filter: blur(2px); /* Apply blur only to sidebar */
+
+  }
+
+  .header {
+    font-size: 1.5rem;
+  font-weight: 600;
+  color: #666974;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  filter: blur(2px); /* Apply blur only to sidebar */
+
+  }
+  
+
+  
+  .uploaded-files {
+    margin-top: 20px;
+    color:#5a6069
+
+  }
+  
+  .file-entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px 25px;
+    border-radius: 20px; /* Circular border */
+    box-shadow:0 4px 7px rgba(0, 0, 0, 0.3); /* Shadow under the container */
+    margin-right: 2%;       /* Pushes it to the far left */
+      border: 1px solid rgba(233, 231, 231, 0.4); /* Stronger border stroke */
+      filter: blur(2px); /* Apply blur only to sidebar */
+
+  }
+  
+
+  .file-entry:first-of-type {
+    margin-top: 100px; /* Adds space only above the first box */
+  }
+  
+  .file-icon {
+    width: 30px;
+    margin-right: 8px;
+  }
+  
+  .file-name {
+    flex: 1;
+    margin-left: 10px;
+  }
+  
+  .file-actions .action-icon {
+    width: 27px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  
+  .add-file-button {
+    margin-top: 20px;
+    text-align: right;
+  }
+  
+  .add-file-button button {
+    background: linear-gradient(to bottom, #1b283c 30%, #152C4E 67%, #1d3a65 100%);
+    color: white;
+    padding: 14px 60px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Segoe UI', sans-serif;
+    margin-top: 20%;
+    margin-right: 2%;       /* Pushes it to the far left */
+    filter: blur(2px); /* Apply blur only to sidebar */
+
+  }

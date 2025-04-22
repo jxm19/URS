@@ -12,3 +12,118 @@
     margin-left: 300px; /* Same as sidebar width */
     padding: 20px;
   }
+
+
+
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f3f4f6;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+
+/* Main content */
+
+
+/* Faculty Header (Top Section) */
+.faculty-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.user-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.header {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #666974;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+
+}
+
+/* Faculty Title */
+.faculty-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.faculty-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.sub-header {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Exam Cards Container */
+.exam-list {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  margin-top:50px;
+}
+
+/* Exam Cards */
+.exam-card {
+  display: flex;
+  align-items: baseline; /* Positions items between center & flex-start */
+  align-items: center;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  padding:2px;
+  padding-right: 10px;
+  padding-left:10px;
+  box-shadow: 0 8px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+
+/* Card Icons */
+.icon {
+  width: 32px;
+  height: 32px;
+}
+
+/* Text inside Cards */
+.text {
+  flex-grow: 1;
+  margin-left: 1rem;
+}
+
+.text h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.text p {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Menu Icon (3-lines) */
+.menu-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.menu-icon:hover {
+  opacity: 1;
+}
