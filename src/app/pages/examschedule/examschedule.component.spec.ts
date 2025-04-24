@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FchomeComponent } from './fchome.component';
+import { ExamscheduleComponent } from './examschedule.component';
 
-describe('FchomeComponent', () => {
-  let component: FchomeComponent;
-  let fixture: ComponentFixture<FchomeComponent>;
+describe('ExamscheduleComponent', () => {
+  let component: ExamscheduleComponent;
+  let fixture: ComponentFixture<ExamscheduleComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FchomeComponent]
+      imports: [ExamscheduleComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(FchomeComponent);
+    fixture = TestBed.createComponent(ExamscheduleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

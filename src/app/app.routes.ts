@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+<<<<<<< HEAD
 import { FchomeComponent } from './pages/fchome/fchome.component';
 import { UploadfilesComponent } from './pages/uploadfiles/uploadfiles.component';
 import { DeleteConfirmationComponent } from './pages/delete-confirmation/delete-confirmation.component';
@@ -9,11 +10,35 @@ import { UploadErrorComponent } from './pages/upload-error/upload-error.componen
 export const routes: Routes = [
   
   
+=======
+import { StudentnavbarComponent } from './layout/studentnavbar/studentnavbar.component';
+import { StudenthomeComponent } from './pages/studenthome/studenthome.component';
+import { ResitexamsComponent } from './pages/resitexams/resitexams.component';
+import { GradesdetailsComponent } from './pages/gradesdetails/gradesdetails.component';
+import { ExamdetailsComponent } from './pages/examdetails/examdetails.component';
+import { ExamscheduleComponent } from './pages/examschedule/examschedule.component';
+
+export const routes: Routes = [
+    {
+        path: 'studentnavbar',
+        component: StudentnavbarComponent
+    },
+
+    {
+        path: 'studenthome',
+        component: StudenthomeComponent
+    },
+    
+    {
+        path: 'resitexams',
+        component: ResitexamsComponent
+    },
+>>>>>>> janaversion
 
    
     {
-        path: 'fchome',
-        component: FchomeComponent
+        path: 'gradesdetails',
+        component: GradesdetailsComponent
     },
     
     {
@@ -46,6 +71,24 @@ export const routes: Routes = [
 
 
    
+
+
+    {
+        path: 'examdetails',
+        component: ExamdetailsComponent
+    },
+
+    
+    
+
+     
+    {
+        path: 'examschedule',
+        component: ExamscheduleComponent
+    },
+
+    
+
 
 
 

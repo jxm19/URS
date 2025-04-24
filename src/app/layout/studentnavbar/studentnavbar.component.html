@@ -1,0 +1,63 @@
+
+<div class="sidebar" [ngClass]="{ 'collapsed': isCollapsed }">
+
+    <div class="navtop mb-0">
+        <div class="test">
+            <button (click)="toggleSidebar()" class="toggle-btn" >
+                ☰
+            </button>
+        <div class="logo d-flex align-items-center mb-2">
+            <img src="./uskudar.png" alt="uskudar Logo" width="70" height="70" class="me-2">
+        </div>            
+    </div>
+        <div>
+        <a  class="nav-link text-white d-flex align-items-center py-2">
+            <img src="./user.png" alt="user" width="30" height="30" class="me-3">
+            <span *ngIf="!isCollapsed">Username</span>
+        </a>
+        </div>
+    </div>
+   
+    <hr class="border-light" />
+    <!-- Navigation Menu -->
+    <div class="menu d-flex flex-column">
+  
+        <a href="studenthome" class="nav-link text-white d-flex align-items-center py-2">
+            <img src="./home.png" alt="Home" width="30" height="30" class="me-3">
+            <span *ngIf="!isCollapsed">Home</span>
+        </a>
+
+        <a href="gradesdetails" class="nav-link text-white d-flex align-items-center py-2">
+            <img src="./grades.png" alt="grades" width="30" height="30" class="me-3">
+            <span *ngIf="!isCollapsed">Grades Details</span>
+        </a>
+
+        <a href="resitexams" class="nav-link text-white d-flex align-items-center py-2">
+            <img src="./resit.png" alt="Resit" width="30" height="30" class="me-3">
+            <span *ngIf="!isCollapsed">Upcoming Exams</span>
+        </a>
+  
+        <a href="examdetails" class="nav-link text-white d-flex align-items-center py-2">
+            <img src="./ann.png" alt="Announcements" width="30" height="30" class="me-3">
+            <span *ngIf="!isCollapsed">Announcements</span>
+        </a>
+
+        <a href="examschedule" class="nav-link text-white d-flex align-items-center py-2">
+            <img src="./schedule.png" alt="Exam Schedule" width="30" height="30" class="me-3">
+            <span *ngIf="!isCollapsed">Exam Schedule</span>
+        </a>
+
+  
+    </div>
+
+    <hr class="border-light" />
+  
+    <!-- Settings & Logout -->
+    <div class="menu d-flex flex-column">
+        <a href="#" class="nav-link text-white d-flex align-items-center py-2">
+            <img src="./logout.png" alt="Log Out" width="30" height="30" class="me-3">
+            <span *ngIf="!isCollapsed">Quit</span>
+        </a>
+    </div>
+  
+</div>

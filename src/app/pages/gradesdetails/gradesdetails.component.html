@@ -1,0 +1,40 @@
+<div class="sidebar">
+    <app-studentnavbar></app-studentnavbar>
+</div>
+
+<div class="main-content">
+  <div class="head d-flex align-items-center mb-3">
+    <img src="./graygrades.png" alt="Grades" width="30" height="30" class="me-3">
+    <span class="page-title">Grades Details</span>
+  </div>
+    <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Grp</th>
+              <th>Course Code</th>
+              <th>Course Name</th>
+              <th>Final Exam Grades</th>
+              <th>Resit Exam Grade</th>
+              <th>Letter Grade</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let course of courses">
+              <td>{{ course.grp }}</td>
+              <td>{{ course.courseCode }}</td>
+              <td>{{ course.courseName }}</td>
+              <td  style="text-align: center;"> {{ course.final }} </td>
+              <td  style="text-align: center;"> <span *ngIf="course.resit !== undefined"> {{ course.resit }}</span></td>
+              <td  style="text-align: center;">{{ course.letterGrade }}</td>
+              <td [ngClass]="{ 'passed': course.status === 'Passed', 'failed': course.status === 'Failed' }">
+                {{ course.status }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+
+ </div>
