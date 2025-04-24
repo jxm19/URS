@@ -1,3 +1,5 @@
+
+<div [class.blurred]="showPopup">
 <div class="sidebar">
     <app-studentnavbar></app-studentnavbar>
 </div>
@@ -43,6 +45,8 @@
               'btn-secondary': course.status === 'Declined'
             }"
             [disabled]="course.status === 'Declined'"
+            (click)="openPopup()"
+           
           >
             Confirm Attendance
           </button>
@@ -266,5 +270,34 @@
     </div>
     </div>
   </div>
-  
+</div>
+</div>
+         <!--First Popup: Confirm Dialog -->
+<div class="custom-modal-overlay" *ngIf="showPopup">
+  <div class="custom-modal">
+    <button class="close-btn left" (click)="closePopup()">
+      <img class="closePopup" src="./closepopup.png" alt="Confirmed" style="width: 10;">
+    </button>
+    <h3>Confirm Your Attendance</h3>
+    <p>
+      Are you sure you want to confirm your attendance<br />
+      for the upcoming resit exam?
+    <div class="modal-buttons">
+      <button class="primary-btn" (click)="confirmAttendance()">Yes, I want to attend</button>
+      <button class="secondary-btn" (click)="closePopup()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Second Popup: Success Message -->
+<div class="custom-modal-overlay" *ngIf="showSuccessPopup">
+  <div class="custom-modal">
+    <button class="close-btn left" (click)="closeSuccessPopup()">
+      <img class="closePopup" src="./closepopup.png" alt="Confirmed" style="width: 10;">
+    </button>
+    <h3>Your attendance confirmation has<br />been recorded successfully!</h3>
+    <div style="margin-top: 15px;">
+      <img src="./success.png" alt="Confirmed" style="width: 60px;">
+    </div>
+  </div>
 </div>

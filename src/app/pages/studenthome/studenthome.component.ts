@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { StudentnavbarComponent } from '../../layout/studentnavbar/studentnavbar.component';
 import { CommonModule } from '@angular/common';
 
@@ -9,7 +9,32 @@ import { CommonModule } from '@angular/common';
   styleUrl: './studenthome.component.css',
   standalone:true
 })
+
+
 export class StudenthomeComponent {
+  
+  showPopup = false;
+  showSuccessPopup = false;
+  
+  openPopup() {
+    this.showPopup = true;
+    document.body.classList.add('modal-open');
+  }
+  
+  closePopup() {
+    this.showPopup = false;
+    document.body.classList.remove('modal-open');
+  }
+  
+  confirmAttendance() {
+    this.showPopup = false;
+    this.showSuccessPopup = true;
+  }
+  
+  closeSuccessPopup() {
+    this.showSuccessPopup = false;
+    document.body.classList.remove('modal-open');
+  }
   
   course0 = [
     {

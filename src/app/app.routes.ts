@@ -4,8 +4,8 @@ import { StudenthomeComponent } from './pages/studenthome/studenthome.component'
 import { ResitexamsComponent } from './pages/resitexams/resitexams.component';
 import { GradesdetailsComponent } from './pages/gradesdetails/gradesdetails.component';
 import { ExamdetailsComponent } from './pages/examdetails/examdetails.component';
-import { CourseannComponent } from './pages/courseann/courseann.component';
 import { ExamscheduleComponent } from './pages/examschedule/examschedule.component';
+
 export const routes: Routes = [
     {
         path: 'studentnavbar',
@@ -33,16 +33,16 @@ export const routes: Routes = [
     },
 
     
-    {
-        path: 'courseann',
-        component: CourseannComponent
-    },
+    
 
      
     {
         path: 'examschedule',
         component: ExamscheduleComponent
     },
+
+    
+
 
 
 
