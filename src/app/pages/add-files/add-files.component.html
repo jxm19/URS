@@ -1,0 +1,74 @@
+
+<div class="main-content">
+    <div class="custom-box">
+
+        <div class="upload-container">
+            <div class="upload-box">
+                <!-- Header with title -->
+                <div class="d-flex justify-content-between align-items-center upload-header">
+                    <h5 class="text-muted">Upload File</h5> 
+                </div>
+        
+                <p class="text-muted">Here you can upload File related to Students Grades</p> 
+        
+                <!-- Drag and Drop Area -->
+                <div class="upload-area" (dragover)="onDragOver($event)" (drop)="onDrop($event)" (click)="fileInput.click()">
+                    <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)" />
+                    <div class="upload-icon">
+                        <img src="upload.png" alt="upload icon" />
+                    </div>
+                    <p class="text-muted">drag and drop</p> 
+                    <p class="text-muted">or Browse your Files <span class="text-primary"> Click Here</span></p> 
+                </div>
+        
+                <!-- File Information -->
+                <div *ngIf="file" class="file-info">
+                    <div class="file-name">
+                        <img src="upload2.png" alt="file icon" />
+                        <span>{{ file.name }}</span>
+                        <span>{{ file.size | number: '1.0-0' }} MB</span>
+                    </div>
+        
+                    <!-- Progress Bar and Percentage -->
+                    <div *ngIf="!uploadSuccess" class="progress-container">
+                        <div class="progress">
+                            <div class="progress-bar" [style.width.%]="progress"></div>
+                        </div>
+                        <span class="progress-text">{{ progress }}%</span> 
+                    </div>
+        
+                    <!-- Success Message -->
+                    <div *ngIf="uploadSuccess" class="d-flex justify-content-between align-items-center w-100">
+                        <span class="success-message">{{ uploadMessage }}</span>
+                     
+                        <button class="btn btn-light btn-sm ml-auto" (click)="deleteFile()">
+                            <img src="trash.ااpng.png" alt="" />
+                        </button>
+                    </div>
+        
+                    <!-- Buttons -->
+                    <div class="buttons d-flex justify-content-end w-100">
+                        <button class="btn btn-secondary" (click)="cancelUpload()">Cancel</button>
+                        <button class="btn btn-primary" (click)="Upload()">Upload</button>
+                        
+
+                                </div>
+            </div>
+        </div>
+        
+        
+            </div>
+
+
+            <!-- Popup Modal: Success Message -->
+<div class="custom-modal-overlay" *ngIf="showSuccessPopup">
+    <div class="custom-modal">
+        <button class="close-btn left" (click)="closeSuccessPopup()">
+            <img class="closePopup" src="./closepopup.png" alt="Close" style="width: 10px;">
+        </button>
+        <h3>Your file has been uploaded successfully!</h3>
+        <div style="margin-top: 15px;">
+            <img src="./success.png" alt="Success" style="width: 60px;">
+        </div>
+    </div>
+</div>

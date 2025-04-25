@@ -1,106 +1,207 @@
 .sidebar {
-    width: 250px;
-    height: 100vh;
-    position: fixed;
-    left: 0;
-    top: 0;
-  }
-  
- 
-  /* Main Content (to prevent overlap) */
-  .main-content {
-    margin-left: 300px; /* Same as sidebar width */
-    padding: 20px;
-  }
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
 
 
-  /* Global Styles */
+/* Main Content (to prevent overlap) */
+.main-content {
+  margin-left: 300px; /* Same as sidebar width */
+  padding: 20px;
+}
+
+
+/* Global Styles */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f3f4f6;
-    margin: 0;
-    padding: 0;
-    display: flex;
-  }
+  font-family: Arial, sans-serif;
+  background-color: #f3f4f6;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
 
 
 /* Additional styling for header and file entries */
 .faculty-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .user-icon {
-    width: 40px;
-    height: 40px;
-  }
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-  .header {
-    font-size: 1.5rem;
-  font-weight: 600;
-  color: #666974;
-  margin: 0;
+.user-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.header {
+  font-size: 1.5rem;
+font-weight: 600;
+color: #666974;
+margin: 0;
+font-family: 'Segoe UI', sans-serif;
+}
+
+
+
+.uploaded-files {
+  margin-top: 20px;
+  color:#5a6069
+}
+
+.file-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px 25px;
+  border-radius: 20px; /* Circular border */
+  box-shadow:0 4px 7px rgba(0, 0, 0, 0.3); /* Shadow under the container */
+  margin-right: 2%;       /* Pushes it to the far left */
+    border: 1px solid rgba(233, 231, 231, 0.4); /* Stronger border stroke */
+}
+
+
+.file-entry:first-of-type {
+  margin-top: 100px; /* Adds space only above the first box */
+}
+
+.file-icon {
+  width: 30px;
+  margin-right: 8px;
+}
+
+.file-name {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.file-actions .action-icon {
+  width: 27px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.add-file-button {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.add-file-button button {
+  background: linear-gradient(to bottom, #1b283c 30%, #152C4E 67%, #1d3a65 100%);
+  color: white;
+  padding: 14px 60px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
   font-family: 'Segoe UI', sans-serif;
-  }
-  
+  margin-top: 20%;
+  margin-right: 2%;       /* Pushes it to the far left */
+}
+
+
+.custom-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.custom-modal {
+  background: #fff;
+  width: 420px;
+  max-width: 90%;
+  padding: 30px 25px;
+  border-radius: 12px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 10000; /* Ensure it is above the overlay */
+
+}
+
+.custom-modal h3 {
+  margin-bottom: 15px;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.custom-modal p {
+  margin-bottom: 30px;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.custom-modal strong {
+  font-weight: bold;
+}
+
+.modal-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.primary-btn {
+  background: linear-gradient(to bottom, #141E2D 40%, #152C4E 67%, #24487E 100%);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.secondary-btn {
+  background: #d3d3d3;
+  color: #444;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.blurred {
+  filter: blur(2px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.closePopup {
+  position: absolute;
+  top: 5px;  /* Adjust the distance from the top */
+  right: 5px;  /* Adjust the distance from the left */
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+
+
+
 
   
-  .uploaded-files {
-    margin-top: 20px;
-    color:#5a6069
-  }
-  
-  .file-entry {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #f9f9f9;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 25px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 20px 25px;
-    border-radius: 20px; /* Circular border */
-    box-shadow:0 4px 7px rgba(0, 0, 0, 0.3); /* Shadow under the container */
-    margin-right: 2%;       /* Pushes it to the far left */
-      border: 1px solid rgba(233, 231, 231, 0.4); /* Stronger border stroke */
-  }
-  
-
-  .file-entry:first-of-type {
-    margin-top: 100px; /* Adds space only above the first box */
-  }
-  
-  .file-icon {
-    width: 30px;
-    margin-right: 8px;
-  }
-  
-  .file-name {
-    flex: 1;
-    margin-left: 10px;
-  }
-  
-  .file-actions .action-icon {
-    width: 27px;
-    margin-left: 10px;
-    cursor: pointer;
-  }
-  
-  .add-file-button {
-    margin-top: 20px;
-    text-align: right;
-  }
-  
-  .add-file-button button {
-    background: linear-gradient(to bottom, #1b283c 30%, #152C4E 67%, #1d3a65 100%);
-    color: white;
-    padding: 14px 60px;
-    border-radius: 12px;
-    border: none;
-    cursor: pointer;
-    font-family: 'Segoe UI', sans-serif;
-    margin-top: 20%;
-    margin-right: 2%;       /* Pushes it to the far left */
-  }
