@@ -11,6 +11,32 @@ import { CommonModule } from '@angular/common';
   standalone:true
 })
 export class ResitexamsComponent {
+
+  showPopup = false;
+  showSuccessPopup = false;
+  
+  openPopup() {
+    this.showPopup = true;
+    document.body.classList.add('modal-open');
+  }
+  
+  closePopup() {
+    console.log("Close button clicked");
+    this.showPopup = false;
+    document.body.classList.remove('modal-open');
+  }
+  
+  confirmAttendance() {
+    this.showPopup = false;
+    this.showSuccessPopup = true;
+  }
+  
+  closeSuccessPopup() {
+    this.showSuccessPopup = false;
+    document.body.classList.remove('modal-open');
+  }
+  
+
   courses = [
     { courseCode: 'SE/302', courseName: 'Software Project Management', instructor: 'SALIM JIBRIN DANBATTA'},
     { courseCode: 'SE/202', courseName: 'Software Design Architecture', instructor: 'SALIM JIBRIN DANBATTA'},

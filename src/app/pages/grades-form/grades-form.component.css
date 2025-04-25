@@ -1,0 +1,52 @@
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+  }
+  
+  /* Main Content */
+  .main-content {
+    margin-left: 250px; /* Same as sidebar width */
+    padding: 30px;
+  }
+
+  /* Custom Box */
+  .custom-box {
+    background-color: #f2f2f3;
+    width: 100%; 
+    max-width: 1250px; 
+    min-height: 100vh;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    margin: 0 auto;
+  }
+  
+
+  
+  /* Icon and Text */
+  .icon-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .icon-img {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .course-text {
+    font-size: 1.5rem;
+    color: #676868;
+  }
+
+  .form-select option[value="Passed"] {
+    color: green; 
+}
+
+.form-select option[value="Failed"] {
+    color: red; 
+}

@@ -1,0 +1,152 @@
+
+  .upload-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;  /* Keep the box centered on the screen */
+  }
+  
+  .upload-box {
+    width: 600px;      /* Box width */
+    height: 420px;     /* Box height */
+    background-color: #ffffff;  /* White color */
+    border-radius: 20px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Light shadow around the box */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Ensure that elements inside the box do not exceed its boundaries */
+    position: relative;
+  }
+  
+  /* Drag and drop file area */
+  .upload-area {
+    width: 100%;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: -10px;
+    border: 3px dashed #ebe8e8;  /* Use dashed lines */
+    border-radius: 10px;      /* Rounded corners */
+    padding: 20px;            /* Padding from the edges */
+  }
+  
+  /* Change background when hovering over the area */
+  .upload-area:hover {
+    background-color: #fdfdfdf3;
+  }
+  
+  /* Style text within the drag and drop area */
+  .upload-area p {
+    margin: 0;
+  }
+  
+  .upload-area .text-primary {
+    color: #007bff;
+  }
+  
+  /* File information box */
+  .file-info {
+    width: 100%;
+    height: 80px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #e8e0e0ec;  /* Gray borders */
+    border-radius: 10px; /* Rounded borders */
+    padding: 10px;
+    background-color: transparent; /* Transparent background */
+  }
+  
+  /* Style for file name and size */
+  .file-name {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align items to the left */
+    margin-bottom: 10px;
+    width: 100%; /* Ensure the container takes full width */
+  }
+  
+  .file-name img {
+    width: 50px;      /* Set image width */
+    height: 50px;     /* Set image height */
+    object-fit: contain; /* Maintain aspect ratio */
+    margin-right: 20px;
+    margin-bottom: -15px;
+  }
+  
+  /* Progress bar container */
+  .progress-container {
+    display: flex;
+    align-items: center;  /* Center the percentage next to the bar */
+    justify-content: flex-start;  /* Ensure the percentage is beside the bar */
+    width: 100%;
+    margin-top: 1px;
+  }
+  
+  .progress {
+    width: 90%; /* Control the width of the bar */
+    background-color: #f3f0f0;
+    border-radius: 5px;
+    height: 10px;
+  }
+  
+  .progress-bar {
+    background-color: #24487E;
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.5s ease-in-out; /* Add a smooth transition effect to the progress bar */
+  }
+  
+  /* Display upload percentage next to the progress bar */
+  .progress-text {
+    font-size: 14px;
+    margin-left: 10px;
+  }
+  
+  /* Button styling */
+  .buttons {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+  }
+    
+  button {
+    padding: 8px 15px;  /* Reduce button size */
+    border-radius: 12px;
+    cursor: pointer;
+    margin-left: 5px;  /* Reduce space between buttons */
+  }
+    
+  /* Primary button */
+  button.btn-primary {
+    background: linear-gradient(53deg, #243c63 0%, #4b72b0 100%);
+    color: white;
+    border: 0px solid #24487E;  /* Remove border */
+    padding: 1px 60px;  /* Increase internal padding to make the button wider */
+  }
+    
+  /* Secondary button */
+  button.btn-secondary {
+    background-color: transparent;  /* Remove background */
+    color: #24487E;  /* Set text color */
+    border: 1px solid #24487E;  /* Add border with the specified color */
+  }
+    
+  /* Success message styling */
+  .success-message {
+    margin-left: 70px;
+    margin-top: -15px;
+    color: #3ac25a; /* Green color for successful upload */
+  }
+    
+  .ml-auto {
+    margin-left: auto; /* Push the delete button to the far right */
+    margin-top: -40px;
+  }
+  
+  

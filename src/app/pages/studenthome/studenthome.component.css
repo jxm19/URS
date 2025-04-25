@@ -11,7 +11,7 @@
   .main-content {
     margin-left: 250px; /* Same as sidebar width */
     padding: 20px;
-    background-color: F2F2F2;
+    background-color: #F2F2F2;
   }
 
   .page-title{
@@ -29,27 +29,21 @@
 
   .general-container{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
-  .container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 20px;
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    margin-bottom: 20px;
-    
-    flex-wrap: wrap;
-  }
+ 
 
-  @media (max-width: 768px) {
-    .container {
-      grid-template-columns: 1fr; /* 1 column */
-    }
-  }
+.row {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+ }
+
+ .card {
+  border: none;
+ }
 
   .attendance-status {
     height: 20px;
@@ -130,7 +124,7 @@
   button {
     background: linear-gradient(to bottom, #141E2D 40%, #152C4E 67%, #24487E 100%);
     color: white;
-    padding: 10px;
+    padding: 7px;
     border: none;
     border-radius: 5px;
     cursor: pointer;

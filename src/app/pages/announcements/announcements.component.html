@@ -1,0 +1,16 @@
+<div class="sidebar">
+    <app-instructornavbar></app-instructornavbar>
+</div>
+
+<div class="main-content">
+    <div class="custom-box">
+        <img src="Icons/profile-add.png" alt="Icon" class="icon-img">
+        <span class="course-text">Exam Details</span>
+
+    <div class="course-bar" *ngFor="let course of courses">
+        <p>{{course.courseName}}</p>
+        <a href="exam-details">
+            <img src="Icons/arrow-right.png" alt="arrow-right" width="45" height="25">
+        </a>
+    </div>
+</div>

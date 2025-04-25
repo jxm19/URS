@@ -1,0 +1,84 @@
+<div class="sidebar">
+    <app-instructornavbar></app-instructornavbar>
+</div>
+
+<div class="main-content">
+    <div class="custom-box">
+        <img src=".\profile-add.png" alt="Icon" class="icon-img">
+        <span class="course-text">New File</span>
+
+
+
+        <div class="uploaded-files">
+            <div class="file-entry">
+                <img src="./folder.png" alt="Folder Icon" class="file-icon">
+                <span class="file-name">SE202resitgrades.pdf</span>
+                <div class="file-actions">
+                    <img src="./eye.png" alt="View2 Icon" class="action-icon">
+                    <button class="icon-button" (click)="openPopup()">
+                        <img src="./trash.png" alt="Delete Icon" class="action-icon">
+                    </button>
+                                </div>
+            </div>
+    
+    
+    
+        <div class="add-file-button">
+            <button class="btn btn-primary" (click)="Upload()">Upload</button>
+        </div>
+    </div>
+    
+
+    
+    <div class="cancel-button">
+        <button>cancel</button>
+    </div>
+</div>
+
+
+
+<!-- Popup Modal: Confirm Dialog -->
+<div class="custom-modal-overlay" *ngIf="showPopup">
+    <div class="custom-modal">
+        <button class="close-btn left" (click)="closePopup()">
+            <img class="closePopup" src="./closepopup.png" alt="Close" style="width: 30px;">
+        </button>
+        <h3>Confirm Your Delete</h3>
+        <p>Do You Want To Delete?</p>
+        <div class="modal-buttons">
+            <button class="primary-btn" (click)="confirmAttendance()">Yes, I want to Delete</button>
+            <button class="secondary-btn" (click)="closePopup()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Popup Modal: Success Message -->
+<div class="custom-modal-overlay" *ngIf="showSuccessPopup">
+    <div class="custom-modal">
+        <button class="close-btn left" (click)="closeSuccessPopup()">
+            <img class="closePopup" src="./closepopup.png" alt="Close" style="width: 30px;">
+        </button>
+        <h3>Delete successful!</h3>
+        <div style="margin-top: 15px;">
+            <img src="./success.png" alt="Success" style="width: 60px;">
+        </div>
+    </div>
+</div>
+
+
+            <!-- Popup Modal: Success Message -->
+            <div class="custom-modal-overlay" *ngIf="showSuccessPopupp">
+                <div class="custom-modal">
+                    <button class="close-btn left" (click)="closeSuccessPopupp()">
+                        <img class="closePopup" src="./closepopup.png" alt="Close" style="width: 30px;">
+                    </button>
+                    <h3>Your file has been uploaded successfully!</h3>
+                    <div style="margin-top: 15px;">
+                        <img src="./success.png" alt="Success" style="width: 60px;">
+                    </div>
+                </div>
+
+
+        
+    
+        

@@ -1,0 +1,24 @@
+<div class="sidebar">
+    <app-instructornavbar></app-instructornavbar>
+  </div>
+  
+  <div class="main-content">
+    <div class="custom-box">
+      <img src="Icons/profile-add.png" alt="Icon" class="icon-img">
+      <span class="course-text">Instructor List</span>
+  
+      <!-- Dynamic Course List -->
+      <div class="box1" *ngFor="let course of courses">
+        <h1>{{ course.code }}</h1>
+        <p>{{ course.title }}</p>
+        <p>{{ course.instructor }}</p>
+
+
+        <a href="/resit-list" class="custom-button" style="text-decoration: none;">
+            Details For Resit Exams
+        </a>
+
+                  <img src="Icons/textalign-justifycenter.png" alt="icon-box-img" class="icon-box-img">
+      </div>
+    </div>
+  </div>

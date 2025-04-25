@@ -22,9 +22,11 @@
                     <td>{{ course.courseCode }}</td>
                     <td>{{ course.courseName }}</td>
                     <td>{{ course.instructor }}</td>
-                    <td class=confirmed>Confirmed</td>
-                    <td>
+                    <td class=confirmed >Confirmed</td>
+                    <td style="text-align: center;"> 
+                      <button class="trash " (click)="openPopup()">
                         <img class="tabletrash" src="./redtrash.png" alt="Trash Icon" />
+                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -34,5 +36,32 @@
               </p>
             </div>
        </div>
+       <!-- Popup Modal: Confirm Dialog -->
+<div class="custom-modal-overlay" *ngIf="showPopup">
+  <div class="custom-modal">
+      <button class="close-btn left" (click)="closePopup()">
+          <img class="closePopup" src="./closepopup.png" alt="Close" style="width: 30px;">
+      </button>
+      <h3>Cancel Resit Exam Attendnace</h3>
+      <p>Are You sure you want to <br> cancel your exam attendance?</p>
+      <div class="modal-buttons">
+          <button class="primary-btn" (click)="confirmAttendance()">Yes</button>
+          <button class="secondary-btn" (click)="closePopup()">Cancel</button>
+      </div>
+  </div>
+</div>
+
+<!-- Popup Modal: Success Message -->
+<div class="custom-modal-overlay" *ngIf="showSuccessPopup">
+  <div class="custom-modal">
+      <button class="close-btn left" (click)="closeSuccessPopup()">
+          <img class="closePopup" src="./closepopup.png" alt="Close" style="width: 30px;">
+      </button>
+      <h3>Resit Exam Attendance <br> canceled successfully!</h3>
+      <div style="margin-top: 15px;">
+          <img src="./success.png" alt="Success" style="width: 60px;">
+      </div>
+  </div>
+</div>
 
        

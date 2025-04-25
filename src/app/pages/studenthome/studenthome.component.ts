@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { StudentnavbarComponent } from '../../layout/studentnavbar/studentnavbar.component';
 import { CommonModule } from '@angular/common';
 
@@ -9,10 +9,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './studenthome.component.css',
   standalone:true
 })
-
-
 export class StudenthomeComponent {
-  
+
+   
   showPopup = false;
   showSuccessPopup = false;
   
@@ -141,7 +140,5 @@ export class StudenthomeComponent {
         return '';
     }
   }
-  
-  
 
 }
