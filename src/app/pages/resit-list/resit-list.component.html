@@ -1,153 +1,66 @@
 <div class="sidebar">
-    <app-instructornavbar></app-instructornavbar>
-</div>
-
-<div class="main-content">
+    <app-instructornavbar [instructorName]="instructorName"></app-instructornavbar>
+  </div>
+  
+  <div class="main-content">
     <div class="custom-box">
-        <img src="Icons\profile-add.png" alt="Icon" class="icon-img">
-        <span class="course-text">Resit List</span>
- 
-
-    <!-- Accordion Section -->
-    <div class="accordion" id="accordionExample">
-        <!-- Accordion Item 1 -->
-        <div class="accordion-item shadow-sm overflow-hidden custom-accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
-                    Section 1
-                </button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <!-- Search Box -->
-                    <div class="search-box">
-                        <span class="input-group-text">
-                            <img src="Icons\search-normal.png" alt="Search" />
-                        </span>
-                        <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Search by Name or ID"
-                            [(ngModel)]="searchText"
-                        />
-                    </div>
-
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Course Code</th>
-                                <th scope="col">ID</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Grade Letter</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for (student of filteredStudents; track student.id) {
-                            <tr>
-                                <th scope="row">{{ student.id }}</th>
-                                <td>{{ student.courseCode }}</td>
-                                <td>{{ student.studentId }}</td>
-                                <td>{{ student.name }}</td>
-                                <td>{{ student.grade }}</td>
-                            </tr>
-                            }
-                        </tbody>
-                    </table>
-                    <div class="row-counter">Total Students: {{ rowCount }}</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- باقي الـ Accordion Items -->
-<div class="accordion-item shadow-sm overflow-hidden custom-accordion-item">
-    <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
-            Section 2
-        </button>
-    </h2>
-    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-        <div class="accordion-body">
-         <!-- Search Box -->
-         <div class="search-box">
-            <span class="input-group-text">
-                <img src="Icons\search-normal.png" alt="Search" />
-            </span>
-            <input
-                type="text"
-                class="form-control"
-                placeholder="Search by Name or ID"
-                [(ngModel)]="searchText"
-            />
-        </div>
-
-        <table class="table">
-            <thead>
-                <tr>
+      <img src="Icons/profile-add.png" alt="Icon" class="icon-img">
+      <span class="course-text">Resit List</span>
+  
+      <!-- Accordion Section -->
+      <div class="accordion" id="accordionExample">
+        <div *ngFor="let course of courseStudentsMap; let i = index" class="accordion-item shadow-sm overflow-hidden custom-accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" [attr.aria-controls]="'collapse' + i">
+              {{ course.courseCode }} - {{ course.courseName }}
+            </button>
+          </h2>
+          <div [id]="'collapse' + i" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <!-- Search Box -->
+              <div class="search-box">
+                <span class="input-group-text">
+                  <img src="Icons/search-normal.png" alt="Search" />
+                </span>
+                <input type="text" class="form-control" placeholder="Search by Name or ID" [(ngModel)]="searchText" />
+              </div>
+  
+              <!-- Table with Students -->
+              <table class="table">
+                <thead>
+                  <tr>
                     <th scope="col">#</th>
                     <th scope="col">Course Code</th>
                     <th scope="col">ID</th>
                     <th scope="col">Name</th>
                     <th scope="col">Grade Letter</th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (student of filteredStudents; track student.id) {
-                <tr>
-                    <th scope="row">{{ student.id }}</th>
-                    <td>{{ student.courseCode }}</td>
-                    <td>{{ student.studentId }}</td>
-                    <td>{{ student.name }}</td>
-                    <td>{{ student.grade }}</td>
-                </tr>
-                }
-            </tbody>
-        </table>
-        <div class="row-counter">Total Students: {{ rowCount }}</div>
+                  </tr>
+                </thead>
+                <tbody *ngIf="course.students.length > 0; else noStudents">
+                    <tr *ngFor="let student of filterStudents(course.students); let j = index">
+                      <th scope="row">{{ j + 1 }}</th>
+                      <td>{{ course.courseCode }}</td>
+                      <td>{{ student.student_university_id }}</td>
+                      <td>{{ student.student_name }}</td>
+                      <td>{{ student.letter_grade }}</td>
+                    </tr>
+                  </tbody>
+                  <ng-template #noStudents>
+                    <tbody>
+                      <tr>
+                        <td colspan="5" class="text-center text-muted">No students confirmed for resit.</td>
+                      </tr>
+                    </tbody>
+                  </ng-template>
+                  
+              </table>
+              <div class="row-counter">
+                Total Students: {{ course.students.length }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
-</div>  
-
+  </div>
   
-
-<!-- Accordion Item 3 -->
-<div class="accordion-item shadow-sm overflow-hidden custom-accordion-item">
-    <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
-            Section 3
-        </button>
-    </h2>
-    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-        <div class="accordion-body">
-            Content for Section 3 goes here.
-        </div>
-    </div>
-</div>
-
-<!-- Accordion Item 4 -->
-<div class="accordion-item shadow-sm overflow-hidden custom-accordion-item">
-    <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
-            Section 4
-        </button>
-    </h2>
-    <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-        <div class="accordion-body">
-            Content for Section 4 goes here.
-        </div>
-    </div>
-</div>
-
-<!-- Accordion Item 5 -->
-<div class="accordion-item shadow-sm overflow-hidden custom-accordion-item">
-    <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive">
-            Section 5
-        </button>
-    </h2>
-    <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-        <div class="accordion-body">
-            Content for Section 5 goes here.
-        </div>
-    </div>
-</div>

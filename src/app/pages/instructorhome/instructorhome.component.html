@@ -1,24 +1,31 @@
-<div class="sidebar">
-    <app-instructornavbar></app-instructornavbar>
-  </div>
-  
-  <div class="main-content">
-    <div class="custom-box">
-      <img src="Icons/profile-add.png" alt="Icon" class="icon-img">
-      <span class="course-text">Instructor List</span>
-  
-      <!-- Dynamic Course List -->
+<!-- Sidebar -->
+<app-instructornavbar [instructorName]="instructorName"></app-instructornavbar>
+
+<!-- Main Content -->
+<div class="main-content">
+  <div class="custom-box">
+    <img src="Icons/profile-add.png" alt="Icon" class="icon-img" />
+    <span class="course-text">Instructor List</span>
+
+    <!-- Welcome message -->
+    <span class="username" style="display: block; font-size: 18px; font-weight: bold; margin-bottom: 10px;">
+      Welcome, {{ instructorName }}
+    </span>
+
+    <!-- Dynamic Course List -->
+    <div *ngIf="courses && courses.length > 0; else noCourses">
       <div class="box1" *ngFor="let course of courses">
-        <h1>{{ course.code }}</h1>
-        <p>{{ course.title }}</p>
-        <p>{{ course.instructor }}</p>
-
-
+        <h1>{{ course.course_code }}</h1>
+        <p>{{ course.course_name }}</p>
         <a href="/resit-list" class="custom-button" style="text-decoration: none;">
-            Details For Resit Exams
+          Details For Resit Exams
         </a>
-
-                  <img src="Icons/textalign-justifycenter.png" alt="icon-box-img" class="icon-box-img">
+        <img src="Icons/textalign-justifycenter.png" alt="icon-box-img" class="icon-box-img" />
       </div>
     </div>
+
+    <ng-template #noCourses>
+      <p>No courses assigned to you yet.</p>
+    </ng-template>
   </div>
+</div>

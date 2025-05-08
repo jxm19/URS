@@ -1,20 +1,43 @@
-import { Component } from '@angular/core';
-import { InstructornavbarComponent } from '../../layout/instructornavbar/instructornavbar.component';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { InstructornavbarComponent } from '../../layout/instructornavbar/instructornavbar.component';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-instructorhome',
-  imports: [InstructornavbarComponent,CommonModule,RouterModule],
+  standalone: true,
+  imports: [CommonModule, InstructornavbarComponent],
   templateUrl: './instructorhome.component.html',
-  styleUrl: './instructorhome.component.css'
+  styleUrls: ['./instructorhome.component.css']
 })
-export class InstructorhomeComponent {
-   // Define courses directly here (no external service needed)
-   courses = [
-    { code: 'SE302/1', title: 'Software Project Management', instructor: 'Dr. Kristin Surpuhi Benli' },
-    { code: 'SE303/1', title: 'Advanced Programming', instructor: 'Dr. Kristin Surpuhi Benli' },
-    { code: 'SE304/1', title: 'Database Systems', instructor: 'Dr. Kristin Surpuhi Benli' },
-  ];
+export class InstructorhomeComponent implements OnInit {
+  courses: any[] = [];
+  instructorName: string = '';
 
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.warn('Token is missing.');
+      return;
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    this.http
+      .get<any>('http://127.0.0.1:8008/api/dashboard-instructor/courses', { headers })
+      .subscribe({
+        next: (response) => {
+          const instructor = response?.data;
+          this.instructorName = instructor?.name || 'Unknown Instructor';
+          this.courses = instructor?.courses || [];
+        },
+        error: (err) => {
+          console.error('Error loading instructor courses:', err);
+        }
+      });
+  }
 }

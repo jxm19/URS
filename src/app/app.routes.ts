@@ -98,12 +98,12 @@ export const routes: Routes = [
     },
 
     {
-        path: 'login',
+        path: 'login/:userType',
         component: LoginComponent
     },
 
     {
-        path: 'sections',
+        path: '',
         component: SectionsComponent
     },
 

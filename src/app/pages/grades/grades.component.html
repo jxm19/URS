@@ -1,98 +1,70 @@
 <div class="sidebar">
-    <app-instructornavbar></app-instructornavbar>
+    <app-instructornavbar [instructorName]="instructorName"></app-instructornavbar>
 </div>
 
 <div class="main-content">
     <div class="custom-box">
         <img src="Icons\profile-add.png" alt="Icon" class="icon-img"> <!-- Icon as an image -->
         <span class="course-text">Grades List</span> <!-- Text with custom class -->
- 
 
-    <!-- Accordion Section -->
-    <div class="accordion" id="accordionExample">
-        <!-- Accordion Item 1 -->
-        <div class="accordion-item shadow-sm overflow-hidden custom-accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
-                    Section 1
-                </button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                             <!-- Add New Button and Search Box -->
-        <!-- Add New Button and Search Box -->
-        <div class="flex-container">
-          
-            <a 
-            href="/upload"  
-            class="btn btn-outline-secondary" 
-            style="height: 35px; width: 120px; border-radius: 0.6rem; font-size: 0.9rem;"
-          >
-            + Upload file
-          </a>
-  
-            <!-- Search Box -->
-            <div class="search-box">
-                <span class="input-group-text">
-                    <img src="Icons\search-normal.png" alt="Search" />
-                </span>
-                <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Search Here"
-                />
+        <!-- Accordion Section -->
+        <div class="accordion" id="accordionExample">
+            <div 
+                class="accordion-item shadow-sm overflow-hidden custom-accordion-item"
+                *ngFor="let course of courses; let i = index"
+            >
+                <h2 class="accordion-header" id="heading{{i}}">
+                    <button 
+                        class="accordion-button collapsed" 
+                        type="button" 
+                        data-bs-toggle="collapse" 
+                        [attr.data-bs-target]="'#collapse' + i" 
+                        aria-expanded="false" 
+                        [attr.aria-controls]="'collapse' + i"
+                    >
+                        {{ course.course_name }}
+                    </button>
+                </h2>
+                <div 
+                    [id]="'collapse' + i" 
+                    class="accordion-collapse collapse" 
+                    [attr.aria-labelledby]="'heading' + i" 
+                    data-bs-parent="#accordionExample"
+                >
+                    <div class="accordion-body">
+                        <!-- Put your student grades table here -->
+                        <table class="table table-borderless align-middle">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Course Code</th>
+                                    <th>Name</th>
+                                    <th>Grade</th>
+                                    <th>Grade Letter</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let student of course.students">
+                                    <td>{{ student.id }}</td>
+                                    <td>{{ course.course_code }}</td>
+                                    <td>{{ student.name }}</td>
+                                    <td>{{ student.grade }}</td>
+                                    <td>{{ student.gradeLetter }}</td>
+                                    <td>
+                                        <span class="badge" [ngClass]="{
+                                            'badge-passed': student.status === 'Passed',
+                                            'badge-failed': student.status === 'Failed'
+                                        }">{{ student.status }}</span>
+                                    </td>
+                                    <td><!-- actions here --></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <!-- Table -->
-        <div class="card-body p-0">
-            <table class="table table-borderless align-middle">
-                <thead class="bg-light">
-                    <tr>
-                        <th>
-                            <div class="form-check custom-checkbox">
-                                <input class="form-check-input" type="checkbox" id="checkAll">
-                            </div>
-                        </th>
-                        <th>#</th>
-                        <th>Course Code</th>
-                        <th>Name</th>
-                        <th>Grade</th>
-                        <th>Grade Letter</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let student of paginatedStudents">
-                        <td>
-                            <div class="form-check custom-checkbox">
-                                <input class="form-check-input" type="checkbox" id="check{{ student.id }}">
-                            </div>
-                        </td>
-                        <td>{{ student.id }}</td>
-                        <td>{{ student.code }}</td>
-                        <td>{{ student.name }}</td>
-                        <td>{{ student.grade }}</td>
-                        <td>{{ student.gradeLetter }}</td>
-                        <td>
-                            <span class="badge" [ngClass]="{
-                                'badge-passed': student.status === 'Passed',
-                                'badge-failed': student.status === 'Failed'
-                            }">{{ student.status }}</span>
-                        </td>
-                        <td class="d-flex justify-content-center align-items-center gap-2">
-                       
-                            <!-- Delete Button -->
-                            <button class="btn btn-light btn-sm">
-                                <img src="Icons\trash.png" alt="Delete" style="width: 12px; height: 12px;" />
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
 
         <!-- Pagination Footer -->
@@ -100,7 +72,6 @@
             <button class="btn btn-outline-secondary btn-sm" (click)="changePage('prev')" [disabled]="currentPage === 1">
                 Previous
             </button>
-
             <nav>
                 <ul class="pagination pagination-sm mb-0">
                     <li class="page-item" *ngFor="let page of totalPagesArray">
@@ -110,109 +81,29 @@
                     </li>
                 </ul>
             </nav>
-
             <button class="btn btn-outline-secondary btn-sm" (click)="changePage('next')" [disabled]="currentPage === totalPages">
                 Next
             </button>
         </div>
-        
     </div>
+    
+    <!-- Action Buttons -->
     <div class="d-flex justify-content-end mt-5 mb-3">
         <button 
           class="btn btn-outline-secondary me-2 rounded-3"
-          style="
-            width: 100px;
-            height: 40px;
-            border-color: #243c63;
-            color: #243c63;
-            background-color: transparent;
-            transition: background-color 0.3s ease;
-          "
+          style="width: 100px; height: 40px; border-color: #243c63; color: #243c63; background-color: transparent; transition: background-color 0.3s ease;"
           onmouseover="this.style.backgroundColor='#ececec'"
           onmouseout="this.style.backgroundColor='transparent'">
           Cancel
         </button>
-        
-        <!--  Save Changes -->
+
+        <!-- Save Changes -->
         <button 
           class="btn text-white rounded-3 border-0"
-          style="
-            width: 170px;
-            height: 40px;
-            background-color: #243c63;
-            transition: all 0.3s ease;
-          "
+          style="width: 170px; height: 40px; background-color: #243c63; transition: all 0.3s ease;"
           onmouseover="this.style.backgroundImage='linear-gradient(53deg, #243c63 0%, #4b72b0 100%)'"
           onmouseout="this.style.backgroundImage='none'">
           Save Changes
         </button>
-      </div>
-      
-</div>
-</div>
-</div>
-</div>
-</div>
-
-
-          
-     
-
-        <!-- Accordion Item 2 -->
-        <div class="accordion-item shadow-sm  overflow-hidden custom-accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
-                    Section 2
-                </button>
-            </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    Content for Section 2 goes here.
-                </div>
-            </div>
-        </div>
-
-        <!-- Accordion Item 3 -->
-        <div class="accordion-item shadow-sm overflow-hidden custom-accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
-                    Section 3
-                </button>
-            </h2>
-            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    Content for Section 3 goes here.
-                </div>
-            </div>
-        </div>
-
-        <!-- Accordion Item 4 -->
-        <div class="accordion-item shadow-sm  overflow-hidden custom-accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
-                    Section 4
-                </button>
-            </h2>
-            <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    Content for Section 4 goes here.
-                </div>
-            </div>
-        </div>
-
-        <!-- Accordion Item 5 -->
-        <div class="accordion-item shadow-sm overflow-hidden custom-accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive">
-                    Section 5
-                </button>
-            </h2>
-            <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    Content for Section 5 goes here.
-                </div>
-            </div>
-    
     </div>
-
-          </div>
+</div>

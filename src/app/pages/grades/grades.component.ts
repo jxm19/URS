@@ -1,31 +1,35 @@
-import { Component } from '@angular/core';
+// grades.component.ts
+import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { InstructornavbarComponent } from '../../layout/instructornavbar/instructornavbar.component';
-import { NgFor, NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-grades',
-  imports: [InstructornavbarComponent, NgFor, NgClass],
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterLink, RouterOutlet, InstructornavbarComponent],
   templateUrl: './grades.component.html',
-  styleUrl: './grades.component.css'
+  styleUrls: ['./grades.component.css']
 })
-export class GradesComponent {
-  students = [
-    { id: 1, code: 'CS/101', name: 'Ahmed Mohamed', grade: 78, gradeLetter: 'CC', status: 'Passed' },
-    { id: 2, code: 'IT/202', name: 'Fatima Ali', grade: 92, gradeLetter: 'AA', status: 'Passed' },
-    { id: 3, code: 'EE/303', name: 'Omar Khaled', grade: 65, gradeLetter: 'DD', status: 'Failed' },
-    { id: 4, code: 'ME/404', name: 'Layla Hassan', grade: 88, gradeLetter: 'BA', status: 'Passed' },
-    { id: 5, code: 'CE/505', name: 'Youssef Samir', grade: 70, gradeLetter: 'CB', status: 'Passed' },
-    { id: 6, code: 'PH/606', name: 'Mariam Adel', grade: 95, gradeLetter: 'AA', status: 'Passed' },
-    { id: 7, code: 'CH/707', name: 'Khalid Ibrahim', grade: 60, gradeLetter: 'DC', status: 'Failed' },
-    { id: 8, code: 'MA/808', name: 'Nour Ahmed', grade: 82, gradeLetter: 'BB', status: 'Passed' },
-    { id: 9, code: 'BI/909', name: 'Ali Mahmoud', grade: 73, gradeLetter: 'BC', status: 'Passed' }
-  ];
-
+export class GradesComponent implements OnInit {
+  instructorName = '';
+  courses: any[] = [];
   currentPage = 1;
   rowsPerPage = 6;
+  selectedCourseIndex = 0;
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.fetchInstructorName();
+    this.fetchCoursesAndStudents();
+  }
 
   get totalPages(): number {
-    return Math.ceil(this.students.length / this.rowsPerPage);
+    if (!this.courses[this.selectedCourseIndex]) return 1;
+    return Math.ceil(this.courses[this.selectedCourseIndex].students?.length / this.rowsPerPage || 1);
   }
 
   get totalPagesArray(): number[] {
@@ -45,7 +49,55 @@ export class GradesComponent {
   }
 
   get paginatedStudents() {
+    const course = this.courses[this.selectedCourseIndex];
+    if (!course || !course.students) return [];
     const startIndex = (this.currentPage - 1) * this.rowsPerPage;
-    return this.students.slice(startIndex, startIndex + this.rowsPerPage);
+    return course.students.slice(startIndex, startIndex + this.rowsPerPage);
+  }
+
+  selectCourse(index: number) {
+    this.selectedCourseIndex = index;
+    this.currentPage = 1;
+  }
+
+  fetchInstructorName() {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+
+    this.http.get<any>('http://127.0.0.1:8008/api/dashboard-instructor/info', { headers })
+      .subscribe({
+        next: (res) => {
+          this.instructorName = res?.data?.name || 'Unknown';
+        },
+        error: (err) => console.error('Error fetching instructor name', err)
+      });
+  }
+
+  fetchCoursesAndStudents() {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+
+    this.http.get<any>('http://127.0.0.1:8008/api/dashboard-instructor/courses', { headers })
+      .subscribe({
+        next: (response) => {
+          const courses = response?.data?.courses || [];
+          this.courses = courses.map((course: any) => ({ ...course, students: [] }));
+
+          this.courses.forEach((course, index) => {
+            this.http.get<any>(`http://127.0.0.1:8008/api/dashboard-instructor/students-grades/${course.id}`, { headers })
+              .subscribe({
+                next: (res) => {
+                  this.courses[index].students = res?.students || [];
+                },
+                error: err => console.warn(`Error fetching students for course ${course.id}`, err)
+              });
+          });
+        },
+        error: err => console.error('Error fetching courses', err)
+      });
   }
 }
