@@ -123,7 +123,7 @@ export const routes: Routes = [
     },
 
     {
-        path: 'upload',
+        path: 'upload/:courseId',
         component:UploadComponent
     },
 

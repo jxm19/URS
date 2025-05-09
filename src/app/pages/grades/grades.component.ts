@@ -1,103 +1,205 @@
-// grades.component.ts
-import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { RouterLink, RouterOutlet } from '@angular/router';
 import { InstructornavbarComponent } from '../../layout/instructornavbar/instructornavbar.component';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-grades',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, RouterOutlet, InstructornavbarComponent],
+  imports: [CommonModule, InstructornavbarComponent],
   templateUrl: './grades.component.html',
   styleUrls: ['./grades.component.css']
 })
 export class GradesComponent implements OnInit {
-  instructorName = '';
   courses: any[] = [];
-  currentPage = 1;
-  rowsPerPage = 6;
-  selectedCourseIndex = 0;
+  instructorName: string = '';
+  coursePages: { [courseId: number]: { currentPage: number, totalPages: number, paginatedGrades: any[] } } = {};
+  itemsPerPage: number = 10;
+
+  @ViewChild('checkAll') checkAll: any;  // Reference to "checkAll" checkbox
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.fetchInstructorName();
-    this.fetchCoursesAndStudents();
-  }
-
-  get totalPages(): number {
-    if (!this.courses[this.selectedCourseIndex]) return 1;
-    return Math.ceil(this.courses[this.selectedCourseIndex].students?.length / this.rowsPerPage || 1);
-  }
-
-  get totalPagesArray(): number[] {
-    return Array(this.totalPages).fill(0).map((_, i) => i + 1);
-  }
-
-  changePage(direction: string) {
-    if (direction === 'next' && this.currentPage < this.totalPages) {
-      this.currentPage++;
-    } else if (direction === 'prev' && this.currentPage > 1) {
-      this.currentPage--;
-    }
-  }
-
-  goToPage(page: number) {
-    this.currentPage = page;
-  }
-
-  get paginatedStudents() {
-    const course = this.courses[this.selectedCourseIndex];
-    if (!course || !course.students) return [];
-    const startIndex = (this.currentPage - 1) * this.rowsPerPage;
-    return course.students.slice(startIndex, startIndex + this.rowsPerPage);
-  }
-
-  selectCourse(index: number) {
-    this.selectedCourseIndex = index;
-    this.currentPage = 1;
-  }
-
-  fetchInstructorName() {
     const token = localStorage.getItem('token');
-    if (!token) return;
-
-    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
-
-    this.http.get<any>('http://127.0.0.1:8008/api/dashboard-instructor/info', { headers })
+    if (!token) {
+      console.warn('Token is missing.');
+      return;
+    }
+  
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    
+  
+    this.http
+      .get<any>('http://127.0.0.1:8008/api/dashboard-instructor/courses', { headers })
       .subscribe({
-        next: (res) => {
-          this.instructorName = res?.data?.name || 'Unknown';
+        next: (response) => {
+          const instructor = response?.data;
+          this.instructorName = instructor?.name || 'Unknown Instructor';
+          this.courses = instructor?.courses || [];
+  
+          for (let course of this.courses) {
+            this.getGradesForCourse(course.id, headers);
+          }
         },
-        error: (err) => console.error('Error fetching instructor name', err)
+        error: (err) => {
+          console.error('Error loading instructor courses:', err);
+        }
       });
   }
 
-  fetchCoursesAndStudents() {
-    const token = localStorage.getItem('token');
-    if (!token) return;
-
-    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
-
-    this.http.get<any>('http://127.0.0.1:8008/api/dashboard-instructor/courses', { headers })
-      .subscribe({
-        next: (response) => {
-          const courses = response?.data?.courses || [];
-          this.courses = courses.map((course: any) => ({ ...course, students: [] }));
-
-          this.courses.forEach((course, index) => {
-            this.http.get<any>(`http://127.0.0.1:8008/api/dashboard-instructor/students-grades/${course.id}`, { headers })
-              .subscribe({
-                next: (res) => {
-                  this.courses[index].students = res?.students || [];
-                },
-                error: err => console.warn(`Error fetching students for course ${course.id}`, err)
-              });
-          });
+  
+  getGradesForCourse(courseId: number, headers: HttpHeaders): void {
+    this.http.get<any>(`http://127.0.0.1:8008/api/dashboard-instructor/courses/${courseId}/grades`, { headers })
+    .subscribe({
+        next: (res) => {
+          const grades = res?.data?.grades || [];
+          const totalPages = Math.ceil(grades.length / this.itemsPerPage);
+          this.coursePages[courseId] = {
+            currentPage: 1,
+            totalPages: totalPages,
+            paginatedGrades: grades.slice(0, this.itemsPerPage)
+          };
+  
+          // Save grades into the course object for easier access if needed
+          const courseIndex = this.courses.findIndex(c => c.id === courseId);
+          if (courseIndex !== -1) {
+            this.courses[courseIndex].grades = grades;
+          }
         },
-        error: err => console.error('Error fetching courses', err)
+        error: (err) => {
+          console.error(`Error fetching grades for course ${courseId}:`, err);
+        }
+      });
+  }
+  
+
+
+  deleteGrade(gradeId: number, courseId: number): void {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.warn('Token is missing.');
+      return;
+    }
+  
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    
+  
+    if (confirm('Are you sure you want to delete this grade?')) {
+      this.http.delete<any>(`http://127.0.0.1:8008/api/dashboard-instructor/grades/${gradeId}`, { headers })
+        .subscribe({
+          next: () => {
+            // Remove from the local grades array
+            const courseIndex = this.courses.findIndex(c => c.id === courseId);
+            if (courseIndex !== -1) {
+              const gradeIndex = this.courses[courseIndex].grades.findIndex((g: any) => g.id === gradeId);
+              if (gradeIndex !== -1) {
+                this.courses[courseIndex].grades.splice(gradeIndex, 1);
+                this.paginateCourse(courseId);
+              }
+            }
+            alert('Grade deleted successfully!');
+          },
+          error: (err) => {
+            console.error('Error deleting grade:', err);
+            alert('Failed to delete grade.');
+          }
+        });
+    }
+  }
+  
+
+  changePage(courseId: number, direction: string): void {
+    const pageInfo = this.coursePages[courseId];
+    if (!pageInfo) return;
+
+    if (direction === 'next' && pageInfo.currentPage < pageInfo.totalPages) {
+      pageInfo.currentPage++;
+    } else if (direction === 'prev' && pageInfo.currentPage > 1) {
+      pageInfo.currentPage--;
+    }
+
+    this.paginateCourse(courseId);
+  }
+
+  goToPage(courseId: number, page: number): void {
+    this.coursePages[courseId].currentPage = page;
+    this.paginateCourse(courseId);
+  }
+
+  paginateCourse(courseId: number): void {
+    const course = this.courses.find(c => c.id === courseId);
+    const pageInfo = this.coursePages[courseId];
+    if (!course || !pageInfo) return;
+
+    const start = (pageInfo.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    pageInfo.paginatedGrades = course.grades.slice(start, end);
+  }
+
+  toggleAllCheckboxes(event: any): void {
+    const isChecked = event.target.checked;
+    const checkboxes = document.querySelectorAll('.form-check-input');
+    checkboxes.forEach((checkbox: any) => {
+      checkbox.checked = isChecked;
+    });
+  }
+
+  editGrade(grade: any): void {
+    const updatedFinalGrade = prompt('Enter new final grade:', grade.final_grade);
+    const updatedAbsenteeism = prompt('Enter absenteeism (optional):', grade.absenteeism || '');
+  
+    if (updatedFinalGrade !== null) {
+      this.updateGrade(grade.id, +updatedFinalGrade, updatedAbsenteeism ? +updatedAbsenteeism : null, grade.course.id);
+    }
+  }
+  
+  updateGrade(gradeId: number, finalGrade: number, absenteeism: number | null, courseId: number): void {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.warn('Token is missing.');
+      return;
+    }
+  
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    
+  
+    const body: any = {
+      final_grade: finalGrade,
+      absenteeism: absenteeism
+    };
+  
+    this.http.delete<any>(`http://127.0.0.1:8008/api/dashboard-instructor/grades/${gradeId}`, { headers })
+    .subscribe({
+        next: (res) => {
+          alert('Grade updated successfully!');
+  
+          // Replace the updated grade in the course object
+          const course = this.courses.find(c => c.id === courseId);
+          if (course) {
+            const index = course.grades.findIndex((g: any) => g.id === gradeId);
+            if (index !== -1) {
+              course.grades[index] = {
+                ...course.grades[index],
+                final_grade: res.data.final_grade,
+                letter_grade: res.data.letter_grade,
+                absenteeism: res.data.absenteeism,
+                status: res.data.status
+              };
+              this.paginateCourse(courseId);
+            }
+          }
+        },
+        error: (err) => {
+          console.error('Failed to update grade:', err);
+          alert('Failed to update grade. Please check your input.');
+        }
       });
   }
 }
