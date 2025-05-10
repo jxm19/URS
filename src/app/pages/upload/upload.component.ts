@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpEvent, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-upload',
@@ -100,10 +101,11 @@ export class UploadComponent implements OnInit {
           this.progress = 100;
           this.uploadSuccess = true;
           this.uploadMessage = 'Uploaded successfully';
-          setTimeout(() => {
-            this.router.navigate(['/file-added']);
-          }, 700); // 0.7 ثانية تأخير قبل التنقل
-        }
+          
+  setTimeout(() => {
+    this.router.navigate(['/file-added'], { state: { uploadedFiles: [this.file?.name] } });
+  }, 700);
+}
       },
       error: (err) => {
         console.error('Upload Error:', err);

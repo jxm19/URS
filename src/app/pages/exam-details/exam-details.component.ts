@@ -1,8 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { InstructornavbarComponent } from '../../layout/instructornavbar/instructornavbar.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { InstructornavbarComponent } from '../../layout/instructornavbar/instructornavbar.component';
+import { RouterModule } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, PLATFORM_ID } from '@angular/core';
+
 
 @Component({
   selector: 'app-exam-details',
@@ -11,161 +16,101 @@ import { InstructornavbarComponent } from '../../layout/instructornavbar/instruc
   templateUrl: './exam-details.component.html',
   styleUrls: ['./exam-details.component.css']
 })
-export class ExamDetailsComponent {
-  // Main data structure with 4 exam entries (same professor)
-  examData = {
-    header: {
-      icon: 'Icons/profile-add.png',
-      title: 'Exam Details'
-    },
-    exams: [
-      {
-        id: 1,
-        avatar: 'Icons/i.png',
-        name: 'Dr. Öğr. Üyesi SALIM JIBRIN DANBATTA',
-        email: 'salimjibrin.danbattauskudar.edu.tr',
-        type: 'Makeup Exam',
-        time: '1 Day ago',
-        actions: {
-          search: 'Icons/search-normal.png',
-          edit: 'Icons/edit-2.png',
-          delete: 'Icons/trash.png'
-        }
-      },
-      {
-        id: 2,
-        avatar: 'Icons/i.png',
-        name: 'Dr. Öğr. Üyesi SALIM JIBRIN DANBATTA',
-        email: 'salimjibrin.danbattauskudar.edu.tr',
-        type: 'Final Exam',
-        time: '2 Days ago',
-        actions: {
-          search: 'Icons/search-normal.png',
-          edit: 'Icons/edit-2.png',
-          delete: 'Icons/trash.png'
-        }
-      },
-      {
-        id: 3,
-        avatar: 'Icons/i.png',
-        name: 'Dr. Öğr. Üyesi SALIM JIBRIN DANBATTA',
-        email: 'salimjibrin.danbattauskudar.edu.tr',
-        type: 'Midterm Exam',
-        time: '3 Days ago',
-        actions: {
-          search: 'Icons/search-normal.png',
-          edit: 'Icons/edit-2.png',
-          delete: 'Icons/trash.png'
-        }
-      },
-      {
-        id: 4,
-        avatar: 'Icons/i.png',
-        name: 'Dr. Öğr. Üyesi SALIM JIBRIN DANBATTA',
-        email: 'salimjibrin.danbattauskudar.edu.tr',
-        type: 'Quiz',
-        time: '4 Days ago',
-        actions: {
-          search: 'Icons/search-normal.png',
-          edit: 'Icons/edit-2.png',
-          delete: 'Icons/trash.png'
-        }
-      }
-    ],
-    addButton: {
-      text: 'Add New',
-      style: {
-        width: '170px',
-        height: '40px',
-        normalBg: '#243c63',
-        hoverGradient: 'linear-gradient(53deg, #243c63 0%, #4b72b0 100%)',
-        transition: 'all 0.3s ease'
-      }
-    }
-  };
-
-  constructor(private router: Router) {}
-
-  goToUpload() {
-    this.router.navigate(['/upload-note']);
-  }
-
-
-  onButtonHover(event: any) {
-    event.target.style.background = this.examData.addButton.style.hoverGradient;
-  }
-
-  onButtonLeave(event: any) {
-    event.target.style.background = this.examData.addButton.style.normalBg;
-  }
-
-
-  onSearch(exam: any) {
-    console.log('Search:', exam);
-  }
-
-  onEdit(exam: any) {
-    console.log('Edit:', exam);
-  }
-
-  onDelete(exam: any) {
-    console.log('Delete:', exam);
-  }
-
+export class ExamDetailsComponent implements OnInit {
+  courseId!: number;
+  instructorName: string = '';
+  announcements: any[] = [];
 
   showPopup = false;
   showSuccessPopup = false;
-  
+  showPopupp = false;
+  showSuccessPopupp = false;
+
+  constructor(private route: ActivatedRoute, private http: HttpClient, @Inject(PLATFORM_ID) private platformId: any) {}
+
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('courseId');
+      if (id) {
+        this.courseId = +id;
+        this.loadAnnouncements(this.courseId);
+      }
+    });
+  }
+
+  loadAnnouncements(courseId: number) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.announcements = [];
+      this.instructorName = 'Unknown Instructor';
+      return;
+    }
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+
+    this.http.get<any>(`http://localhost:8000/api/dashboard-instructor/exam-details`, { headers })
+      .subscribe({
+        next: res => {
+          if (res.success && Array.isArray(res.data)) {
+            this.announcements = res.data.filter((item: any) => item.course_id === courseId);
+
+            if (this.announcements.length > 0 && this.announcements[0].course?.instructor?.name) {
+              this.instructorName = this.announcements[0].course.instructor.name;
+            } else {
+              this.instructorName = 'Unknown Instructor';
+            }
+          } else {
+            this.announcements = [];
+            this.instructorName = 'Unknown Instructor';
+          }
+        },
+        error: err => {
+          console.error('Error loading announcements', err);
+          this.announcements = [];
+          this.instructorName = 'Unknown Instructor';
+        }
+      });
+  }
+
   openPopup() {
     this.showPopup = true;
     document.body.classList.add('modal-open');
   }
-  
+
   closePopup() {
-    console.log("Close button clicked");
     this.showPopup = false;
     document.body.classList.remove('modal-open');
   }
-  
+
   confirmAttendance() {
     this.showPopup = false;
     this.showSuccessPopup = true;
   }
-  
+
   closeSuccessPopup() {
     this.showSuccessPopup = false;
     document.body.classList.remove('modal-open');
   }
 
-
-
-
-
-
-  
-  showPopupp = false;
-  showSuccessPopupp = false;
-  
   openPopupp() {
     this.showPopupp = true;
     document.body.classList.add('modal-open');
   }
-  
+
   closePopupp() {
-    console.log("Close button clicked");
-    this.showPopup = false;
+    this.showPopupp = false;
     document.body.classList.remove('modal-open');
   }
-  
+
   confirmAttendancee() {
     this.showPopupp = false;
     this.showSuccessPopupp = true;
   }
-  
+
   closeSuccessPopupp() {
     this.showSuccessPopupp = false;
     document.body.classList.remove('modal-open');
   }
 
-  
+  examData: any; // or better type if known
+
 }

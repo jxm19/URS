@@ -133,9 +133,9 @@ export const routes: Routes = [
     },
 
     {
-        path: 'exam-details',
-        component:ExamDetailsComponent
-    },
+        path: 'exam-details/:courseId',
+        component: ExamDetailsComponent
+      },
 
     {
         path: 'upload-note',
