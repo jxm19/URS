@@ -27,11 +27,8 @@
 
             <!-- Upload and Search -->
             <div class="flex-container">
-              <a href="/upload"
-                 class="btn btn-outline-secondary"
-                 style="height: 35px; width: 120px; border-radius: 0.6rem; font-size: 0.9rem;">
-                + Upload file
-              </a>
+              <a [routerLink]="['/upload', course.id]" class="btn btn-outline-secondary">+ Upload file</a>
+
 
               <div class="search-box">
                 <span class="input-group-text">
@@ -169,3 +166,4 @@
 
   </div>
 </div>
+

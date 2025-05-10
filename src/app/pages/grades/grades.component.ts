@@ -2,11 +2,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InstructornavbarComponent } from '../../layout/instructornavbar/instructornavbar.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { RouterModule } from '@angular/router'; // ✅ Add this
+
 
 @Component({
   selector: 'app-grades',
   standalone: true,
-  imports: [CommonModule, InstructornavbarComponent],
+  imports: [CommonModule, InstructornavbarComponent, RouterModule],
   templateUrl: './grades.component.html',
   styleUrls: ['./grades.component.css']
 })
