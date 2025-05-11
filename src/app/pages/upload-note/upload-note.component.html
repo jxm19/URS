@@ -1,6 +1,6 @@
 <div class="sidebar">
-    <app-instructornavbar></app-instructornavbar>
-  </div>
+  <app-instructornavbar [instructorName]="instructorName"></app-instructornavbar>
+</div>
   
   <div class="main-content">
     <div class="custom-box">
@@ -78,3 +78,16 @@
   </div>
 </div>
   
+<!-- Popup Modal: Error Message -->
+<div class="custom-modal-overlay" *ngIf="showErrorPopup">
+  <div class="custom-modal">
+      <button class="close-btn left" (click)="closeErrorPopup()">
+          <img class="closePopup" src="./closepopup.png" alt="Close" style="width: 30px;">
+      </button>
+      <h3>Error: Missing Title or Notes</h3>
+      <p>Please fill out both the title and the notes before uploading.</p>
+      <div class="modal-buttons">
+          <button class="primary-btn" (click)="closeErrorPopup()">Close</button>
+      </div>
+  </div>
+</div>

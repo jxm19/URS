@@ -2,46 +2,30 @@
   <app-instructornavbar [instructorName]="instructorName"></app-instructornavbar>
 </div>
 
-<div class="main-content">
+<div class="main-content" style="font-family: 'Inter', sans-serif; font-size: 14px;">
   <div class="custom-box">
-    <h2>Announcements for Course ID: {{ courseId }}</h2>
-    <h4>Instructor: {{ instructorName }}</h4>
-
-    <div *ngIf="announcements.length > 0; else noAnnouncements">
-      <div *ngFor="let announcement of announcements" class="announcement-item">
-        <p>{{ announcement.announcement_text }}</p>
-        <small>Created at: {{ announcement.created_at | date:'medium' }}</small>
-      </div>
+    <div class="icon-text">
+      <img src="Icons/profile-add.png" alt="Icon" class="icon-img">
+      <span class="course-text">Exam Details</span>
     </div>
-
-    <ng-template #noAnnouncements>
-      <p>No announcements found for this course.</p>
-    </ng-template>
 
     <div class="custom-box1">
       <table class="table table-hover align-middle">
         <tbody>
-          <tr *ngFor="let exam of examData?.exams">
+          <tr *ngFor="let exam of exams">
+            <td><img src="Icons/i.png" class="avatar" alt="Avatar"></td>
+            <td>{{ exam.announcement_title }}</td>
+            <td>{{ exam.type || '' }}</td> <!-- fallback if 'type' not defined -->
+            <td>{{ exam.created_at | date: 'short' }}</td>
             <td>
-              <div class="avatar">
-                <img [src]="exam.avatar" alt="avatar">
-              </div>
-            </td>
-            <td>
-              <div class="name-email">{{ exam.name }}</div>
-              <div class="email">{{ exam.email }}</div>
-            </td>
-            <td>{{ exam.type }}</td>
-            <td>{{ exam.time }}</td>
-            <td>
-              <button class="btn" [routerLink]="['/courseann']">
-                <img [src]="exam.actions.search" alt="Search" />
+              <button class="btn" [routerLink]="['/courseann', exam.id]">
+                <img src="Icons/search-normal.png" alt="Search">
               </button>
-              <button class="icon-button" (click)="openPopupp()">
-                <img [src]="exam.actions.edit" alt="Edit" class="action-icon" />
+              <button class="icon-button" (click)="openEditPopup(exam)">
+                <img src="Icons/edit-2.png" alt="Edit" class="action-icon">
               </button>
-              <button class="icon-button" (click)="openPopup()">
-                <img src="./trash.png" alt="Delete Icon" class="action-icon" />
+              <button class="icon-button" (click)="openDeletePopup(exam)">
+                <img src="Icons/trash.png" alt="Delete Icon" class="action-icon">
               </button>
             </td>
           </tr>
@@ -49,69 +33,98 @@
       </table>
 
       <div class="d-flex justify-content-end mt-5 mb-3">
-        <a href="upload-note"
+        <button 
           class="btn text-white rounded-3 border-0"
-          style="width: 170px; height: 40px; background-color: #243c63; transition: all 0.3s ease;"
-          >
+          style="width: 170px; height: 40px; background-color: #243c63;"
+          (click)="goToUpload()"
+          (mouseover)="onButtonHover($event)"
+          (mouseout)="onButtonLeave($event)">
           Add New
-        </a>
+        </button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Popup Modal: Confirm Delete -->
-<div class="custom-modal-overlay" *ngIf="showPopup">
+<!-- Edit Confirmation Modal -->
+<div class="custom-modal-overlay" *ngIf="showEditPopup">
   <div class="custom-modal">
-    <button class="close-btn left" (click)="closePopup()">
-      <img class="closePopup" src="./closepopup.png" alt="Close" style="width: 30px" />
+    <button class="close-btn" (click)="closePopup()">
+      <img src="./closepopup.png" alt="Close" style="width: 30px;">
+    </button>
+    <h3>Confirm Your Edit</h3>
+    <p>Do You Want To Edit?</p>
+
+    
+
+
+<!-- Announcement Title Edit -->
+<div class="form-group">
+  <label for="announcementTitle">Announcement Title:</label>
+  <input
+    id="announcementTitle"
+    type="text"
+    [(ngModel)]="selectedExam.announcement_title"
+    class="form-control"
+    placeholder="Edit the announcement title here..."
+  />
+</div>
+
+ <!-- Announcement Text Edit -->
+ <div class="form-group">
+  <label for="announcementText">Announcement Text:</label>
+  <textarea
+    id="announcementText"
+    [(ngModel)]="selectedExam.announcement_text"
+    rows="5"
+    class="form-control"
+    placeholder="Edit the announcement text here..."
+  ></textarea>
+</div>
+
+
+
+<div class="modal-buttons">
+  <!-- Yes Button triggers confirmEdit() -->
+  <button class="primary-btn" (click)="confirmEdit()">Yes, I want to Edit</button>
+  <!-- Cancel Button just closes the modal -->
+  <button class="secondary-btn" (click)="closePopup()">Cancel</button>
+</div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="custom-modal-overlay" *ngIf="showDeletePopup">
+  <div class="custom-modal">
+    <button class="close-btn" (click)="closePopup()">
+      <img src="./closepopup.png" alt="Close" style="width: 30px;">
     </button>
     <h3>Confirm Your Delete</h3>
     <p>Do You Want To Delete?</p>
     <div class="modal-buttons">
-      <button class="primary-btn" (click)="confirmAttendance()">Yes, I want to Delete</button>
+      <button class="primary-btn" (click)="confirmDelete()">Yes, I want to Delete</button>
       <button class="secondary-btn" (click)="closePopup()">Cancel</button>
     </div>
   </div>
 </div>
 
-<!-- Popup Modal: Success Delete -->
-<div class="custom-modal-overlay" *ngIf="showSuccessPopup">
+<!-- Success Popups -->
+<div class="custom-modal-overlay" *ngIf="showEditSuccess">
   <div class="custom-modal">
-    <button class="close-btn left" (click)="closeSuccessPopup()">
-      <img class="closePopup" src="./closepopup.png" alt="Close" style="width: 30px" />
-    </button>
-    <h3>Delete successful!</h3>
-    <div style="margin-top: 15px;">
-      <img src="./success.png" alt="Success" style="width: 60px" />
-    </div>
-  </div>
-</div>
-
-<!-- Popup Modal: Confirm Edit -->
-<div class="custom-modal-overlay" *ngIf="showPopupp">
-  <div class="custom-modal">
-    <button class="close-btn left" (click)="closePopupp()">
-      <img class="closePopupp" src="./closepopup.png" alt="Close" style="width: 30px" />
-    </button>
-    <h3>Confirm Your Edit</h3>
-    <p>Do You Want To Edit?</p>
-    <div class="modal-buttons">
-      <button class="primary-btn" (click)="confirmAttendancee()">Yes, I want to Edit</button>
-      <button class="secondary-btn" (click)="closePopupp()">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<!-- Popup Modal: Success Edit -->
-<div class="custom-modal-overlay" *ngIf="showSuccessPopupp">
-  <div class="custom-modal">
-    <button class="close-btn left" (click)="closeSuccessPopupp()">
-      <img class="closePopupp" src="./closepopup.png" alt="Close" style="width: 30px" />
+    <button class="close-btn" (click)="closeSuccessPopup()">
+      <img src="./closepopup.png" alt="Close" style="width: 30px;">
     </button>
     <h3>Edit successful!</h3>
-    <div style="margin-top: 15px;">
-      <img src="./success.png" alt="Success" style="width: 60px" />
-    </div>
+    <img src="./success.png" alt="Success" style="width: 60px; margin-top: 15px;">
+  </div>
+</div>
+
+<div class="custom-modal-overlay" *ngIf="showDeleteSuccess">
+  <div class="custom-modal">
+    <button class="close-btn" (click)="closeSuccessPopup()">
+      <img src="./closepopup.png" alt="Close" style="width: 30px;">
+    </button>
+    <h3>Delete successful!</h3>
+    <img src="./success.png" alt="Success" style="width: 60px; margin-top: 15px;">
   </div>
 </div>

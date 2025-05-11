@@ -1,13 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { InstructornavbarComponent } from '../../layout/instructornavbar/instructornavbar.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
-import { Inject, PLATFORM_ID } from '@angular/core';
-
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { InstructornavbarComponent } from '../../layout/instructornavbar/instructornavbar.component';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-exam-details',
@@ -17,100 +13,145 @@ import { Inject, PLATFORM_ID } from '@angular/core';
   styleUrls: ['./exam-details.component.css']
 })
 export class ExamDetailsComponent implements OnInit {
-  courseId!: number;
   instructorName: string = '';
-  announcements: any[] = [];
 
-  showPopup = false;
-  showSuccessPopup = false;
-  showPopupp = false;
-  showSuccessPopupp = false;
+  exams: any[] = [];
+  selectedExam: any; // Add this property to hold selected exam if not already there
 
-  constructor(private route: ActivatedRoute, private http: HttpClient, @Inject(PLATFORM_ID) private platformId: any) {}
+
+  showDeletePopup = false;
+  showEditPopup = false;
+  showDeleteSuccess = false;
+  showEditSuccess = false;
+
+  courseId!: number;
+
+  constructor(
+    private route: Router,
+    private activatedRoute: ActivatedRoute,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      const id = params.get('courseId');
-      if (id) {
-        this.courseId = +id;
-        this.loadAnnouncements(this.courseId);
-      }
-    });
-  }
+    this.courseId = Number(this.activatedRoute.snapshot.paramMap.get('courseId'));
 
-  loadAnnouncements(courseId: number) {
     const token = localStorage.getItem('token');
-    if (!token) {
-      this.announcements = [];
-      this.instructorName = 'Unknown Instructor';
-      return;
-    }
+    if (!token) return;
+
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
 
-    this.http.get<any>(`http://localhost:8000/api/dashboard-instructor/exam-details`, { headers })
+    this.http
+      .get<any>('http://127.0.0.1:8008/api/dashboard-instructor/exam-details', { headers })
       .subscribe({
-        next: res => {
-          if (res.success && Array.isArray(res.data)) {
-            this.announcements = res.data.filter((item: any) => item.course_id === courseId);
+        next: (response) => {
+          const allExams = response?.data || [];
 
-            if (this.announcements.length > 0 && this.announcements[0].course?.instructor?.name) {
-              this.instructorName = this.announcements[0].course.instructor.name;
-            } else {
-              this.instructorName = 'Unknown Instructor';
-            }
+          // Filter to only exams of this course
+          this.exams = allExams.filter((exam: any) => exam.course_id === this.courseId);
+
+          this.exams.reverse();
+
+          if (this.exams.length > 0 && this.exams[0].course?.instructor?.name) {
+            this.instructorName = this.exams[0].course.instructor.name;
           } else {
-            this.announcements = [];
             this.instructorName = 'Unknown Instructor';
           }
         },
-        error: err => {
-          console.error('Error loading announcements', err);
-          this.announcements = [];
-          this.instructorName = 'Unknown Instructor';
-        }
+        error: (err) => console.error('Error fetching exams:', err)
       });
   }
 
-  openPopup() {
-    this.showPopup = true;
+  goToUpload() {
+    this.route.navigate(['/upload-note', this.courseId]);
+  }
+  
+
+  openEditPopup(exam: any) {
+    this.selectedExam = exam; // Set the selected exam to the one clicked
+    this.showEditPopup = true;
     document.body.classList.add('modal-open');
   }
+  
+
+  openDeletePopup(exam: any) {
+    this.selectedExam = exam; // ADD THIS LINE
+    this.showDeletePopup = true;
+    document.body.classList.add('modal-open');
+  }
+  
 
   closePopup() {
-    this.showPopup = false;
+    this.showEditPopup = false;
+    this.showDeletePopup = false;
     document.body.classList.remove('modal-open');
   }
 
-  confirmAttendance() {
-    this.showPopup = false;
-    this.showSuccessPopup = true;
+  confirmEdit() {
+    if (!this.selectedExam) return;
+  
+    const token = localStorage.getItem('token');
+    if (!token) return;
+  
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+  
+    const updatedExam = {
+      announcement_title: this.selectedExam.announcement_title,
+      announcement_text: this.selectedExam.announcement_text
+    };
+  
+    this.http
+      .put<any>(`http://127.0.0.1:8008/api/dashboard-instructor/exam-details/${this.selectedExam.id}`, updatedExam, { headers })
+      .subscribe({
+        next: (response) => {
+          console.log('Exam updated successfully:', response);
+          this.showEditSuccess = true;
+          this.closePopup();
+          this.ngOnInit();
+        },
+        error: (err) => {
+          console.error('Error updating exam:', err);
+        }
+      });
+  }
+  
+  
+  
+
+  confirmDelete() {
+    if (!this.selectedExam) return;
+  
+    const token = localStorage.getItem('token');
+    if (!token) return;
+  
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+  
+    this.http
+      .delete<any>(`http://127.0.0.1:8008/api/dashboard-instructor/exam-details/${this.selectedExam.id}`, { headers })
+      .subscribe({
+        next: (response) => {
+          console.log('Exam deleted successfully:', response);
+          this.showDeletePopup = false;
+          this.showDeleteSuccess = true;
+          this.ngOnInit(); // Refresh list
+        },
+        error: (err) => {
+          console.error('Error deleting exam:', err);
+        }
+      });
+  }
+  
+
+  onButtonHover(event: any) {
+    event.target.style.background = 'linear-gradient(53deg, #243c63 0%, #4b72b0 100%)';
+  }
+
+  onButtonLeave(event: any) {
+    event.target.style.background = '#243c63';
   }
 
   closeSuccessPopup() {
-    this.showSuccessPopup = false;
+    this.showEditSuccess = false;
+    this.showDeleteSuccess = false;
     document.body.classList.remove('modal-open');
   }
-
-  openPopupp() {
-    this.showPopupp = true;
-    document.body.classList.add('modal-open');
-  }
-
-  closePopupp() {
-    this.showPopupp = false;
-    document.body.classList.remove('modal-open');
-  }
-
-  confirmAttendancee() {
-    this.showPopupp = false;
-    this.showSuccessPopupp = true;
-  }
-
-  closeSuccessPopupp() {
-    this.showSuccessPopupp = false;
-    document.body.classList.remove('modal-open');
-  }
-
-  examData: any; // or better type if known
-
 }

@@ -138,7 +138,7 @@ export const routes: Routes = [
       },
 
     {
-        path: 'upload-note',
+        path: 'upload-note/:courseId',
         component:UploadNoteComponent
     },
 
@@ -148,7 +148,7 @@ export const routes: Routes = [
     },
 
     {
-        path: 'courseann',
+        path: 'courseann/:id',
         component:CourseannComponent
     },
 

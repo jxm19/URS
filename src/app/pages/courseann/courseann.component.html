@@ -1,26 +1,26 @@
 <div class="sidebar">
-    <app-instructornavbar></app-instructornavbar>
-  </div>
-  
-  <div class="main-content">
-    <div class="custom-box">
-      <img src="Icons/profile-add.png" alt="Icon" class="icon-img">
-      <span class="course-text">Exam Details</span>
-  
-      <div class="container mt-4" *ngFor="let announcement of announcements">
-        <div class="ann-content mb-4">
-          <div class="top-bar d-flex align-items-center mb-2">
-            <img src="Icons/i.png" alt="profile" width="30" height="30" class="me-2">
-            <span class="sender fw-bold">{{ announcement.sender }}</span>
-          </div>
-          <p class="mb-2 text-muted">{{ announcement.message }}</p>
-          <small class="dates text-muted fst-italic">
-            Date of addition : {{ announcement.createdAt }} &nbsp;
-            Date of last update : {{ announcement.updatedAt }}
-          </small>
+  <app-instructornavbar [instructorName]="instructorName"></app-instructornavbar>
+</div>
+
+<div class="main-content">
+  <div class="custom-box">
+    <img src="Icons/profile-add.png" alt="Icon" class="icon-img">
+    <span class="course-text">Exam Details</span>
+
+    <!-- Display exam announcement details -->
+    <div class="container mt-4" *ngIf="announcement">
+      <div class="ann-content mb-4">
+        <div class="top-bar d-flex align-items-center mb-2">
+          <img src="Icons/i.png" alt="profile" width="30" height="30" class="me-2">
+          <span class="sender fw-bold">Announcement Title: {{ announcement.announcement_title }}</span>
         </div>
+        <p class="mb-2 text-muted">{{ announcement.announcement_text }}</p>
+        <small class="dates text-muted fst-italic">
+          Created At: {{ announcement.created_at | date:'medium' }} &nbsp;
+          Updated At: {{ announcement.updated_at | date:'medium' }}
+        </small>
+        
       </div>
-      
     </div>
   </div>
-  
+</div>
