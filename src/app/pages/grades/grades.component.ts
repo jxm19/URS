@@ -170,19 +170,17 @@ export class GradesComponent implements OnInit {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-    
   
     const body: any = {
       final_grade: finalGrade,
       absenteeism: absenteeism
     };
   
-    this.http.delete<any>(`http://127.0.0.1:8008/api/dashboard-instructor/grades/${gradeId}`, { headers })
-    .subscribe({
+    this.http.put<any>(`http://127.0.0.1:8008/api/dashboard-instructor/grades/${gradeId}`, body, { headers })
+      .subscribe({
         next: (res) => {
           alert('Grade updated successfully!');
   
-          // Replace the updated grade in the course object
           const course = this.courses.find(c => c.id === courseId);
           if (course) {
             const index = course.grades.findIndex((g: any) => g.id === gradeId);
@@ -204,4 +202,5 @@ export class GradesComponent implements OnInit {
         }
       });
   }
+  
 }
