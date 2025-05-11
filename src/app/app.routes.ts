@@ -6,6 +6,8 @@ import { UploadErrorComponent } from './pages/upload-error/upload-error.componen
 import { GradesdetailsComponent } from './pages/gradesdetails/gradesdetails.component';
 import { ExamdetailsComponent } from './pages/examdetails/examdetails.component';
 import { ExamscheduleComponent } from './pages/examschedule/examschedule.component';
+import { InstructorExamScheduleComponent } from './pages/instructor-exam-schedule/instructor-exam-schedule.component';
+
 import { StudentnavbarComponent } from './layout/studentnavbar/studentnavbar.component';
 import { StudenthomeComponent } from './pages/studenthome/studenthome.component';
 import { InstructorhomeComponent } from './pages/instructorhome/instructorhome.component';
@@ -153,8 +155,8 @@ export const routes: Routes = [
     },
 
     {
-        path: 'exam-schedule',
-        component:ExamscheduleComponent
+        path: 'instructor-exam-schedule',
+        component:InstructorExamScheduleComponent
     },
 
     { path: 'grades', component: GradesComponent },
