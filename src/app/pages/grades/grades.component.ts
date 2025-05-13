@@ -35,7 +35,7 @@ export class GradesComponent implements OnInit {
     
   
     this.http
-      .get<any>('http://127.0.0.1:8008/api/dashboard-instructor/courses', { headers })
+      .get<any>('http://127.0.0.1:8001/api/dashboard-instructor/courses', { headers })
       .subscribe({
         next: (response) => {
           const instructor = response?.data;
@@ -54,7 +54,7 @@ export class GradesComponent implements OnInit {
 
   
   getGradesForCourse(courseId: number, headers: HttpHeaders): void {
-    this.http.get<any>(`http://127.0.0.1:8008/api/dashboard-instructor/courses/${courseId}/grades`, { headers })
+    this.http.get<any>(`http://127.0.0.1:8001/api/dashboard-instructor/courses/${courseId}/grades`, { headers })
     .subscribe({
         next: (res) => {
           const grades = res?.data?.grades || [];
@@ -92,7 +92,7 @@ export class GradesComponent implements OnInit {
     
   
     if (confirm('Are you sure you want to delete this grade?')) {
-      this.http.delete<any>(`http://127.0.0.1:8008/api/dashboard-instructor/grades/${gradeId}`, { headers })
+      this.http.delete<any>(`http://127.0.0.1:8001/api/dashboard-instructor/grades/${gradeId}`, { headers })
         .subscribe({
           next: () => {
             // Remove from the local grades array
@@ -176,7 +176,7 @@ export class GradesComponent implements OnInit {
       absenteeism: absenteeism
     };
   
-    this.http.put<any>(`http://127.0.0.1:8008/api/dashboard-instructor/grades/${gradeId}`, body, { headers })
+    this.http.put<any>(`http://127.0.0.1:8001/api/dashboard-instructor/grades/${gradeId}`, body, { headers })
       .subscribe({
         next: (res) => {
           alert('Grade updated successfully!');

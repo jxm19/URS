@@ -12,7 +12,7 @@
         <div>
         <a  class="nav-link text-white d-flex align-items-center py-2">
             <img src="./user.png" alt="user" width="30" height="30" class="me-3">
-            <span *ngIf="!isCollapsed">Username</span>
+            <span *ngIf="!isCollapsed">{{ secretaryName }}</span> <!-- Display the secretary name -->
         </a>
         </div>
     </div>
@@ -29,7 +29,7 @@
 
         <a href="uploadfiles" class="nav-link text-white d-flex align-items-center py-2">
             <img src="./direct-inbox.png" alt="resitmangement" width="30" height="30" class="me-3">
-            <span *ngIf="!isCollapsed">Upload Files</span>
+            <span *ngIf="!isCollapsed">Exam Schedule</span>
         </a>
 
     

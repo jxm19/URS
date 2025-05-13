@@ -31,7 +31,7 @@ export class AnnouncementsComponent implements OnInit {
       'Authorization': `Bearer ${token}`
     });
 
-    this.http.get<any>('http://127.0.0.1:8008/api/dashboard-instructor/courses', { headers })
+    this.http.get<any>('http://127.0.0.1:8001/api/dashboard-instructor/courses', { headers })
       .subscribe({
         next: (response) => {
           const instructor = response?.data;

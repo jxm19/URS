@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddFilesComponent } from './add-files.component';
+import { SecFileAddedComponent } from './sec-file-added.component';
 
-describe('AddFilesComponent', () => {
-  let component: AddFilesComponent;
-  let fixture: ComponentFixture<AddFilesComponent>;
+describe('SecFileAddedComponent', () => {
+  let component: SecFileAddedComponent;
+  let fixture: ComponentFixture<SecFileAddedComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddFilesComponent]
+      imports: [SecFileAddedComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AddFilesComponent);
+    fixture = TestBed.createComponent(SecFileAddedComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

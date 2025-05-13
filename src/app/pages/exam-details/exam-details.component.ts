@@ -41,7 +41,7 @@ export class ExamDetailsComponent implements OnInit {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
 
     this.http
-      .get<any>('http://127.0.0.1:8008/api/dashboard-instructor/exam-details', { headers })
+      .get<any>('http://127.0.0.1:8001/api/dashboard-instructor/exam-details', { headers })
       .subscribe({
         next: (response) => {
           const allExams = response?.data || [];
@@ -100,7 +100,7 @@ export class ExamDetailsComponent implements OnInit {
     };
   
     this.http
-      .put<any>(`http://127.0.0.1:8008/api/dashboard-instructor/exam-details/${this.selectedExam.id}`, updatedExam, { headers })
+      .put<any>(`http://127.0.0.1:8001/api/dashboard-instructor/exam-details/${this.selectedExam.id}`, updatedExam, { headers })
       .subscribe({
         next: (response) => {
           console.log('Exam updated successfully:', response);
@@ -126,7 +126,7 @@ export class ExamDetailsComponent implements OnInit {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
   
     this.http
-      .delete<any>(`http://127.0.0.1:8008/api/dashboard-instructor/exam-details/${this.selectedExam.id}`, { headers })
+      .delete<any>(`http://127.0.0.1:8001/api/dashboard-instructor/exam-details/${this.selectedExam.id}`, { headers })
       .subscribe({
         next: (response) => {
           console.log('Exam deleted successfully:', response);

@@ -43,13 +43,13 @@ export class LoginComponent {
     let redirectUrl = '';
 
     if (this.userType === 'student') {
-      apiUrl = 'http://127.0.0.1:8008/api/site-student/login';
+      apiUrl = 'http://127.0.0.1:8001/api/site-student/login';
       redirectUrl = '/studenthome';
     } else if (this.userType === 'instructor') {
-      apiUrl = 'http://127.0.0.1:8008/api/dashboard-instructor/login';
+      apiUrl = 'http://127.0.0.1:8001/api/dashboard-instructor/login';
       redirectUrl = '/instructorhome';
     } else if (this.userType === 'secretary') {
-      apiUrl = 'http://127.0.0.1:8008/api/dashboard-secretary/login';
+      apiUrl = 'http://127.0.0.1:8001/api/dashboard-secretary/login';
       redirectUrl = '/fchome';
     }
 
@@ -64,8 +64,13 @@ export class LoginComponent {
           this.errorMessage = 'The account type is not valid for this section';
           return;
         }
-
+    
+        // ✅ Save token and secretaryName (only if secretary)
         localStorage.setItem('token', response.token);
+        if (this.userType === 'secretary') {
+          localStorage.setItem('secretaryName', response.user.name);
+        }
+    
         this.router.navigate([redirectUrl]);
       },
       error: (error) => {
@@ -73,5 +78,7 @@ export class LoginComponent {
         this.errorMessage = error.error.message || 'Login failed';
       }
     });
+    
+
   }
 }

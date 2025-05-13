@@ -3,21 +3,20 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpEvent, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
-import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-upload',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './upload.component.html',
-  styleUrl: './upload.component.css'
+  templateUrl: './upload-sec.component.html',
+  styleUrl: './upload-sec.component.css'
 })
-export class UploadComponent implements OnInit {
+export class UploadSecComponent implements OnInit {
   file: File | null = null;
   progress = 0;
   uploadSuccess = false;
   uploadMessage = '';
-  courseId!: number;
+  examSchedules: any[] = [];
 
   constructor(
     private http: HttpClient,
@@ -25,15 +24,7 @@ export class UploadComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('courseId');
-    if (id) {
-      this.courseId = +id;
-      console.log('Course ID from URL:', this.courseId);
-    } else {
-      console.warn('No courseId found in URL');
-    }
-  }
+  ngOnInit(): void {}
 
   onDragOver(event: DragEvent) {
     event.preventDefault();
@@ -44,14 +35,11 @@ export class UploadComponent implements OnInit {
     const file = event.dataTransfer?.files[0];
     if (file) {
       this.file = file;
-      // لا تبدأ الرفع تلقائياً
     }
   }
 
   onFileSelected(event: any) {
     this.file = event.target.files[0];
-    console.log('Selected file:', this.file);
-    // لا تبدأ الرفع تلقائياً
   }
 
   startUpload() {
@@ -60,18 +48,12 @@ export class UploadComponent implements OnInit {
       return;
     }
 
-    if (this.courseId === undefined || this.courseId === null) {
-      this.uploadMessage = 'Course ID is missing. Please access this page correctly.';
-      return;
-    }
-
     this.uploadMessage = '';
     this.progress = 0;
     this.uploadSuccess = false;
 
     const formData = new FormData();
-    formData.append('grades_file', this.file);
-    formData.append('course_id', this.courseId.toString());
+    formData.append('file', this.file);
 
     const token = localStorage.getItem('token');
     if (!token) {
@@ -83,38 +65,55 @@ export class UploadComponent implements OnInit {
       'Authorization': `Bearer ${token}`
     });
 
-    this.http.post('http://localhost:8001/api/dashboard-instructor/import-grades', formData, {
+    this.http.post('http://localhost:8001/api/exam-schedules/import', formData, {
       headers,
       reportProgress: true,
       observe: 'events'
     }).subscribe({
       next: (event: HttpEvent<any>) => {
-        if (event.type === HttpEventType.UploadProgress) {
-          if (event.total) {
-            this.progress = Math.round((event.loaded / event.total) * 100);
-            console.log(`Uploaded ${event.loaded} of ${event.total} bytes (${this.progress}%)`);
-          } else {
-            this.progress = 0;
-            console.log(`Uploaded ${event.loaded} bytes (total size unknown)`);
-          }
+        if (event.type === HttpEventType.UploadProgress && event.total) {
+          this.progress = Math.round((event.loaded / event.total) * 100);
         } else if (event.type === HttpEventType.Response) {
           this.progress = 100;
-          this.uploadSuccess = true;
-          this.uploadMessage = 'Uploaded successfully';
-          
-  setTimeout(() => {
-    this.router.navigate(['/file-added'], { state: { uploadedFiles: [this.file?.name] } });
-  }, 700);
-}
+        
+          const response = event.body;
+        
+          if (response.status === 'success') {
+            this.uploadSuccess = true;
+            this.uploadMessage = response.message || 'File uploaded and data imported successfully.';
+            this.fetchExamSchedules();
+          } else {
+            this.uploadSuccess = false;
+            this.uploadMessage = response.message || 'Import failed.';
+        
+            if (response.details && Array.isArray(response.details)) {
+              this.uploadMessage += '\n' + response.details.join('\n');
+            }
+          }
+        }
+        
       },
       error: (err) => {
         console.error('Upload Error:', err);
-        if (err.error instanceof ProgressEvent) {
-          this.uploadMessage = 'File upload failed. Please try again.';
-        } else {
-          this.uploadMessage = err?.error?.message || err?.message || 'Upload failed due to a server error';
-        }
+        this.uploadMessage = err?.error?.message || 'Upload failed due to a server error';
         this.uploadSuccess = false;
+      }
+    });
+  }
+
+  fetchExamSchedules() {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    this.http.get<any>('http://localhost:8001/api/exam-schedules', { headers }).subscribe({
+      next: (res) => {
+        this.examSchedules = res.data;
+      },
+      error: (err) => {
+        console.error('Error fetching exam schedules:', err);
+        this.uploadMessage = 'File uploaded, but failed to fetch schedules.';
       }
     });
   }

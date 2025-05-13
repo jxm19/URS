@@ -38,7 +38,7 @@ export class InstructorExamScheduleComponent implements OnInit {
       Authorization: `Bearer ${token}`
     };
 
-    this.http.get<any>('http://localhost:8000/api/dashboard-instructor/instructor/exam-schedules', { headers })
+    this.http.get<any>('http://localhost:8001/api/dashboard-instructor/instructor/exam-schedules', { headers })
       .subscribe(
         (response) => {
           console.log('API response:', response);

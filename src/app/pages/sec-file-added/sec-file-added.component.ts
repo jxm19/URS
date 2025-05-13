@@ -3,18 +3,18 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { InstructornavbarComponent } from '../../layout/instructornavbar/instructornavbar.component';
 import * as XLSX from 'xlsx';
+import { FcnavbarComponent } from '../../layout/fcnavbar/fcnavbar.component';
 
 @Component({
   selector: 'app-file-added',
-  imports: [CommonModule, FormsModule, InstructornavbarComponent],
-  templateUrl: './file-added.component.html',
-  styleUrl: './file-added.component.css'
+  imports: [CommonModule, FormsModule, FcnavbarComponent],
+  templateUrl: './sec-file-added.component.html',
+  styleUrl: './sec-file-added.component.css'
 })
-export class FileAddedComponent implements OnInit {
+export class SecFileAddedComponent implements OnInit {
 
-  instructorName: string = '';
+  secretaryName: string = '';
   uploadedFiles: string[] = [];
   excelData: any[] = [];
   showExcelContent = false;
@@ -31,7 +31,7 @@ export class FileAddedComponent implements OnInit {
     const token = localStorage.getItem('token');
     if (!token) {
       console.warn('Token is missing.');
-      this.instructorName = 'Unknown Instructor';
+      this.secretaryName = 'Unknown sec';
       return;
     }
 
@@ -39,14 +39,14 @@ export class FileAddedComponent implements OnInit {
       'Authorization': `Bearer ${token}`
     });
 
-    this.http.get<any>('http://localhost:8001/api/dashboard-instructor/courses', { headers })
+    this.http.get<any>('http://localhost:8001/api/dashboard-secretary/login', { headers })
       .subscribe({
         next: (res) => {
-          this.instructorName = res?.data?.name || 'Unknown Instructor';
+          this.secretaryName = res?.data?.name || 'Unknown sec';
         },
         error: (err) => {
-          console.error('Error fetching instructor profile:', err);
-          this.instructorName = 'Unknown Instructor';
+          console.error('Error fetching sec profile:', err);
+          this.secretaryName = 'Unknown sec';
         }
       });
   }

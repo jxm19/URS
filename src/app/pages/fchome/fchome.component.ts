@@ -1,15 +1,18 @@
-import { Component } from '@angular/core';
-import { FcnavbarComponent } from '../../layout/fcnavbar/fcnavbar.component';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FcnavbarComponent } from '../../layout/fcnavbar/fcnavbar.component'; // ✅ Import the navbar component
 
 @Component({
   selector: 'app-fchome',
-  imports: [FcnavbarComponent, CommonModule],
+  standalone: true,
+  imports: [CommonModule, FcnavbarComponent], // ✅ Include it here
   templateUrl: './fchome.component.html',
-  styleUrl: './fchome.component.css',
-  standalone:true
-
+  styleUrls: ['./fchome.component.css']
 })
-export class FchomeComponent {
+export class FchomeComponent implements OnInit {
+  secretaryName: string = '';
 
+  ngOnInit(): void {
+    this.secretaryName = localStorage.getItem('secretaryName') || 'Unknown Secretary';
+  }
 }

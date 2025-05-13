@@ -12,7 +12,6 @@ import { StudentnavbarComponent } from './layout/studentnavbar/studentnavbar.com
 import { StudenthomeComponent } from './pages/studenthome/studenthome.component';
 import { InstructorhomeComponent } from './pages/instructorhome/instructorhome.component';
 import { FchomeComponent } from './pages/fchome/fchome.component';
-import { AddFilesComponent } from './pages/add-files/add-files.component';
 import { ResitexamsComponent } from './pages/resitexams/resitexams.component';
 import { AnnouncementsComponent } from './pages/announcements/announcements.component';
 import { CourseannComponent } from './pages/courseann/courseann.component';
@@ -25,6 +24,10 @@ import { ResitListComponent } from './pages/resit-list/resit-list.component';
 import { SectionsComponent } from './pages/sections/sections.component';
 import { UploadNoteComponent } from './pages/upload-note/upload-note.component';
 import { UploadComponent } from './pages/upload/upload.component';
+import { UploadSecComponent } from './pages/upload-sec/upload-sec.component';
+import { SecFileAddedComponent } from './pages/sec-file-added/sec-file-added.component';
+
+
 
 export const routes: Routes = [
 
@@ -32,6 +35,19 @@ export const routes: Routes = [
         path: 'studentnavbar',
         component: StudentnavbarComponent
     },
+
+    {
+        path: 'sec-file-added',
+        component: SecFileAddedComponent
+      },
+      
+
+
+    {
+        path: 'upload-sec',
+        component: UploadSecComponent
+    },
+
 
     {
         path: 'studenthome',
@@ -88,10 +104,7 @@ export const routes: Routes = [
         component: ExamscheduleComponent
     },
 
-    {
-        path: 'add-files',
-        component: AddFilesComponent
-    },
+   
 
 
     {
