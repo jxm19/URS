@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { NgClass, CommonModule } from '@angular/common'; 
+import { NgClass, CommonModule } from '@angular/common';
 import { FcnavbarComponent } from '../../layout/fcnavbar/fcnavbar.component';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-uploadfiles',
@@ -15,6 +15,7 @@ export class UploadfilesComponent implements OnInit {
   secretaryName: string = '';
   courses: {
     id: string;
+    courseId: string | null;
     courseCode: string;
     courseName: string;
     instructor: string;
@@ -27,7 +28,6 @@ export class UploadfilesComponent implements OnInit {
   courseToDelete: any = null;
   courseToEdit: any = null;
 
-  // Modal data for editing
   updatedDate: string = '';
   updatedTime: string = '';
   updatedClassroom: string = '';
@@ -56,11 +56,12 @@ export class UploadfilesComponent implements OnInit {
           if (response.success && Array.isArray(response.data)) {
             this.courses = response.data.map((schedule: any) => ({
               id: schedule.id,
+              courseId: schedule.course?.id ?? null,
               courseCode: schedule.course?.course_code ?? 'N/A',
               courseName: schedule.course?.course_name ?? 'N/A',
               instructor: schedule.course?.instructor?.name ?? 'N/A',
-              date: schedule.exam_date,
-              time: schedule.exam_time,
+              date: schedule.exam_date?.substring(0, 10),
+              time: schedule.exam_time?.substring(0, 5),
               classroom: schedule.classroom
             }));
           } else {
@@ -113,17 +114,10 @@ export class UploadfilesComponent implements OnInit {
   }
 
   openEditModal(course: any, index: number): void {
-    this.courseToEdit = { ...course };  // Copy the course object to avoid reference issues
-    console.log('Editing course:', this.courseToEdit);  // Debugging the course data
-    
-    // Prepopulate the modal fields with course data
+    this.courseToEdit = { ...course, index };
     this.updatedDate = this.courseToEdit.date;
     this.updatedTime = this.courseToEdit.time;
     this.updatedClassroom = this.courseToEdit.classroom;
-    
-    // Set the index if needed (not really necessary unless used elsewhere in the modal)
-    this.courseToEdit.index = index;  // Storing index if you want to track it for any reason
-  
     this.isEditModalVisible = true;
   }
 
@@ -133,35 +127,33 @@ export class UploadfilesComponent implements OnInit {
   }
 
   confirmEdit(): void {
-    if (!this.courseToEdit || !this.courseToEdit.course_id) {
-      console.error('Course data or course_id is missing.');
+    if (!this.courseToEdit || !this.courseToEdit.courseId) {
+      console.error('Course data or courseId is missing.');
       return;
     }
-  
-    const scheduleId = this.courseToEdit.id;  // Use the schedule ID
+
+    const scheduleId = this.courseToEdit.id;
     const token = localStorage.getItem('token');
     if (!token) {
       console.error('No token found. User is not authenticated.');
       return;
     }
-  
+
     const headers = {
       Authorization: `Bearer ${token}`
     };
-  
-    // Prepare the updated schedule object with course_id
+
     const updatedSchedule = {
-      course_id: this.courseToEdit.course_id,  // Ensure we get the correct course_id from courseToEdit
+      course_id: this.courseToEdit.courseId,
       exam_date: this.updatedDate,
       exam_time: this.updatedTime,
       classroom: this.updatedClassroom
     };
-  
+
     this.http.put<any>(`http://localhost:8001/api/exam-schedules/${scheduleId}`, updatedSchedule, { headers })
       .subscribe(
         (response) => {
           if (response.success) {
-            // Update the course in the courses list
             this.courses = this.courses.map((course, index) =>
               index === this.courseToEdit.index ? { ...course, ...updatedSchedule } : course
             );
@@ -176,6 +168,4 @@ export class UploadfilesComponent implements OnInit {
         }
       );
   }
-  
-  
 }

@@ -40,7 +40,7 @@
   
     <!-- Settings & Logout -->
     <div class="menu d-flex flex-column">
-        <a href="login" class="nav-link text-white d-flex align-items-center py-2">
+        <a (click)="logout()" class="nav-link text-white d-flex align-items-center py-2" style="cursor: pointer;">
             <img src="./logout.png" alt="Log Out" width="30" height="30" class="me-3">
             <span *ngIf="!isCollapsed">Quit</span>
         </a>

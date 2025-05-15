@@ -103,7 +103,7 @@ export class UploadComponent implements OnInit {
           this.uploadMessage = 'Uploaded successfully';
           
   setTimeout(() => {
-    this.router.navigate(['/file-added'], { state: { uploadedFiles: [this.file?.name] } });
+    this.router.navigate(['/grades'], { state: { uploadedFiles: [this.file?.name] } });
   }, 700);
 }
       },

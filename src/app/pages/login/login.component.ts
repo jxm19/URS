@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterModule, ActivatedRoute } from '@angular/router'; 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
@@ -8,15 +8,15 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true, 
-  imports: [RouterModule, FormsModule ,CommonModule],
+  imports: [RouterModule, FormsModule, CommonModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']  // ✅ Fixed typo here
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   email: string = '';
   password: string = '';
   errorMessage: string = '';
-  userType: string = ''; // user type from URL
+  userType: string = ''; // from URL param (student/instructor/secretary)
 
   constructor(
     private http: HttpClient, 
@@ -29,7 +29,7 @@ export class LoginComponent {
   }
 
   onSubmit(form: any) {
-    if (form.invalid) {
+    if (form.invalid || !this.email || !this.password) {
       this.errorMessage = 'All fields are required';
       return;
     }
@@ -42,43 +42,53 @@ export class LoginComponent {
     let apiUrl = '';
     let redirectUrl = '';
 
-    if (this.userType === 'student') {
-      apiUrl = 'http://127.0.0.1:8001/api/site-student/login';
-      redirectUrl = '/studenthome';
-    } else if (this.userType === 'instructor') {
-      apiUrl = 'http://127.0.0.1:8001/api/dashboard-instructor/login';
-      redirectUrl = '/instructorhome';
-    } else if (this.userType === 'secretary') {
-      apiUrl = 'http://127.0.0.1:8001/api/dashboard-secretary/login';
-      redirectUrl = '/fchome';
+    switch (this.userType) {
+      case 'student':
+        apiUrl = 'http://127.0.0.1:8001/api/site-student/login';
+        redirectUrl = '/studenthome';
+        break;
+      case 'instructor':
+        apiUrl = 'http://127.0.0.1:8001/api/dashboard-instructor/login';
+        redirectUrl = '/instructorhome';
+        break;
+      case 'secretary':
+        apiUrl = 'http://127.0.0.1:8001/api/dashboard-secretary/login';
+        redirectUrl = '/fchome';
+        break;
+      default:
+        this.errorMessage = 'Unknown user type';
+        return;
     }
 
     this.http.post<any>(apiUrl, payload).subscribe({
       next: (response) => {
-        // تحقق من نوع المستخدم بناءً على القيم المرسلة من الـ API
+        const user = response.user;
+
+        // 🚫 Role mismatch (user type check fails)
         if (
-          (this.userType === 'student' && response.user.is_student !== 1) ||
-          (this.userType === 'instructor' && response.user.is_instructor !== 1) ||
-          (this.userType === 'secretary' && response.user.is_secretary !== 1)
+          (this.userType === 'student' && user.is_student !== 1) ||
+          (this.userType === 'instructor' && user.is_instructor !== 1) ||
+          (this.userType === 'secretary' && user.is_secretary !== 1)
         ) {
           this.errorMessage = 'The account type is not valid for this section';
           return;
         }
-    
-        // ✅ Save token and secretaryName (only if secretary)
+
+        // ✅ Store token
         localStorage.setItem('token', response.token);
+
+        // ✅ If secretary, also store name
         if (this.userType === 'secretary') {
-          localStorage.setItem('secretaryName', response.user.name);
+          localStorage.setItem('secretaryName', user.name);
         }
-    
+
+        // ✅ Navigate
         this.router.navigate([redirectUrl]);
       },
       error: (error) => {
-        console.error(error);
-        this.errorMessage = error.error.message || 'Login failed';
+        console.error('Login failed:', error);
+        this.errorMessage = error.error?.message || 'Login failed. Please try again.';
       }
     });
-    
-
   }
 }

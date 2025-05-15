@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FcnavbarComponent } from '../../layout/fcnavbar/fcnavbar.component'; // ✅ Import the navbar component
+import { FcnavbarComponent } from '../../layout/fcnavbar/fcnavbar.component';
 
 @Component({
   selector: 'app-fchome',
   standalone: true,
-  imports: [CommonModule, FcnavbarComponent], // ✅ Include it here
+  imports: [CommonModule, FcnavbarComponent],
   templateUrl: './fchome.component.html',
   styleUrls: ['./fchome.component.css']
 })
