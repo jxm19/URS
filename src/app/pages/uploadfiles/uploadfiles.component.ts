@@ -1,6 +1,7 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FcnavbarComponent } from '../../layout/fcnavbar/fcnavbar.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-uploadfiles',
@@ -12,7 +13,15 @@ import { FcnavbarComponent } from '../../layout/fcnavbar/fcnavbar.component';
 })
 export class UploadfilesComponent {
 
+  SecretaryName: string = '';
 
+  constructor(private http: HttpClient) {
+  }
+
+  ngOnInit() {
+    this.SecretaryName = localStorage.getItem('SecretaryName') || '';
+  }
+  
   showPopup = false;
   showSuccessPopup = false;
   

@@ -35,20 +35,26 @@
       <div class="col-md-8 d-flex align-items-center justify-content-center right-section">
         <div class="w-75">
           
-            <div class="baton-container">
-                <div class="baton baton1">
-                  <img src="profile-circle.png" alt="Student Icon" class="icon"> 
-                  <span>Student Login</span>
-                </div>
-                <a href="instructorhome">
-                  <div class="baton baton2">
-                    <img src="user-cirlce-add.png" alt="Instructor Icon" class="icon"> 
-                    <span>Instructor Login</span>
-                  </div>
-                </a>
-                
-                <div class="baton baton3">
-                  <img src="bank.png" alt="Secretary Icon" class="icon"> 
-                  <span>Faculty Secretary Login</span>
-                </div>
+          <div class="baton-container">
+            <a [routerLink]="['/login', 'student']">
+              <div class="baton baton1">
+                <img src="profile-circle.png" alt="Student Icon" class="icon"> 
+                <span>Student Login</span>
               </div>
+            </a>
+          
+            <a [routerLink]="['/login', 'instructor']">
+              <div class="baton baton2">
+                <img src="user-cirlce-add.png" alt="Instructor Icon" class="icon"> 
+                <span>Instructor Login</span>
+              </div>
+            </a>
+          
+            <a [routerLink]="['/login', 'secretary']">
+              <div class="baton baton3">
+                <img src="bank.png" alt="Secretary Icon" class="icon"> 
+                <span>Faculty Secretary Login</span>
+              </div>
+            </a>
+          </div>
+          

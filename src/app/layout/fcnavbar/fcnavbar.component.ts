@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-fcnavbar',
@@ -10,6 +10,8 @@ import { Component } from '@angular/core';
 })
 export class FcnavbarComponent {
   isCollapsed = false; // Default state
+  @Input() SecretaryName: string = '';
+  
 
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed; // Toggle collapse state

@@ -1,0 +1,26 @@
+<div class="sidebar">
+    <app-studentnavbar [StudentName]="StudentName"></app-studentnavbar>
+  </div>
+  
+  <div class="main-content">
+    <div class="custom-box">
+      <img src="Icons/profile-add.png" alt="Icon" class="icon-img">
+      <span class="course-text">Exam Details</span>
+  
+      <div class="container mt-4" *ngFor="let announcement of announcements">
+        <div class="ann-content mb-4">
+          <div class="top-bar d-flex align-items-center mb-2">
+            <img src="Icons/i.png" alt="profile" width="30" height="30" class="me-2">
+            <span class="sender fw-bold">
+              {{ announcement.course?.instructor?.name }}
+            </span>
+          </div>
+          <p class="mb-2 text-muted">{{ announcement.announcement_text }}</p>
+          <small class="dates text-muted fst-italic">
+            Date of addition : {{ announcement.created_at }} &nbsp;
+            Date of last update : {{ announcement.updated_at }}
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>

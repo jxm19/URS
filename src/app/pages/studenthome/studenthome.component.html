@@ -1,298 +1,70 @@
-
 <div [class.blurred]="showPopup">
-    <div class="sidebar">
-        <app-studentnavbar></app-studentnavbar>
+  <div class="sidebar">
+    <app-studentnavbar [StudentName]="StudentName"></app-studentnavbar>
+  </div>
+  
+  <div class="main-content">
+    <div class="head">
+      <span class="page-title">Courses</span>
     </div>
-    
-    <div class="main-content">
-      <div class="head">
-        <span class="page-title">Courses</span>
-      </div>
-      <div class="general-container">
-        <!--Course-->
-        <div class="container mt-4">
-        <div class="row">
-          <div class="" *ngFor="let course of course0">
-            <div class="card h-100">
-              <div class="card-content-with-grade d-flex align-items-start mb-2">
-                <div class="course-info">
-                  <h3 class="fw-bold">{{ course.code }}</h3>
-                  <p class="mb-1">{{ course.title }}</p>
-                  <small class="course-instructor text-muted">
-                    <img src="./instructor-profile.png" width="25" height="25" >
-                    {{ course.instructor }}
-                  </small>
-                </div>
-                <div class="letter-grade d-flex align-items-center justify-content-center"
-                  [ngClass]="getGradeColor(course.grade)"
-                  style="width: 45px; height: 45px; font-weight: bold;"
-                >
-                  {{ course.grade }}
-                </div>
-              </div>
-      
-              <p class="attendance-status h-25 mt-3 mb-2">
-                Attendance Confirmation Status :
-                <span [ngClass]="getStatusColor(course.status)">
-                  {{ course.status }}
-                </span>
-              </p>
-      
-              <button
-                class="btn w-100"
-                [ngClass]="{
-                  'btn-dark': course.status !== 'Declined',
-                  'btn-secondary': course.status === 'Declined'
-                }"
-                [disabled]="course.status === 'Declined'"
-                (click)="openPopup()"
-               
-              >
-                Confirm Attendance
-              </button>
-            </div>
-          </div>
-        </div>
-        </div>
-       <!--Course-->
-       <div class="container mt-4">
-        <div class="row">
-          <div class="" *ngFor="let course of course1">
-            <div class="card h-100">
-              <div class="card-content-with-grade d-flex align-items-start mb-2">
-                <div class="course-info">
-                  <h3 class="fw-bold">{{ course.code }}</h3>
-                  <p class="mb-1">{{ course.title }}</p>
-                  <small class="course-instructor text-muted">
-                    <img src="./instructor-profile.png" width="20" height="20" >
-                    {{ course.instructor }}
-                  </small>
-                </div>
-                <div class="letter-grade d-flex align-items-center justify-content-center"
-                  [ngClass]="getGradeColor(course.grade)"
-                  style="width: 45px; height: 45px; font-weight: bold;"
-                >
-                  {{ course.grade }}
-                </div>
-              </div>
-      
-              <p class="attendance-status h-25 mt-3 mb-2">
-                Attendance Confirmation Status :
-                <span [ngClass]="getStatusColor(course.status)">
-                  {{ course.status }}
-                </span>
-              </p>
-      
-              <button
-                class="btn w-100"
-                [ngClass]="{
-                  'btn-dark': course.status !== 'Declined',
-                  'btn-secondary': course.status === 'Declined'
-                }"
-                [disabled]="course.status === 'Declined'"
-                (click)="openPopup()"
-               
-              >
-                Confirm Attendance
-              </button>
-            </div>
-          </div>
-        </div>
-        </div>
-
-      
-       <!--Course-->
-
-       <div class="container mt-4">
-        <div class="row">
-          <div class="" *ngFor="let course of course2">
-            <div class="card h-100">
-              <div class="card-content-with-grade d-flex align-items-start mb-2">
-                <div class="course-info">
-                  <h3 class="fw-bold">{{ course.code }}</h3>
-                  <p class="mb-1">{{ course.title }}</p>
-                  <small class="course-instructor text-muted">
-                    <img src="./instructor-profile.png" width="20" height="20" >
-                    {{ course.instructor }}
-                  </small>
-                </div>
-                <div class="letter-grade d-flex align-items-center justify-content-center"
-                  [ngClass]="getGradeColor(course.grade)"
-                  style="width: 45px; height: 45px; font-weight: bold;"
-                >
-                  {{ course.grade }}
-                </div>
-              </div>
-      
-              <p class="attendance-status h-25 mt-3 mb-2">
-                Attendance Confirmation Status :
-                <span [ngClass]="getStatusColor(course.status)">
-                  {{ course.status }}
-                </span>
-              </p>
-      
-              <button
-                class="btn w-100"
-                [ngClass]="{
-                  'btn-dark': course.status !== 'Declined',
-                  'btn-secondary': course.status === 'Declined'
-                }"
-                [disabled]="course.status === 'Declined'"
-                (click)="openPopup()"
-               
-              >
-                Confirm Attendance
-              </button>
-            </div>
-          </div>
-        </div>
-        </div>
-
-      
-        <!--Course-->
+    <div class="general-container">
+      <!-- كل كورس في container منفصل -->
+      <ng-container *ngFor="let course of courses">
         <div class="container mt-4">
           <div class="row">
-            <div class="" *ngFor="let course of course3">
+            <div class="col-12"> <!-- تغيير هنا لجعل الكورس يأخذ كامل العرض -->
               <div class="card h-100">
                 <div class="card-content-with-grade d-flex align-items-start mb-2">
                   <div class="course-info">
-                    <h3 class="fw-bold">{{ course.code }}</h3>
-                    <p class="mb-1">{{ course.title }}</p>
+                    <h3 class="fw-bold">{{ course.code || course.course_code }}</h3>
+                    <p class="mb-1">{{ course.title || course.course_name }}</p>
                     <small class="course-instructor text-muted">
-                      <img src="./instructor-profile.png" width="20" height="20" >
+                      <img src="./instructor-profile.png" width="20" height="20">
                       {{ course.instructor }}
                     </small>
                   </div>
                   <div class="letter-grade d-flex align-items-center justify-content-center"
-                    [ngClass]="getGradeColor(course.grade)"
-                    style="width: 45px; height: 45px; font-weight: bold;"
-                  >
-                    {{ course.grade }}
+                  [ngClass]="[getGradeColor(course.letter_grade), course.status !== 'Unconfirmed' ? 'no-animation' : '']"             
+                    style="width: 45px; height: 45px; font-weight: bold;">
+                    {{ course.letter_grade }}
                   </div>
                 </div>
         
                 <p class="attendance-status h-25 mt-3 mb-2">
-                  Attendance Confirmation Status :
+                  Attendance Confirmation Status:
                   <span [ngClass]="getStatusColor(course.status)">
                     {{ course.status }}
                   </span>
                 </p>
         
-                <button
-                  class="btn w-100"
-                  [ngClass]="{
-                    'btn-dark': course.status !== 'Declined',
-                    'btn-secondary': course.status === 'Declined'
-                  }"
-                  [disabled]="course.status === 'Declined'"
-                  (click)="openPopup()"
-                 
-                >
-                  Confirm Attendance
+                <button class="btn btn-dark w-100"
+                  *ngIf="course.status === 'Unconfirmed'"
+                  (click)="openPopup(course)">
+                   Confirm Attendance
                 </button>
-              </div>
-            </div>
-          </div>
-          </div>
 
-      
-        <!--Course-->
-        <div class="container mt-4">
-          <div class="row">
-            <div class="" *ngFor="let course of course4">
-              <div class="card h-100">
-                <div class="card-content-with-grade d-flex align-items-start mb-2">
-                  <div class="course-info">
-                    <h3 class="fw-bold">{{ course.code }}</h3>
-                    <p class="mb-1">{{ course.title }}</p>
-                    <small class="course-instructor text-muted">
-                      <img src="./instructor-profile.png" width="20" height="20" >
-                      {{ course.instructor }}
-                    </small>
-                  </div>
-                  <div class="letter-grade d-flex align-items-center justify-content-center"
-                    [ngClass]="getGradeColor(course.grade)"
-                    style="width: 45px; height: 45px; font-weight: bold;"
-                  >
-                    {{ course.grade }}
-                  </div>
-                </div>
-        
-                <p class="attendance-status h-25 mt-3 mb-2">
-                  Attendance Confirmation Status :
-                  <span [ngClass]="getStatusColor(course.status)">
-                    {{ course.status }}
-                  </span>
-                </p>
-        
-                <button
-                  class="btn w-100"
-                  [ngClass]="{
-                    'btn-dark': course.status !== 'Declined',
-                    'btn-secondary': course.status === 'Declined'
-                  }"
-                  [disabled]="course.status === 'Declined'"
-                  (click)="openPopup()"
-                 
-                >
-                  Confirm Attendance
-                </button>
+                <!-- إذا تم التأكيد -->
+                <button class="btn btn-success w-100"
+                   *ngIf="course.status === 'Confirmed'"
+                   (click)="viewExamSchedule(course)">
+                    View Exam Schedule
+                 </button>
+
+                  <button class="btn btn-secondary w-100"
+                    *ngIf="course.status === 'Declined'"
+                    disabled>
+                    Confirm Attendance
+                 </button>
               </div>
             </div>
           </div>
-          </div>
-      
-    
-         <!--Course-->
-         <div class="container mt-4">
-          <div class="row">
-            <div class="" *ngFor="let course of course1">
-              <div class="card h-100">
-                <div class="card-content-with-grade d-flex align-items-start mb-2">
-                  <div class="course-info">
-                    <h3 class="fw-bold">{{ course.code }}</h3>
-                    <p class="mb-1">{{ course.title }}</p>
-                    <small class="course-instructor text-muted">
-                      <img src="./instructor-profile.png" width="20" height="20" >
-                      {{ course.instructor }}
-                    </small>
-                  </div>
-                  <div class="letter-grade d-flex align-items-center justify-content-center"
-                    [ngClass]="getGradeColor(course.grade)"
-                    style="width: 45px; height: 45px; font-weight: bold;"
-                  >
-                    {{ course.grade }}
-                  </div>
-                </div>
-        
-                <p class="attendance-status h-25 mt-3 mb-2">
-                  Attendance Confirmation Status :
-                  <span [ngClass]="getStatusColor(course.status)">
-                    {{ course.status }}
-                  </span>
-                </p>
-        
-                <button
-                  class="btn w-100"
-                  [ngClass]="{
-                    'btn-dark': course.status !== 'Declined',
-                    'btn-secondary': course.status === 'Declined'
-                  }"
-                  [disabled]="course.status === 'Declined'"
-                  (click)="openPopup()"
-                 
-                >
-                  Confirm Attendance
-                </button>
-              </div>
-            </div>
-          </div>
-          </div>
-      
-      </div>
+        </div>
+      </ng-container>
     </div>
-    </div> 
-             <!--First Popup: Confirm Dialog -->
+  </div>
+</div>
+
+           <!--First Popup: Confirm Dialog -->
     <div class="custom-modal-overlay" *ngIf="showPopup">
       <div class="custom-modal">
         <button class="close-btn left" (click)="closePopup()">

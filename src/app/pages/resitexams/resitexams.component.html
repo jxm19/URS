@@ -1,67 +1,67 @@
 <div class="sidebar">
-    <app-studentnavbar></app-studentnavbar>
+  <app-studentnavbar [StudentName]="StudentName"></app-studentnavbar>
 </div>
-    <div class="main-content">
-        <div class="head d-flex align-items-center mb-3">
-          <img src="./task.png" alt="Grades" width="30" height="30" class="me-3">
-          <span class="page-title">Upcoming Exams</span>
-        </div>
-          <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Course Code</th>
-                    <th>Course Name</th>
-                    <th>Instructor</th>
-                    <th>Attendance Confirmation</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let course of courses">
-                    <td>{{ course.courseCode }}</td>
-                    <td>{{ course.courseName }}</td>
-                    <td>{{ course.instructor }}</td>
-                    <td class=confirmed >Confirmed</td>
-                    <td style="text-align: center;"> 
-                      <button class="trash " (click)="openPopup()">
-                        <img class="tabletrash" src="./redtrash.png" alt="Trash Icon" />
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <p class="ann-section">
-                Kindly check <a href="examschedule">Exam Schedule</a> Section for exam details.
-              </p>
-            </div>
-       </div>
-       <!-- Popup Modal: Confirm Dialog -->
+<div class="main-content">
+  <div class="head d-flex align-items-center mb-3">
+    <img src="./task.png" alt="Grades" width="30" height="30" class="me-3">
+    <span class="page-title">Upcoming Exams</span>
+  </div>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Course Code</th>
+          <th>Course Name</th>
+          <th>Instructor</th>
+          <th>Attendance Confirmation</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let course of courses">
+          <td>{{ course.course_code }}</td>
+          <td>{{ course.course_name }}</td>
+          <td>{{ course.instructor }}</td>
+          <td class="confirmed">Confirmed</td>
+          <td style="text-align: center;">
+            <!-- تمرير resit_exam_id عند الضغط على زر سلة المهملات -->
+            <button class="trash" (click)="openPopup(course.resit_exam_id)">
+              <img class="tabletrash" src="./redtrash.png" alt="Trash Icon" />
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="ann-section">
+      Kindly check <a href="examschedule">Exam Schedule</a> Section for exam details.
+    </p>
+  </div>
+</div>
+
+<!-- Popup Modal: Confirm Dialog -->
 <div class="custom-modal-overlay" *ngIf="showPopup">
   <div class="custom-modal">
-      <button class="close-btn left" (click)="closePopup()">
-          <img class="closePopup" src="./closepopup.png" alt="Close" style="width: 30px;">
-      </button>
-      <h3>Cancel Resit Exam Attendnace</h3>
-      <p>Are You sure you want to <br> cancel your exam attendance?</p>
-      <div class="modal-buttons">
-          <button class="primary-btn" (click)="confirmAttendance()">Yes</button>
-          <button class="secondary-btn" (click)="closePopup()">Cancel</button>
-      </div>
+    <button class="close-btn left" (click)="closePopup()">
+      <img class="closePopup" src="./closepopup.png" alt="Close" style="width: 30px;">
+    </button>
+    <h3>Cancel Resit Exam Attendance</h3>
+    <p>Are You sure you want to <br> cancel your exam attendance?</p>
+    <div class="modal-buttons">
+      <button class="primary-btn" (click)="confirmAttendance()">Yes</button>
+      <button class="secondary-btn" (click)="closePopup()">Cancel</button>
+    </div>
   </div>
 </div>
 
 <!-- Popup Modal: Success Message -->
 <div class="custom-modal-overlay" *ngIf="showSuccessPopup">
   <div class="custom-modal">
-      <button class="close-btn left" (click)="closeSuccessPopup()">
-          <img class="closePopup" src="./closepopup.png" alt="Close" style="width: 30px;">
-      </button>
-      <h3>Resit Exam Attendance <br> canceled successfully!</h3>
-      <div style="margin-top: 15px;">
-          <img src="./success.png" alt="Success" style="width: 60px;">
-      </div>
+    <button class="close-btn left" (click)="closeSuccessPopup()">
+      <img class="closePopup" src="./closepopup.png" alt="Close" style="width: 30px;">
+    </button>
+    <h3>Resit Exam Attendance <br> canceled successfully!</h3>
+    <div style="margin-top: 15px;">
+      <img src="./success.png" alt="Success" style="width: 60px;">
+    </div>
   </div>
 </div>
-
-       
