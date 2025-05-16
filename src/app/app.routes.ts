@@ -28,12 +28,15 @@ import { UploadSecComponent } from './pages/upload-sec/upload-sec.component';
 import { SecFileAddedComponent } from './pages/sec-file-added/sec-file-added.component';
 
 
+import { ExamdetailsScourseannComponent } from './pages/examdetails-scourseann/examdetails-scourseann.component';
+import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
 
     {
         path: 'studentnavbar',
-        component: StudentnavbarComponent
+        component: StudentnavbarComponent,
+        canActivate: [AuthGuard]
     },
 
     {
@@ -51,37 +54,44 @@ export const routes: Routes = [
 
     {
         path: 'studenthome',
-        component: StudenthomeComponent
+        component: StudenthomeComponent,
+        canActivate: [AuthGuard]
     },
 
     {
         path: 'instructorhome',
-        component: InstructorhomeComponent
+        component: InstructorhomeComponent,
+        canActivate: [AuthGuard]
     },
 
     {
         path: 'fchome',
-        component: FchomeComponent
+        component: FchomeComponent,
+        canActivate: [AuthGuard]
     },
     
     {
         path: 'resitexams',
-        component: ResitexamsComponent
+        component: ResitexamsComponent,
+        canActivate: [AuthGuard]
     },
 
     {
         path: 'gradesdetails',
-        component: GradesdetailsComponent
+        component: GradesdetailsComponent,
+        canActivate: [AuthGuard]
     },
     
     {
         path: 'uploadfiles',
-        component: UploadfilesComponent
+        component: UploadfilesComponent,
+        canActivate: [AuthGuard]
     },
 
     {
         path: 'delete-successful',
-        component: DeleteSuccessfulComponent
+        component: DeleteSuccessfulComponent,
+        canActivate: [AuthGuard]
     },
 
     {
@@ -91,25 +101,30 @@ export const routes: Routes = [
 
     {
         path: 'upload-error',
-        component: UploadErrorComponent
+        component: UploadErrorComponent,
+        canActivate: [AuthGuard]
     },
 
     {
         path: 'examdetails',
-        component: ExamdetailsComponent
+        component: ExamdetailsComponent,
+        canActivate: [AuthGuard]
     },
 
     {
         path: 'examschedule',
-        component: ExamscheduleComponent
+        component: ExamscheduleComponent,
+        canActivate: [AuthGuard]
     },
 
+   
    
 
 
     {
         path: 'instructorhome',
-        component: InstructorhomeComponent
+        component: InstructorhomeComponent,
+        canActivate: [AuthGuard]
     },
 
     {
@@ -119,32 +134,44 @@ export const routes: Routes = [
 
     {
         path: '',
+
         component: SectionsComponent
     },
 
+    {
+        path: 'sections',
+
+        component: SectionsComponent
+    },
 
     {
         path: 'Grades',
-        component: GradesComponent
+        component: GradesComponent,
+        canActivate: [AuthGuard]
     },
 
     {
         path: 'Grades-Form',
-        component:GradesFormComponent
+        component:GradesFormComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: 'resit-list',
-        component:ResitListComponent
+        component:ResitListComponent,
+        canActivate: [AuthGuard]
     },
 
     {
         path: 'upload/:courseId',
         component:UploadComponent
+
+        
     },
 
     {
         path: 'file-added',
-        component:FileAddedComponent
+        component:FileAddedComponent,
+        canActivate: [AuthGuard]
     },
 
     {
@@ -155,11 +182,13 @@ export const routes: Routes = [
     {
         path: 'upload-note/:courseId',
         component:UploadNoteComponent
+
     },
 
     {
         path: 'announcements',
-        component:AnnouncementsComponent
+        component:AnnouncementsComponent,
+        canActivate: [AuthGuard]
     },
 
     {
@@ -170,10 +199,27 @@ export const routes: Routes = [
     {
         path: 'instructor-exam-schedule',
         component:InstructorExamScheduleComponent
+
     },
 
-    { path: 'grades', component: GradesComponent },
+    {
+        path: 'examdetails-scourseann/:course_id',
+        component:ExamdetailsScourseannComponent,
+        canActivate: [AuthGuard]
+    },
 
-    { path: 'upload-note', component: UploadNoteComponent } 
+    {
+        path: 'exam-schedule',
+        component:ExamscheduleComponent,
+        canActivate: [AuthGuard]
+    },
+
+    { path: 'grades', component: GradesComponent,
+      canActivate: [AuthGuard]
+    },
+
+    { path: 'upload-note', component: UploadNoteComponent,
+     canActivate: [AuthGuard]
+    } 
 
 ];

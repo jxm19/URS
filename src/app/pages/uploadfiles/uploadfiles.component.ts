@@ -4,6 +4,7 @@ import { NgClass, CommonModule } from '@angular/common';
 import { FcnavbarComponent } from '../../layout/fcnavbar/fcnavbar.component';
 import { FormsModule } from '@angular/forms';
 
+
 @Component({
   selector: 'app-uploadfiles',
   standalone: true,
@@ -33,6 +34,8 @@ export class UploadfilesComponent implements OnInit {
   updatedClassroom: string = '';
 
   constructor(private http: HttpClient) {}
+
+
 
   ngOnInit(): void {
     this.secretaryName = localStorage.getItem('secretaryName') || 'Unknown Secretary';

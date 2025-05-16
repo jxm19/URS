@@ -82,6 +82,11 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('secretaryName', user.name);
         }
 
+        if (this.userType === 'student') {
+          localStorage.setItem('studentName', user.name); // ✅ أضف هذا السطر
+        }
+        
+
         // ✅ Navigate
         this.router.navigate([redirectUrl]);
       },
@@ -91,4 +96,4 @@ export class LoginComponent implements OnInit {
       }
     });
   }
-}
+}  

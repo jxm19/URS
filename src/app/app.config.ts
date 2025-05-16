@@ -11,4 +11,4 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch())  // تأكد من إضافة withFetch هنا
   ]
-};
+} ;

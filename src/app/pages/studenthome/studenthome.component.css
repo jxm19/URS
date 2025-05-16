@@ -63,6 +63,11 @@
     padding: 10px;
     animation: pulseText 1.2s ease-in-out infinite;
   }
+
+  .no-animation {
+    animation: none !important;
+  }
+  
   .course-instructor {
     display: flex;
     justify-content:center;
