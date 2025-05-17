@@ -39,7 +39,7 @@ export class SecFileAddedComponent implements OnInit {
       'Authorization': `Bearer ${token}`
     });
 
-    this.http.get<any>('http://localhost:8001/api/dashboard-secretary/login', { headers })
+    this.http.get<any>('http://localhost:8000/api/dashboard-secretary/login', { headers })
       .subscribe({
         next: (res) => {
           this.secretaryName = res?.data?.name || 'Unknown sec';

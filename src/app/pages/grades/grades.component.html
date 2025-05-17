@@ -54,7 +54,8 @@
                       <th>Course Code</th>
                       <th>Student ID</th> 
                       <th>Name</th>
-                      <th>Grade</th>
+                      <th>Final Grade</th>
+                      <th>Resit Grade</th>
                       <th>Grade Letter</th>
                       <th>Status</th>
                       <th>Actions</th>
@@ -69,10 +70,10 @@
                     </td>
                     <td>{{ j + 1 }}</td>
                     <td>{{ grade.course.course_code }}</td>
-
                     <td>{{ grade.student.id }}</td> 
                     <td>{{ grade.student.name }}</td>
                     <td>{{ grade.final_grade }}</td>
+                    <td>{{ grade.resit_exam_grade }}</td>
                     <td>{{ grade.letter_grade }}</td>
                     <td>{{ grade.status }}</td>
                     <td>
@@ -166,4 +167,3 @@
 
   </div>
 </div>
-

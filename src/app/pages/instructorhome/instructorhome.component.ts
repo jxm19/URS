@@ -28,7 +28,7 @@ export class InstructorhomeComponent implements OnInit {
     });
 
     this.http
-      .get<any>('http://127.0.0.1:8001/api/dashboard-instructor/courses', { headers })
+      .get<any>('http://127.0.0.1:8000/api/dashboard-instructor/courses', { headers })
       .subscribe({
         next: (response) => {
           const instructor = response?.data;

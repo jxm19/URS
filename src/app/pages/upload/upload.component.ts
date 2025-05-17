@@ -83,7 +83,7 @@ export class UploadComponent implements OnInit {
       'Authorization': `Bearer ${token}`
     });
 
-    this.http.post('http://localhost:8001/api/dashboard-instructor/import-grades', formData, {
+    this.http.post('http://localhost:8000/api/dashboard-instructor/import-grades', formData, {
       headers,
       reportProgress: true,
       observe: 'events'

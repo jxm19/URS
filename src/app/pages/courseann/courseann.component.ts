@@ -46,7 +46,7 @@ export class CourseannComponent implements OnInit {
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    this.http.get(`http://127.0.0.1:8001/api/dashboard-instructor/exam-details/${this.examId}`, { headers })
+    this.http.get(`http://127.0.0.1:8000/api/dashboard-instructor/exam-details/${this.examId}`, { headers })
       .subscribe({
         next: (data: any) => {
           this.announcement = data;

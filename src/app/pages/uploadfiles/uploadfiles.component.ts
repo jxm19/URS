@@ -53,7 +53,7 @@ export class UploadfilesComponent implements OnInit {
       Authorization: `Bearer ${token}`
     };
 
-    this.http.get<any>('http://localhost:8001/api/exam-schedules/', { headers })
+    this.http.get<any>('http://localhost:8000/api/exam-schedules/', { headers })
       .subscribe(
         (response) => {
           if (response.success && Array.isArray(response.data)) {
@@ -99,7 +99,7 @@ export class UploadfilesComponent implements OnInit {
       Authorization: `Bearer ${token}`
     };
 
-    this.http.delete<any>(`http://localhost:8001/api/exam-schedules/${scheduleId}`, { headers })
+    this.http.delete<any>(`http://localhost:8000/api/exam-schedules/${scheduleId}`, { headers })
       .subscribe(
         (response) => {
           if (response.success) {
@@ -153,7 +153,7 @@ export class UploadfilesComponent implements OnInit {
       classroom: this.updatedClassroom
     };
 
-    this.http.put<any>(`http://localhost:8001/api/exam-schedules/${scheduleId}`, updatedSchedule, { headers })
+    this.http.put<any>(`http://localhost:8000/api/exam-schedules/${scheduleId}`, updatedSchedule, { headers })
       .subscribe(
         (response) => {
           if (response.success) {

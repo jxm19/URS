@@ -39,7 +39,7 @@ export class FileAddedComponent implements OnInit {
       'Authorization': `Bearer ${token}`
     });
 
-    this.http.get<any>('http://localhost:8001/api/dashboard-instructor/courses', { headers })
+    this.http.get<any>('http://localhost:8000/api/dashboard-instructor/courses', { headers })
       .subscribe({
         next: (res) => {
           this.instructorName = res?.data?.name || 'Unknown Instructor';

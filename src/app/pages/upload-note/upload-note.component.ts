@@ -23,7 +23,7 @@ export class UploadNoteComponent implements OnInit {
   instructorName: string = 'Loading...';
   courses: any[] = [];
 
-  private coursesApiUrl = 'http://127.0.0.1:8001/api/dashboard-instructor/courses'; // Updated API URL
+  private coursesApiUrl = 'http://127.0.0.1:8000/api/dashboard-instructor/courses'; // Updated API URL
 
   constructor(
     private http: HttpClient,
@@ -102,7 +102,7 @@ export class UploadNoteComponent implements OnInit {
     };
 
     // Use your existing exam-details API for posting
-    this.http.post('http://127.0.0.1:8001/api/dashboard-instructor/exam-details', examDetailData, { headers }).subscribe({
+    this.http.post('http://127.0.0.1:8000/api/dashboard-instructor/exam-details', examDetailData, { headers }).subscribe({
       next: (response) => {
         console.log('Upload successful!', response);
         this.showPopup = false;

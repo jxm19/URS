@@ -44,15 +44,15 @@ export class LoginComponent implements OnInit {
 
     switch (this.userType) {
       case 'student':
-        apiUrl = 'http://127.0.0.1:8001/api/site-student/login';
+        apiUrl = 'http://127.0.0.1:8000/api/site-student/login';
         redirectUrl = '/studenthome';
         break;
       case 'instructor':
-        apiUrl = 'http://127.0.0.1:8001/api/dashboard-instructor/login';
+        apiUrl = 'http://127.0.0.1:8000/api/dashboard-instructor/login';
         redirectUrl = '/instructorhome';
         break;
       case 'secretary':
-        apiUrl = 'http://127.0.0.1:8001/api/dashboard-secretary/login';
+        apiUrl = 'http://127.0.0.1:8000/api/dashboard-secretary/login';
         redirectUrl = '/fchome';
         break;
       default:

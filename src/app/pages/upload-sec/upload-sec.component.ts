@@ -65,7 +65,7 @@ export class UploadSecComponent implements OnInit {
       'Authorization': `Bearer ${token}`
     });
 
-    this.http.post('http://localhost:8001/api/exam-schedules/import', formData, {
+    this.http.post('http://localhost:8000/api/exam-schedules/import', formData, {
       headers,
       reportProgress: true,
       observe: 'events'
@@ -107,7 +107,7 @@ export class UploadSecComponent implements OnInit {
       'Authorization': `Bearer ${token}`
     });
 
-    this.http.get<any>('http://localhost:8001/api/exam-schedules', { headers }).subscribe({
+    this.http.get<any>('http://localhost:8000/api/exam-schedules', { headers }).subscribe({
       next: (res) => {
         this.examSchedules = res.data;
       },

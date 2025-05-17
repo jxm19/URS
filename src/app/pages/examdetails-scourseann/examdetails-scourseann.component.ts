@@ -44,7 +44,7 @@ export class ExamdetailsScourseannComponent {
       });
 
       this.http.get<any>(
-        `http://127.0.0.1:8001/api/student/exam-details/${courseId}`,
+        `http://127.0.0.1:8000/api/student/exam-details/${courseId}`,
         { headers }
       ).subscribe({
         next: (res) => {

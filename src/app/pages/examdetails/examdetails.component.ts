@@ -36,7 +36,7 @@ export class ExamdetailsComponent implements OnInit {
       'Authorization': `Bearer ${token}`
     });
 
-    this.http.get<any>('http://127.0.0.1:8001/api/student/exam-details', { headers })
+    this.http.get<any>('http://127.0.0.1:8000/api/student/exam-details', { headers })
       .subscribe({
         next: (response) => {
           if (response.success && response.data) {
