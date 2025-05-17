@@ -13,16 +13,19 @@ class CourseController extends Controller
 {
     use ApiResponse;
 
-    public function index()
-    {
-        $instructor = Instructor::where('user_id', auth()->id())->with('courses')->first();
-    
-        if (!$instructor) {
-            return response()->json(['message' => 'instructor not found!'], 404);
-        }
-    
-        return $this->success($instructor);
+    // Controller Method to fetch courses for a specific instructor
+public function index()
+{
+    $userId = auth()->id();  // Get authenticated user's ID from the auth system
+    $instructor = Instructor::where('user_id', $userId)->with('courses')->first();
+
+    if (!$instructor) {
+        return response()->json(['message' => 'Instructor not found!'], 404);
     }
+
+    return $this->success($instructor);
+}
+
     
 
     public function show($id)

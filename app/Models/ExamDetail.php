@@ -12,6 +12,7 @@ class ExamDetail extends Model
     protected $fillable = [
         'course_id',
         'instructor_id',
+        'announcement_title',
         'announcement_text',
     ];
     public function course()

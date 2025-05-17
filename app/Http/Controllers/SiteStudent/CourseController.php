@@ -7,36 +7,48 @@ use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Student;
 use App\Traits\ApiResponse;
+use App\Models\ResitExam;
+
 
 class CourseController extends Controller
 {
     use ApiResponse;
 
     public function index()
-{
-    $student = Student::where('user_id', auth()->id())
-        ->with(['courses.instructor.user', 'grades'])  
-        ->first();
-
-    if (!$student) {
-        return response()->json(['message' => 'Student not found!'], 404);
+    {
+        $student = Student::where('user_id', auth()->id())
+            ->with(['courses.instructor.user', 'grades'])  
+            ->first();
+    
+        if (!$student) {
+            return response()->json(['message' => 'Student not found!'], 404);
+        }
+    
+        $coursesWithGrades = $student->courses->map(function ($course) use ($student) {
+            $grade = $student->grades->where('course_id', $course->id)->first();
+            $instructorName = $course->instructor?->user?->name ?? 'Unknown';  
+    
+            $isConfirmed = false;
+            if ($grade) {
+                $isConfirmed = ResitExam::where('student_id', $student->id)
+                    ->where('course_id', $course->id)
+                    ->where('grade_id', $grade->id)
+                    ->exists();
+            }
+    
+            return [
+                'student_name'  => $student->user->name,
+                'course_id'     => $course->id,
+                'course_name'   => $course->course_name,
+                'course_code'   => $course->course_code,
+                'letter_grade'  => $grade->letter_grade ?? null,
+                'instructor'    => $instructorName,  
+                'is_confirmed'  => $isConfirmed, 
+            ];
+        });
+        
+        return $this->success(['courses' => $coursesWithGrades]);
     }
-
-    $coursesWithGrades = $student->courses->map(function ($course) use ($student) {
-        $grade = $student->grades->where('course_id', $course->id)->first();
-        $instructorName = $course->instructor?->user?->name ?? 'Unknown';  
-
-        return [
-            'course_id'     => $course->id,
-            'course_name'   => $course->course_name,
-            'course_code'   => $course->course_code,
-            'letter_grade'  => $grade->letter_grade ?? null,
-            'instructor'    => $instructorName,  
-        ];
-    });
-
-    return $this->success(['courses' => $coursesWithGrades]);
-}
 
 
 public function show($id)

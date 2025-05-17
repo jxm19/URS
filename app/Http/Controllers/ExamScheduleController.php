@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -6,6 +7,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ExamScheduleImport;
 use App\Models\ExamSchedule;
 use Exception;
+use Illuminate\Support\Facades\Auth; // <-- Move this line here
 
 class ExamScheduleController extends Controller
 {
@@ -29,7 +31,7 @@ class ExamScheduleController extends Controller
                     'details' => $errors,
                 ]);
             }
-            
+
             // Return success response
             return response()->json([
                 'message' => 'File imported successfully!',
@@ -122,4 +124,98 @@ class ExamScheduleController extends Controller
             'message' => 'File imported successfully!',
         ]);
     }
+
+    public function instructorExamSchedules()
+    {
+        try {
+            $user = Auth::user();
+
+            // Assuming 'user_id' is stored in 'instructors' table and matched with logged-in user
+            $schedules = ExamSchedule::whereHas('course.instructor', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->with(['course.instructor'])->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $schedules
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve instructor exam schedules.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function destroy($id)
+{
+    try {
+        // Find the exam schedule by ID
+        $schedule = ExamSchedule::find($id);
+
+        if (!$schedule) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Exam schedule not found'
+            ], 404); // Return a 404 if not found
+        }
+
+        // Delete the schedule
+        $schedule->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Exam schedule deleted successfully'
+        ], 200); // Return success response
+    } catch (Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to delete exam schedule.',
+            'error' => $e->getMessage(),
+        ], 500); // Return error response
+    }
+}
+
+public function update(Request $request, $id)
+{
+    try {
+        // Validate the input fields
+        $validated = $request->validate([
+            'exam_date' => 'required|date', // Correct the field name here
+            'exam_time' => 'required|string', 
+            'classroom' => 'required|string', 
+            'course_id' => 'required|exists:courses,id',
+        ]);
+
+        // Find the schedule
+        $schedule = ExamSchedule::find($id);
+
+        if (!$schedule) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Exam schedule not found'
+            ], 404);
+        }
+
+        // Update the schedule fields
+        $schedule->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Exam schedule updated successfully',
+            'data' => $schedule
+        ], 200);
+
+    } catch (Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to update exam schedule.',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
+
+
+
 }

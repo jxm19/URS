@@ -79,8 +79,10 @@ class ResitExamController extends Controller
         $data = $resitExams->map(function ($exam) {
             return [
                 'resit_exam_id' => $exam->id,
+                'course_id' => $exam->course_id,
                 'course_code' => $exam->course->course_code,
                 'course_name' => $exam->course->course_name,
+                'instructor' => $exam->course->instructor?->user?->name ?? 'Unknown',
                 'status' => 'confirmed',
             ];
         });

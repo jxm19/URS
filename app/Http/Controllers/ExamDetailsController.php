@@ -16,6 +16,7 @@ class ExamDetailsController extends Controller
     {
         $request->validate([
             'course_id' => 'required|exists:courses,id', // Make sure course exists
+            'announcement_title' => 'required|string|max:255',
             'announcement_text' => 'required|string|max:1000',
         ]);
 
@@ -60,6 +61,7 @@ if (!$course->instructor->is($instructor)) {
         $examDetail = new ExamDetail();
         $examDetail->course_id = $request->course_id;
         $examDetail->instructor_id = Auth::id();  // Get the authenticated instructor ID
+        $examDetail->announcement_title = $request->announcement_title;
         $examDetail->announcement_text = $request->announcement_text;
         $examDetail->save();
 
@@ -117,23 +119,20 @@ if (!$course->instructor->is($instructor)) {
 
 
 
-     // Show a specific exam detail
-     public function show($id)
-     {
-         $examDetail = ExamDetail::find($id);
- 
-         if (!$examDetail) {
-             return response()->json(['message' => 'Exam detail not found.'], 404);
-         }
- 
-         return response()->json($examDetail);
-     }
+public function show($id)
+{
+    $examDetail = ExamDetail::with('course.instructor')->find($id);
+
+    if (!$examDetail) {
+        return response()->json(['message' => 'Exam detail not found.'], 404);
+    }
+
+    return response()->json($examDetail);
+}
 
 
-     
      public function update(Request $request, $id)
 {
-
     $examDetail = ExamDetail::find($id);
 
     if (!$examDetail) {
@@ -146,14 +145,17 @@ if (!$course->instructor->is($instructor)) {
     }
 
     $request->validate([
+        'announcement_title' => 'required|string|max:255',
         'announcement_text' => 'required|string|max:1000',
     ]);
 
+    $examDetail->announcement_title = $request->input('announcement_title');
     $examDetail->announcement_text = $request->input('announcement_text');
     $examDetail->save();
 
     return response()->json(['message' => 'Exam detail updated successfully!']);
 }
+
 
      
      // Delete an exam detail

@@ -23,11 +23,7 @@ class GradeController extends Controller
             'student_id' => 'required|exists:students,id',
             'course_id' => 'required|exists:courses,id',
             'final_grade' => 'required|numeric|min:0|max:100',
-<<<<<<< Updated upstream
             'absenteeism' => 'nullable|integer|min:0',
-=======
-            'attended' => 'nullable|boolean' // Optional attendance field
->>>>>>> Stashed changes
         ]);
     
         if ($validate->fails()) {
@@ -55,25 +51,13 @@ class GradeController extends Controller
         if ($existingGrade) {
             return response()->json(['error' => 'Grade already exists for this student in this course.'], 409);
         }
-
-        $attended = filter_var($request->attended, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-        $attended = $attended === null ? true : !$attended; // Default to true if no valid value is provided
-        
-
-    // ✅ Create the Grade record
-    $grade = new Grade([
-        'student_id' => $request->student_id,
-        'course_id' => $request->course_id,
-        'final_grade' => $request->final_grade,
-        'status' => ($attended === false) ? 'Disqualified' : 'Active',
-        'attended' => $attended
-    ]);
-    $grade->calculateGrade();
-    $grade->save();
+    
+        $grade = new Grade($request->all());
+        $grade->calculateGrade(); 
+        $grade->save();
     
         return $this->success(['message' => 'Grade added successfully!', 'grade' => $grade], 201);
     }
-<<<<<<< Updated upstream
     
         public function update(Request $request, $id)
     {
@@ -81,73 +65,40 @@ class GradeController extends Controller
             'final_grade' => 'required|numeric|min:0|max:100',
             'absenteeism' => 'nullable|integer|min:0'
         ]);
-=======
-    //////////////////
-    //////////////////
->>>>>>> Stashed changes
 
-    public function update(Request $request, $id)
-    {
-        // Validate the input
-        $validate = Validator::make($request->all(), [
-            'attended' => 'nullable|boolean', // Optional attendance field
-            'final_grade' => 'nullable|numeric|min:0|max:100' // Optional final grade field
-        ]);
-    
         if ($validate->fails()) {
             return response()->json(['errors' => $validate->errors()], 422);
         }
-    
-        // Find the grade entry by ID
-        $grade = Grade::find($id);
-        if (!$grade) {
-            return response()->json(['error' => 'Grade not found!'], 404);
-        }
-    
-        // Get the instructor and validate if the instructor is associated with the course
+
         $instructor = Instructor::where('user_id', auth()->id())->first();
+
         if (!$instructor) {
             return response()->json(['error' => 'Instructor not found!'], 404);
         }
-    
+
+        $grade = Grade::find($id);
+
+        if (!$grade) {
+            return response()->json(['error' => 'Grade not found.'], 404);
+        }
+
         $course = $instructor->courses->where('id', $grade->course_id)->first();
+
         if (!$course) {
             return response()->json(['error' => 'You are not authorized to update grades for this course.'], 403);
         }
-<<<<<<< Updated upstream
 
         $grade->final_grade = $request->final_grade;
         $grade->absenteeism = $request->absenteeism;
-        $grade->calculateGrade();  
-=======
-    
-        // Update grade with new values from the request
-        if ($request->has('final_grade')) {
-            $grade->final_grade = $request->final_grade;
-        }
-    
-        // If 'attended' is present, update it, otherwise don't change it
-        if ($request->has('attended')) {
-            $attended = filter_var($request->attended, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-            
-            // Only update 'attended' if the request actually contains it
-            if ($attended !== null) {
-                $grade->attended = $attended;
-            }
-        }
-    
-        // Recalculate the grade status and letter grade
-        $grade->calculateGrade();
-    
-        // Save the updated grade
->>>>>>> Stashed changes
+        // $grade->calculateGrade();  
         $grade->save();
-    
-        // Return success response
+
+        $grade->load(['student:id,student_id,name', 'course:id,course_name,course_code']);
+        
         return response()->json([
+            'error' => false,
             'message' => 'Grade updated successfully!',
             'data' => [
-<<<<<<< Updated upstream
                 'student_db_id' => $grade->student_id,
                 'student_code'  => $grade->student->student_id,
                 'student_name'  => $grade->student->name,
@@ -157,21 +108,10 @@ class GradeController extends Controller
                 'letter_grade'  => $grade->letter_grade,
                 'absenteeism'   => $grade->absenteeism,
                 'status'        => $grade->status,
-=======
-                'student_id' => $grade->student_id,
-                'course_id' => $grade->course_id,
-                'final_grade' => $grade->final_grade,
-                'letter_grade' => $grade->letter_grade,
-                'status' => $grade->status,
-                'attended' => $grade->attended,
->>>>>>> Stashed changes
             ]
-        ], 200);
+        ]);
+        
     }
-    
-
-    //////////////////////
-    /////////////////////
 
     public function show($id)
     {
