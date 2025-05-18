@@ -15,7 +15,6 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class GradesImport implements ToModel, WithHeadingRow
 {
-    
     protected $courseId;
     protected $instructorId;
 
@@ -28,7 +27,7 @@ class GradesImport implements ToModel, WithHeadingRow
     public function model(array $row)
 {
     $validator = Validator::make($row, [
-        'student_id' => 'required|integer|exists:students,id',
+        'student_id' => ['required', 'digits:9', 'exists:students,student_id'],
         'final_grade' => 'required|numeric|min:0|max:100',
         'absenteeism' => 'nullable|integer|min:0',
         'letter_grade' => 'required|string',
@@ -39,14 +38,7 @@ class GradesImport implements ToModel, WithHeadingRow
         throw ValidationException::withMessages($validator->errors()->toArray());
     }
 
-    $studentId = $row['student_id'];
-    $finalGrade = $row['final_grade'];
-    $absenteeism = $row['absenteeism'] ?? 0;
-    $letterGrade = strtoupper(trim($row['letter_grade'])); 
-    $resitExamGrade = $row['resit_exam_grade'] ?? null;
-
-
-    $student = Student::find($studentId);
+    $student = Student::where('student_id', $row['student_id'])->first();
     if (!$student || !$student->courses->contains($this->courseId)) {
         throw ValidationException::withMessages(['student_id' => 'Student is not enrolled in this course.']);
     }
@@ -56,53 +48,51 @@ class GradesImport implements ToModel, WithHeadingRow
         throw ValidationException::withMessages(['instructor_id' => 'Instructor does not teach this course.']);
     }
 
-
+    $letterGrade = strtoupper(trim($row['letter_grade']));
     $validLetterGrades = ['AA', 'BA', 'BB', 'CB', 'CC', 'DC', 'DD', 'FD', 'FF', 'DZ'];
     if (!in_array($letterGrade, $validLetterGrades)) {
         throw ValidationException::withMessages(['letter_grade' => 'Invalid letter grade value.']);
     }
 
+    $finalGrade = $row['final_grade'];
+    $absenteeism = $row['absenteeism'] ?? 0;
+    $resitExamGrade = $row['resit_exam_grade'] ?? null;
     $status = in_array($letterGrade, ['FD', 'FF', 'DZ']) ? 'failed' : 'passed';
 
-    if ($resitExamGrade !== null) {
+    $existingGrade = Grade::where('student_id', $student->id)
+                          ->where('course_id', $this->courseId)
+                          ->first();
 
-        $resitExam = ResitExam::where('student_id', $studentId)
+    if ($existingGrade && is_null($resitExamGrade)) {
+        // Prevent overwriting existing final grades if no resit exam grade is being imported
+        throw ValidationException::withMessages([
+            'student_id' => 'Final grade already exists for this student in this course. Importing final grade again is not allowed unless updating with a resit exam grade.'
+        ]);
+    }
+
+    if (!is_null($resitExamGrade)) {
+        $resitExam = ResitExam::where('student_id', $student->id)
             ->where('course_id', $this->courseId)
             ->first();
 
         if (!$resitExam) {
-            throw ValidationException::withMessages(['resit_exam' => 'Student is not registered for resit exam for this course.']);
+            throw ValidationException::withMessages([
+                'resit_exam_grade' => 'Student is not registered for resit exam in this course.'
+            ]);
         }
-
-        $grade = Grade::updateOrCreate(
-            [
-                'student_id' => $studentId,
-                'course_id' => $this->courseId,
-            ],
-            [
-                'final_grade' => $finalGrade,
-                'absenteeism' => $absenteeism,
-                'letter_grade' => $letterGrade,
-                'status' => $status,
-                'resit_exam_grade' => $resitExamGrade, 
-            ]
-        );
-    } else {
-
-        $grade = Grade::updateOrCreate(
-            [
-                'student_id' => $studentId,
-                'course_id' => $this->courseId,
-            ],
-            [
-                'final_grade' => $finalGrade,
-                'absenteeism' => $absenteeism,
-                'letter_grade' => $letterGrade,
-                'status' => $status,
-            ]
-        );
     }
 
-    return $grade;
+    // Save or update the grade
+    return Grade::updateOrCreate(
+        ['student_id' => $student->id, 'course_id' => $this->courseId],
+        [
+            'final_grade' => $finalGrade,
+            'absenteeism' => $absenteeism,
+            'letter_grade' => $letterGrade,
+            'status' => $status,
+            'resit_exam_grade' => $resitExamGrade,
+        ]
+    );
 }
+
 }

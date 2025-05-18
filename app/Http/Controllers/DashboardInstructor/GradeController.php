@@ -59,60 +59,67 @@ class GradeController extends Controller
         return $this->success(['message' => 'Grade added successfully!', 'grade' => $grade], 201);
     }
     
-        public function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $validate = Validator::make($request->all(), [
-            'final_grade' => 'required|numeric|min:0|max:100',
-            'absenteeism' => 'nullable|integer|min:0'
+            'final_grade'       => 'required|numeric|min:0|max:100',
+            'absenteeism'       => 'nullable|integer|min:0',
+            'resit_exam_grade'  => 'nullable|numeric|min:0|max:100',
+            'letter_grade'      => 'required|string|max:2', // You can customize this rule further
         ]);
-
+    
         if ($validate->fails()) {
             return response()->json(['errors' => $validate->errors()], 422);
         }
-
+    
         $instructor = Instructor::where('user_id', auth()->id())->first();
-
+    
         if (!$instructor) {
             return response()->json(['error' => 'Instructor not found!'], 404);
         }
-
+    
         $grade = Grade::find($id);
-
+    
         if (!$grade) {
             return response()->json(['error' => 'Grade not found.'], 404);
         }
-
+    
         $course = $instructor->courses->where('id', $grade->course_id)->first();
-
+    
         if (!$course) {
             return response()->json(['error' => 'You are not authorized to update grades for this course.'], 403);
         }
-
-        $grade->final_grade = $request->final_grade;
-        $grade->absenteeism = $request->absenteeism;
-        // $grade->calculateGrade();  
+    
+        $grade->final_grade       = $request->final_grade;
+        $grade->absenteeism = $request->absenteeism ?? 0;
+        $grade->resit_exam_grade  = $request->resit_exam_grade;
+        $grade->letter_grade      = $request->letter_grade;
+    
+        // Optional: Recalculate status based on grades if needed
+        // $grade->calculateStatus();
+    
         $grade->save();
-
+    
         $grade->load(['student:id,student_id,name', 'course:id,course_name,course_code']);
-        
+    
         return response()->json([
             'error' => false,
             'message' => 'Grade updated successfully!',
             'data' => [
-                'student_db_id' => $grade->student_id,
-                'student_code'  => $grade->student->student_id,
-                'student_name'  => $grade->student->name,
-                'course_name'   => $grade->course->course_name,
-                'course_code'   => $grade->course->course_code,
-                'final_grade'   => $grade->final_grade,
-                'letter_grade'  => $grade->letter_grade,
-                'absenteeism'   => $grade->absenteeism,
-                'status'        => $grade->status,
+                'student_db_id'     => $grade->student_id,
+                'student_code'      => $grade->student->student_id,
+                'student_name'      => $grade->student->name,
+                'course_name'       => $grade->course->course_name,
+                'course_code'       => $grade->course->course_code,
+                'final_grade'       => $grade->final_grade,
+                'resit_exam_grade'  => $grade->resit_exam_grade,
+                'letter_grade'      => $grade->letter_grade,
+                'absenteeism'       => $grade->absenteeism,
+                'status'            => $grade->status,
             ]
         ]);
-        
     }
-
+    
     public function show($id)
     {
         $instructor = Instructor::where('user_id', auth()->id())->first();
