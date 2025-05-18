@@ -151,14 +151,39 @@ export class GradesComponent implements OnInit {
 
   editGrade(grade: any): void {
     const updatedFinalGrade = prompt('Enter new final grade:', grade.final_grade);
-    const updatedAbsenteeism = prompt('Enter absenteeism (optional):', grade.absenteeism || '');
+    if (updatedFinalGrade === null) return;
   
-    if (updatedFinalGrade !== null) {
-      this.updateGrade(grade.id, +updatedFinalGrade, updatedAbsenteeism ? +updatedAbsenteeism : null, grade.course.id);
+    const updatedAbsenteeismInput = prompt('Enter absenteeism (optional):', grade.absenteeism ?? '');
+    const updatedResitGradeInput = prompt('Enter resit exam grade (optional):', grade.resit_exam_grade ?? '');
+    const updatedLetterGrade = prompt('Enter letter grade:', grade.letter_grade);
+    if (updatedLetterGrade === null || updatedLetterGrade.trim() === '') {
+      alert('Letter grade is required.');
+      return;
     }
+  
+    const updatedAbsenteeism = updatedAbsenteeismInput?.trim() === '' ? null : +updatedAbsenteeismInput!;
+    const updatedResitGrade = updatedResitGradeInput?.trim() === '' ? null : +updatedResitGradeInput!;
+  
+    this.updateGrade(
+      grade.id,
+      +updatedFinalGrade,
+      updatedAbsenteeism,
+      updatedResitGrade,
+      updatedLetterGrade.trim(),
+      grade.course.id
+    );
   }
   
-  updateGrade(gradeId: number, finalGrade: number, absenteeism: number | null, courseId: number): void {
+  
+  
+  updateGrade(
+    gradeId: number,
+    finalGrade: number,
+    absenteeism: number | null,
+    resitExamGrade: number | null,
+    letterGrade: string,
+    courseId: number
+  ): void {
     const token = localStorage.getItem('token');
     if (!token) {
       console.warn('Token is missing.');
@@ -166,11 +191,14 @@ export class GradesComponent implements OnInit {
     }
   
     const headers = new HttpHeaders({
-'Authorization': `Bearer ${token}`    });
+      'Authorization': `Bearer ${token}`
+    });
   
-    const body: any = {
+    const body = {
       final_grade: finalGrade,
-      absenteeism: absenteeism
+      absenteeism: absenteeism,
+      resit_exam_grade: resitExamGrade,
+      letter_grade: letterGrade
     };
   
     this.http.put<any>(`http://127.0.0.1:8000/api/dashboard-instructor/grades/${gradeId}`, body, { headers })
@@ -200,5 +228,6 @@ export class GradesComponent implements OnInit {
         }
       });
   }
+  
   
 }

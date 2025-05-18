@@ -40,7 +40,6 @@ export class ExamdetailsComponent implements OnInit {
       .subscribe({
         next: (response) => {
           if (response.success && response.data) {
-            // تحويل الكائن إلى مصفوفة
             this.courses = Object.values(response.data).map((item: any) => ({
               course: {
                 id: item.course.id,
