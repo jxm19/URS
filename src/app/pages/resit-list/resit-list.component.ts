@@ -8,19 +8,19 @@ import { InstructornavbarComponent } from '../../layout/instructornavbar/instruc
 @Component({
   selector: 'app-resit-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, RouterOutlet, InstructornavbarComponent],  
+  imports: [CommonModule, FormsModule, RouterLink, RouterOutlet, InstructornavbarComponent],
   templateUrl: './resit-list.component.html',
   styleUrls: ['./resit-list.component.css'],
 })
 export class ResitListComponent implements OnInit {
-  searchText = '';
+  searchTextMap: { [key: number]: string } = {};
   courseStudentsMap: any[] = [];
-  instructorName: string = ''; 
+  instructorName: string = '';
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.fetchInstructorName(); 
+    this.fetchInstructorName();
     this.fetchCoursesAndStudents();
   }
 
@@ -32,20 +32,18 @@ export class ResitListComponent implements OnInit {
     }
 
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     });
 
-    this.http
-      .get<any>('http://127.0.0.1:8000/api/dashboard-instructor/courses', { headers })
-      .subscribe({
-        next: (response) => {
-          const instructor = response?.data;
-          this.instructorName = instructor?.name || 'Unknown Instructor';
-        },
-        error: (err) => {
-          console.error('Error fetching instructor name:', err);
-        }
-      });
+    this.http.get<any>('http://127.0.0.1:8000/api/dashboard-instructor/courses', { headers }).subscribe({
+      next: (response) => {
+        const instructor = response?.data;
+        this.instructorName = instructor?.name || 'Unknown Instructor';
+      },
+      error: (err) => {
+        console.error('Error fetching instructor name:', err);
+      },
+    });
   }
 
   fetchCoursesAndStudents() {
@@ -54,52 +52,61 @@ export class ResitListComponent implements OnInit {
       console.warn('Token is missing.');
       return;
     }
-  
+
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     });
-  
-    this.http.get<any>('http://127.0.0.1:8000/api/dashboard-instructor/courses', { headers })
-      .subscribe({
-        next: (response) => {
-          const instructorCourses = response?.data?.courses || [];
-  
-          instructorCourses.forEach((course: any) => {
-            this.http.get<any>(`http://127.0.0.1:8000/api/dashboard-instructor/confirmed-students/${course.id}`, { headers })
-              .subscribe({
-                next: (res) => {
-                  this.courseStudentsMap.push({
-                    courseCode: res.course_code,
-                    courseName: res.course_name,
-                    students: res.students
-                  });
-                },
-                error: err => {
-                  console.warn(`No resit students for course ${course.id}`, err);
-                  this.courseStudentsMap.push({
-                    courseCode: course.course_code,
-                    courseName: course.course_name,
-                    students: [] // empty list means no confirmed students
-                  });
-                }
-                
-              });
-          });
-        },
-        error: err => {
-          console.error('Error fetching instructor courses:', err);
-        }
-      });
+
+    this.courseStudentsMap = []; // reset before loading
+
+    this.http.get<any>('http://127.0.0.1:8000/api/dashboard-instructor/courses', { headers }).subscribe({
+      next: (response) => {
+        const instructorCourses = response?.data?.courses || [];
+
+        instructorCourses.forEach((course: any, index: number) => {
+          // Initialize search text for each course index
+          this.searchTextMap[index] = '';
+
+          this.http
+            .get<any>(`http://127.0.0.1:8000/api/dashboard-instructor/confirmed-students/${course.id}`, { headers })
+            .subscribe({
+              next: (res) => {
+                this.courseStudentsMap.push({
+                  courseCode: res.course_code,
+                  courseName: res.course_name,
+                  students: res.students,
+                });
+              },
+              error: (err) => {
+                console.warn(`No resit students for course ${course.id}`, err);
+                this.courseStudentsMap.push({
+                  courseCode: course.course_code,
+                  courseName: course.course_name,
+                  students: [],
+                });
+              },
+            });
+        });
+      },
+      error: (err) => {
+        console.error('Error fetching instructor courses:', err);
+      },
+    });
   }
-  
 
-  filterStudents(students: any[]): any[] {
-    if (!this.searchText.trim()) return students;
+  onSearchInput(courseIndex: number): void {
+    // Optional: can be used for debugging or to trigger change detection explicitly
+  }
 
-    const term = this.searchText.toLowerCase();
-    return students.filter(s =>
-      s.student_name.toLowerCase().includes(term) ||
-      s.student_university_id.includes(this.searchText)
+  filterStudents(students: any[], courseIndex: number): any[] {
+    const searchText = this.searchTextMap[courseIndex] || '';
+    if (!searchText.trim()) return students;
+
+    const term = searchText.toLowerCase();
+    return students.filter(
+      (s) =>
+        s.student_name.toLowerCase().includes(term) ||
+        s.student_university_id.toString().includes(searchText)
     );
   }
 }
