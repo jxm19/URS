@@ -254,18 +254,25 @@ pageInfo.paginatedGrades = this.filteredGrades[courseId].slice(start, end);
   onSearchChange(courseId: number): void {
     const course = this.courses.find(c => c.id === courseId);
     if (!course || !course.grades) return;
-
-    const query = this.searchQuery.toLowerCase().trim();
-
-    this.filteredGrades[courseId] = course.grades.filter((grade: any) =>
-      grade.student.name?.toLowerCase().includes(query)
-    );
-
-    const totalPages = Math.ceil(this.filteredGrades[courseId].length / this.itemsPerPage);
+  
+    const query = this.searchQuery.trim().toLowerCase();
+  
+    if (!query) {
+      // If search is empty, show all grades
+      this.filteredGrades[courseId] = course.grades;
+    } else {
+      this.filteredGrades[courseId] = course.grades.filter((grade: any) => {
+        const studentName = (grade.student.name ?? '').toLowerCase();
+        const studentId = (grade.student.student_id ?? '').toString().toLowerCase();
+        return studentName.includes(query) || studentId.includes(query);
+      });
+    }
+  
+    // Reset to first page after search
     this.coursePages[courseId].currentPage = 1;
-    this.coursePages[courseId].totalPages = totalPages;
-    this.coursePages[courseId].paginatedGrades = this.filteredGrades[courseId].slice(0, this.itemsPerPage);
+    this.paginateCourse(courseId);
   }
+  
 
 
   cancelSelection(courseId: number): void {

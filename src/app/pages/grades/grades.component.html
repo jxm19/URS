@@ -33,13 +33,14 @@
                 <span class="input-group-text">
                     <img src="Icons\search-normal.png" alt="Search" />
                 </span>
-               <input
-  type="text"
-  class="form-control"
-  placeholder="Search by student name"
-  [(ngModel)]="searchQuery"
-  (input)="onSearchChange(course.id)"
-/>
+                <input
+                type="text"
+                class="form-control"
+                placeholder="Search by student name or ID"
+                [(ngModel)]="searchQuery"
+                (input)="onSearchChange(course.id)"
+              />
+              
 
             </div>
         </div>
