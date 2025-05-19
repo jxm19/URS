@@ -1,5 +1,4 @@
-
- table, td, th, tr, button, .name-email, .email, 
+table, td, th, tr, button, .name-email, .email, 
  .avatar {
   color: #808383;
 
@@ -68,10 +67,12 @@
   vertical-align: middle;
 }
 
-.avatar img {
-  width: 40px;
-  height: 40px;
+.avatar {
+  width: 40px !important;
+  height: 40px !important;
 }
+
+
 
 .name-email {
   font-weight: 400;
@@ -129,12 +130,13 @@
 .custom-modal strong {
   font-weight: bold;
 }
-
 .modal-buttons {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin-top: 20px; 
 }
+
 
 .primary-btn {
   background: linear-gradient(to bottom, #141E2D 40%, #152C4E 67%, #24487E 100%);
@@ -182,12 +184,10 @@
   cursor: pointer;
 }
 
-
-.icon-button{
-  background-color: #f9f9f9;
+.icon-button {
+  background-color: transparent;
   border: none;
-
+  padding: 1;
+  outline: none;
+  box-shadow: none;
 }
-
-
-

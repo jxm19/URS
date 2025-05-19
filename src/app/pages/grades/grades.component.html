@@ -1,3 +1,4 @@
+<!-- ✅ grades.component.html -->
 <div class="sidebar">
   <app-instructornavbar [instructorName]="instructorName"></app-instructornavbar>
 </div>
@@ -29,14 +30,15 @@
             <div class="flex-container">
               <a [routerLink]="['/upload', course.id]" class="btn btn-outline-secondary">+ Upload file</a>
 
-
               <div class="search-box">
                 <span class="input-group-text">
                   <img src="Icons/search-normal.png" alt="Search" />
                 </span>
                 <input type="text"
                        class="form-control"
-                       placeholder="Search Here" />
+                       placeholder="Search by Student ID"
+                       [(ngModel)]="searchTerms[course.id]"
+                       (input)="filterGrades(course.id)" />
               </div>
             </div>
 
@@ -47,12 +49,13 @@
                   <tr>
                       <th>
                           <div class="form-check custom-checkbox">
-                              <input class="form-check-input" type="checkbox" id="checkAll">
+                              <input class="form-check-input" type="checkbox"
+                                     (change)="toggleAllCheckboxes($event, course.id)" />
                           </div>
                       </th>
                       <th>#</th>
                       <th>Course Code</th>
-                      <th>Student ID</th> 
+                      <th>Student ID</th>
                       <th>Name</th>
                       <th>Final Grade</th>
                       <th>Resit Grade</th>
@@ -70,100 +73,28 @@
                     </td>
                     <td>{{ j + 1 }}</td>
                     <td>{{ grade.course.course_code ?? '--' }}</td>
-                    <td>{{ grade.student.student_id ?? '--' }}</td> 
-                    <td>{{ grade.student.name ?? '--' }}</td> 
+                    <td>{{ grade.student.student_id ?? '--' }}</td>
+                    <td>{{ grade.student.name ?? '--' }}</td>
                     <td>{{ grade.final_grade ?? '--' }}</td>
                     <td>{{ grade.resit_exam_grade ?? '--' }}</td>
                     <td>{{ grade.letter_grade ?? '--' }}</td>
                     <td>{{ grade.status ?? '--' }}</td>
                     <td>
-
                       <button class="btn btn-light btn-sm me-2" (click)="editGrade(grade)">
-                          <img src="Icons/edit.png" alt="Edit" style="width: 12px; height: 12px;" />
-                        </button>
-                        
-
-                      <button class="btn btn-light btn-sm"
-      (click)="deleteGrade(grade.id, course.id)">
-<img src="Icons/trash.png" alt="Delete" style="width: 12px; height: 12px;" />
-</button>
-
-
-
-
+                        <img src="Icons/edit-2.png" alt="Edit" style="width: 12px; height: 12px;" />
+                      </button>
+                      <button class="btn btn-light btn-sm" (click)="deleteGrade(grade.id, course.id)">
+                        <img src="Icons/trash.png" alt="Delete" style="width: 12px; height: 12px;" />
+                      </button>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
-            <!-- Pagination
-            <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center py-3 px-4">
-              <button class="btn btn-outline-secondary btn-sm"
-                      (click)="changePage(course.id, 'prev')"
-                      [disabled]="coursePages[course.id]?.currentPage === 1">
-                Previous
-              </button> -->
-
-              <!-- <nav>
-                <ul class="pagination pagination-sm mb-0">
-                  <li class="page-item"
-                      *ngFor="let page of [].constructor(coursePages[course.id]?.totalPages); let pageNum = index">
-                    <a class="page-link"
-                       href="#"
-                       (click)="goToPage(course.id, pageNum + 1)"
-                       [ngClass]="{'active': coursePages[course.id]?.currentPage === pageNum + 1}">
-                      {{ pageNum + 1 }}
-                    </a>
-                  </li>
-                </ul>
-              </nav> -->
-
-              <!-- <button class="btn btn-outline-secondary btn-sm"
-                      (click)="changePage(course.id, 'next')"
-                      [disabled]="coursePages[course.id]?.currentPage === coursePages[course.id]?.totalPages">
-                Next
-              </button>
-            </div> -->
-
-            <!-- Save/Cancel Buttons
-            <div class="d-flex justify-content-end mt-5 mb-3">
-              <button class="btn btn-outline-secondary me-2 rounded-3"
-                      style="width: 100px; height: 40px; border-color: #243c63; color: #243c63; background-color: transparent; transition: background-color 0.3s ease;"
-                      onmouseover="this.style.backgroundColor='#ececec'"
-                      onmouseout="this.style.backgroundColor='transparent'">
-                Cancel
-              </button> -->
-
-              <!-- <button class="btn text-white rounded-3 border-0"
-                      style="width: 170px; height: 40px; background-color: #243c63; transition: all 0.3s ease;"
-                      onmouseover="this.style.backgroundImage='linear-gradient(53deg, #243c63 0%, #4b72b0 100%)'"
-                      onmouseout="this.style.backgroundImage='none'">
-                Save Changes
-              </button>
-            </div> -->
-            <div class="d-flex justify-content-end mt-5 mb-3">
-              <!-- <button 
-                class="btn btn-outline-secondary me-2 rounded-3"
-                style="
-                  width: 100px;
-                  height: 40px;
-                  border-color: #243c63;
-                  color: #243c63;
-                  background-color: transparent;
-                  transition: background-color 0.3s ease;
-                "
-                onmouseover="this.style.backgroundColor='#ececec'"
-                onmouseout="this.style.backgroundColor='transparent'">
-                Cancel
-              </button> -->
-          </div> 
-
-
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </div>

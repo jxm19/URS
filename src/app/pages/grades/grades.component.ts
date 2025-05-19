@@ -1,14 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InstructornavbarComponent } from '../../layout/instructornavbar/instructornavbar.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { RouterModule } from '@angular/router'; // ✅ Add this
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-grades',
   standalone: true,
-  imports: [CommonModule, InstructornavbarComponent, RouterModule],
+  imports: [CommonModule, InstructornavbarComponent, RouterModule, FormsModule],
   templateUrl: './grades.component.html',
   styleUrls: ['./grades.component.css']
 })
@@ -17,8 +18,8 @@ export class GradesComponent implements OnInit {
   instructorName: string = '';
   coursePages: { [courseId: number]: { currentPage: number, totalPages: number, paginatedGrades: any[] } } = {};
   itemsPerPage: number = 10;
-
-  @ViewChild('checkAll') checkAll: any;  // Reference to "checkAll" checkbox
+  searchText: { [courseId: number]: string } = {};
+  selectAllChecked: { [courseId: number]: boolean } = {};  // For "select all" per course
 
   constructor(private http: HttpClient) {}
 
@@ -30,9 +31,9 @@ export class GradesComponent implements OnInit {
     }
   
     const headers = new HttpHeaders({
-'Authorization': `Bearer ${token}`    });
+      'Authorization': `Bearer ${token}`
+    });
     
-  
     this.http
       .get<any>('http://127.0.0.1:8000/api/dashboard-instructor/courses', { headers })
       .subscribe({
@@ -43,6 +44,8 @@ export class GradesComponent implements OnInit {
   
           for (let course of this.courses) {
             this.getGradesForCourse(course.id, headers);
+            this.searchText[course.id] = '';
+            this.selectAllChecked[course.id] = false;
           }
         },
         error: (err) => {
@@ -51,20 +54,20 @@ export class GradesComponent implements OnInit {
       });
   }
 
-  
   getGradesForCourse(courseId: number, headers: HttpHeaders): void {
     this.http.get<any>(`http://127.0.0.1:8000/api/dashboard-instructor/courses/${courseId}/grades`, { headers })
-    .subscribe({
+      .subscribe({
         next: (res) => {
-          const grades = res?.data?.grades || [];
+          let grades = res?.data?.grades || [];
+          grades = grades.map((g: any) => ({ ...g, checked: false }));
+
           const totalPages = Math.ceil(grades.length / this.itemsPerPage);
           this.coursePages[courseId] = {
             currentPage: 1,
             totalPages: totalPages,
             paginatedGrades: grades.slice(0, this.itemsPerPage)
           };
-  
-          // Save grades into the course object for easier access if needed
+
           const courseIndex = this.courses.findIndex(c => c.id === courseId);
           if (courseIndex !== -1) {
             this.courses[courseIndex].grades = grades;
@@ -75,8 +78,25 @@ export class GradesComponent implements OnInit {
         }
       });
   }
-  
 
+  filterGrades(courseId: number): void {
+    const course = this.courses.find(c => c.id === courseId);
+    if (!course || !course.grades) return;
+
+    const search = this.searchText[courseId]?.toLowerCase() || '';
+
+    const filteredGrades = course.grades.filter((grade: any) =>
+      grade.student.name.toLowerCase().includes(search) ||
+      grade.student.student_id.toLowerCase().includes(search)
+    );
+
+    this.coursePages[courseId].currentPage = 1;
+    this.coursePages[courseId].totalPages = Math.ceil(filteredGrades.length / this.itemsPerPage);
+    this.coursePages[courseId].paginatedGrades = filteredGrades.slice(0, this.itemsPerPage);
+
+    // Reset select all checkbox for filtered results
+    this.selectAllChecked[courseId] = false;
+  }
 
   deleteGrade(gradeId: number, courseId: number): void {
     const token = localStorage.getItem('token');
@@ -86,14 +106,13 @@ export class GradesComponent implements OnInit {
     }
   
     const headers = new HttpHeaders({
-'Authorization': `Bearer ${token}`    });
+      'Authorization': `Bearer ${token}`
+    });
     
-  
     if (confirm('Are you sure you want to delete this grade?')) {
       this.http.delete<any>(`http://127.0.0.1:8000/api/dashboard-instructor/grades/${gradeId}`, { headers })
         .subscribe({
           next: () => {
-            // Remove from the local grades array
             const courseIndex = this.courses.findIndex(c => c.id === courseId);
             if (courseIndex !== -1) {
               const gradeIndex = this.courses[courseIndex].grades.findIndex((g: any) => g.id === gradeId);
@@ -111,7 +130,6 @@ export class GradesComponent implements OnInit {
         });
     }
   }
-  
 
   changePage(courseId: number, direction: string): void {
     const pageInfo = this.coursePages[courseId];
@@ -136,17 +154,41 @@ export class GradesComponent implements OnInit {
     const pageInfo = this.coursePages[courseId];
     if (!course || !pageInfo) return;
 
+    const search = this.searchText[courseId]?.toLowerCase() || '';
+    let filteredGrades = course.grades;
+    if (search) {
+      filteredGrades = course.grades.filter((grade: any) =>
+        grade.student.name.toLowerCase().includes(search) ||
+        grade.student.student_id.toLowerCase().includes(search)
+      );
+    }
+
     const start = (pageInfo.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
-    pageInfo.paginatedGrades = course.grades.slice(start, end);
+    pageInfo.paginatedGrades = filteredGrades.slice(start, end);
+
+    // Update total pages according to filtered results
+    pageInfo.totalPages = Math.ceil(filteredGrades.length / this.itemsPerPage);
   }
 
-  toggleAllCheckboxes(event: any): void {
+  toggleAllCheckboxes(courseId: number, event: any): void {
     const isChecked = event.target.checked;
-    const checkboxes = document.querySelectorAll('.form-check-input');
-    checkboxes.forEach((checkbox: any) => {
-      checkbox.checked = isChecked;
-    });
+    const course = this.courses.find(c => c.id === courseId);
+    if (!course || !course.grades) return;
+
+    course.grades.forEach((grade: any) => grade.checked = isChecked);
+    this.selectAllChecked[courseId] = isChecked;
+    this.paginateCourse(courseId);
+  }
+
+  toggleCheckbox(courseId: number, grade: any, event: any): void {
+    grade.checked = event.target.checked;
+    const course = this.courses.find(c => c.id === courseId);
+    if (!course || !course.grades) return;
+
+    // Update select all checkbox state for the course
+    const allChecked = course.grades.every((g: any) => g.checked);
+    this.selectAllChecked[courseId] = allChecked;
   }
 
   editGrade(grade: any): void {
@@ -173,8 +215,6 @@ export class GradesComponent implements OnInit {
       grade.course.id
     );
   }
-  
-  
   
   updateGrade(
     gradeId: number,
@@ -228,6 +268,4 @@ export class GradesComponent implements OnInit {
         }
       });
   }
-  
-  
 }
