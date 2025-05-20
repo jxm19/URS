@@ -6,6 +6,8 @@ use App\Models\ExamSchedule;
 use App\Models\Course;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+
 
 class ExamScheduleImport implements ToModel, WithHeadingRow
 {
@@ -35,13 +37,18 @@ class ExamScheduleImport implements ToModel, WithHeadingRow
 }
 
 
-        return new ExamSchedule([
-            'course_id' => $row['course_id'],
-            'exam_date' => $row['exam_date'],
-            'exam_time' => $row['exam_time'],
-            'classroom' => $row['classroom'],
-        ]);
-    }
+      // ✅ Convert Excel serial date to Y-m-d
+      $examDate = is_numeric($row['exam_date'])
+      ? Date::excelToDateTimeObject($row['exam_date'])->format('Y-m-d')
+      : date('Y-m-d', strtotime($row['exam_date'])); // fallback
+
+  return new ExamSchedule([
+      'course_id' => $row['course_id'],
+      'exam_date' => $examDate,
+      'exam_time' => $row['exam_time'],
+      'classroom' => $row['classroom'],
+  ]);
+}
     protected function addError($message)
     {
         // Store the error message (you could also store it in a session or elsewhere)

@@ -15,38 +15,37 @@ class UserController extends Controller
     use ApiResponse;
     
     public function store(Request $request)
-     {
-
-         $validated = Validator::make($request->all(), [
-             'name' => 'required',
-             'email' => 'required|email|unique:users,email',
-             'password' => 'required',
-             'role' => 'required|in:student,secretary,instructor,university',
-         ]);
- 
-         if ($validated->fails()) {
-             return response()->json(['errors' => $validated->errors()], 422);
-         }
- 
-            $userData = $request->only(['name', 'email', 'password', 'role']);
- 
-        
-         if ($userData['role'] == 'student') {
-             $userData['is_student'] = 1;
-         } elseif ($userData['role'] == 'secretary') {
-             $userData['is_secretary'] = 1;
-         } elseif ($userData['role'] == 'instructor') {
-             $userData['is_instructor'] = 1;
-         } elseif ($userData['role'] == 'university') {
-            $userData['is_university'] = 1;
-         }
- 
-        
-         $user = User::create($userData);
- 
-       
-         return $this->success(['message' => 'User created successfully!', 'user' => $user], 201);
-     }
+    {
+        $validated = Validator::make($request->all(), [
+            'users' => 'required|array',
+            'users.*.name' => 'required',
+            'users.*.email' => 'required|email|unique:users,email',
+            'users.*.password' => 'required',
+            'users.*.role' => 'required|in:student,secretary,instructor,university',
+        ]);
+    
+        if ($validated->fails()) {
+            return response()->json(['errors' => $validated->errors()], 422);
+        }
+    
+        $users = [];
+        foreach ($request->users as $userData) {
+            if ($userData['role'] == 'student') {
+                $userData['is_student'] = 1;
+            } elseif ($userData['role'] == 'secretary') {
+                $userData['is_secretary'] = 1;
+            } elseif ($userData['role'] == 'instructor') {
+                $userData['is_instructor'] = 1;
+            } elseif ($userData['role'] == 'university') {
+                $userData['is_university'] = 1;
+            }
+    
+            $users[] = User::create($userData);
+        }
+    
+        return response()->json(['message' => 'Users created successfully!', 'users' => $users], 201);
+    }
+    
 
      public function update(Request $request, $id)
      {

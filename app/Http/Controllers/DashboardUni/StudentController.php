@@ -29,44 +29,44 @@ class StudentController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validate = Validator::make($request->all(), [
-            'name' => 'required',
-            'user_id' => 'required|exists:users,id',
-            'courses' => 'array',
-            'courses.*' => 'exists:courses,id'
-        ]);
-    
-        if ($validate->fails()) {
-            return response()->json(['errors' => $validate->errors()], 422);
-        }
+{
+    $validate = Validator::make($request->all(), [
+        'students' => 'required|array',
+        'students.*.name' => 'required',
+        'students.*.user_id' => 'required|exists:users,id',
+        'students.*.courses' => 'array',
+        'students.*.courses.*' => 'exists:courses,id'
+    ]);
 
-        $existingStudent = Student::where('user_id', $request->user_id)->first();
+    if ($validate->fails()) {
+        return response()->json(['errors' => $validate->errors()], 422);
+    }
+
+    $students = [];
+    foreach ($request->students as $studentData) {
+        $existingStudent = Student::where('user_id', $studentData['user_id'])->first();
         if ($existingStudent) {
             return response()->json(['message' => 'User already has a student ID'], 422);
         }
-    
+
         $year = date('y'); 
         $randomNumber = rand(1000000, 9999999); 
-    
-        
         $studentId = (int)($year . $randomNumber); 
-    
-        
+
         if (strlen($studentId) !== 9) {
             return response()->json(null, ['message' => 'student_id should be 9 digits'], 422);
         }
-    
-        
-        $student = Student::create([
-            'name' => $request->name,
+
+        $students[] = Student::create([
+            'name' => $studentData['name'],
             'student_id' => $studentId,
-            'user_id' => $request->user_id
+            'user_id' => $studentData['user_id']
         ]);
-    
-       return response()->json(['message' => 'Student created successfully!', 'student' => $student], 201);
     }
-    
+
+    return response()->json(['message' => 'Students created successfully!', 'students' => $students], 201);
+}
+
 
     public function update(Request $request, $id)
     {

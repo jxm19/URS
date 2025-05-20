@@ -26,6 +26,7 @@ use App\Http\Controllers\SiteStudent\ExamDetailsController as StudentExamDetails
 
 
 
+Route::post('/site-student/resit_confirm_noauth', [StudentResitExamController::class, 'confirmWithoutAuth']);
 
 
 Route::post('/exam-schedules/import', [ExamScheduleController::class, 'import']);
