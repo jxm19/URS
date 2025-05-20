@@ -123,33 +123,42 @@ this.filteredGrades[courseId] = grades;
     }
   }
   
-  changePage(courseId: number, direction: string): void {
-    const pageInfo = this.coursePages[courseId];
-    if (!pageInfo) return;
-
-    if (direction === 'next' && pageInfo.currentPage < pageInfo.totalPages) {
-      pageInfo.currentPage++;
-    } else if (direction === 'prev' && pageInfo.currentPage > 1) {
-      pageInfo.currentPage--;
+  changePage(courseId: number, direction: 'prev' | 'next'): void {
+    const pageData = this.coursePages[courseId];
+    if (!pageData) return;
+  
+    if (direction === 'next' && pageData.currentPage < pageData.totalPages) {
+      pageData.currentPage++;
+    } else if (direction === 'prev' && pageData.currentPage > 1) {
+      pageData.currentPage--;
     }
+  
+    this.paginateCourse(courseId); // refresh paginatedGrades based on currentPage
+  }
+  
 
+  goToPage(courseId: number, pageNum: number): void {
+    if (!this.coursePages[courseId]) return;
+    this.coursePages[courseId].currentPage = pageNum;
     this.paginateCourse(courseId);
   }
-
-  goToPage(courseId: number, page: number): void {
-    this.coursePages[courseId].currentPage = page;
-    this.paginateCourse(courseId);
-  }
+  
 
   paginateCourse(courseId: number): void {
-    const course = this.courses.find(c => c.id === courseId);
-    const pageInfo = this.coursePages[courseId];
-    if (!course || !pageInfo) return;
-
-    const start = (pageInfo.currentPage - 1) * this.itemsPerPage;
-    const end = start + this.itemsPerPage;
-pageInfo.paginatedGrades = this.filteredGrades[courseId].slice(start, end);
+    const grades = this.filteredGrades[courseId] || [];
+    const pageSize = 10; // or your page size
+    const totalPages = Math.ceil(grades.length / pageSize);
+  
+    if (!this.coursePages[courseId]) {
+      this.coursePages[courseId] = { currentPage: 1, totalPages, paginatedGrades: [] };
+    } else {
+      this.coursePages[courseId].totalPages = totalPages;
+    }
+  
+    const start = (this.coursePages[courseId].currentPage - 1) * pageSize;
+    this.coursePages[courseId].paginatedGrades = grades.slice(start, start + pageSize);
   }
+  
 
   toggleAllCheckboxes(event: any, courseId: number): void {
     const isChecked = event.target.checked;
