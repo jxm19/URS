@@ -26,6 +26,7 @@ use App\Http\Controllers\SiteStudent\ExamDetailsController as StudentExamDetails
 
 
 
+
 Route::post('/site-student/resit_confirm_noauth', [StudentResitExamController::class, 'confirmWithoutAuth']);
 
 
@@ -58,6 +59,9 @@ Route::group(['prefix' => 'dashboard-instructor'], function () {
     Route::post('/login', [InstructorAuthController::class, 'login']);
 
     Route::group(['middleware' => ['auth:sanctum' , 'is_instructor']], function () {
+
+        Route::get('/confirmed-students/export/{courseId}', [InstructorResitExamController::class, 'exportConfirmedStudents']);
+
         Route::post('/logout', [InstructorAuthController::class, 'logout']);
         Route::get('/courses', [InstructorCourseController::class, 'index']);
         Route::get('/courses/{id}', [InstructorCourseController::class, 'show']);

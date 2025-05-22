@@ -10,6 +10,8 @@ use App\Models\Course;
 use App\Models\Grade;
 use App\Models\Instructor;
 use App\Traits\ApiResponse;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ConfirmedStudentsExport;
 
 
 class ResitExamController extends Controller
@@ -60,5 +62,25 @@ class ResitExamController extends Controller
         ]);
     }
     
-    
+    public function exportConfirmedStudents($courseId)
+{
+    $instructor = Instructor::where('user_id', auth()->id())->first();
+
+    if (!$instructor) {
+        return response()->json(['error' => 'Instructor not found!'], 404);
+    }
+
+    $course = Course::where('id', $courseId)
+        ->where('instructor_id', $instructor->id)
+        ->first();
+
+    if (!$course) {
+        return response()->json(['error' => 'You are not authorized to export this course.'], 403);
+    }
+
+    $filename = 'Confirmed_Students_' . $course->course_code . '.xlsx';
+
+    return Excel::download(new ConfirmedStudentsExport($courseId, $instructor->id), $filename);
+}
+
 }
